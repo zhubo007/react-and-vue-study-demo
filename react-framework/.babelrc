@@ -1,0 +1,10 @@
+{
+  "presets": ["@babel/preset-env","@babel/preset-react"],
+  "plugins": [
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],//注解的使用
+    ["@babel/plugin-proposal-class-properties", { "loose" : true }],//如class这种语法，es7的语法
+    "@babel/plugin-transform-runtime",
+    ["import", {"libraryName": "antd","libraryDirectory": "lib", "style": "css"}]
+  ],
+  "comments": false
+}
