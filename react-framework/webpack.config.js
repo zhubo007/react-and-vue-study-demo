@@ -1,3 +1,4 @@
+//HELLO WORDLD
 let path = require('path');
 let HtmlWebpackPlugin = require('html-webpack-plugin')
 //将样式压缩成CSS文件，而不写入到header中，不压缩内容
