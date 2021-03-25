@@ -4,7 +4,7 @@ let HtmlWebpackPlugin = require('html-webpack-plugin')
 let MiniCssExtractPlugin = require('mini-css-extract-plugin')
 // 压缩JS文件
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-// 压缩CSS的内容
+// 压缩CSS的内容 
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 let webpack=require('webpack');
 module.exports = {
