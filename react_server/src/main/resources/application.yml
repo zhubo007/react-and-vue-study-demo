@@ -1,0 +1,28 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /mktm/api
+spring:
+  datasource:
+    name: mktm
+    druid:
+#      driver: org.mariadb.jdbc.Driver
+#      driver-class-name: org.mariadb.jdbc.Driver
+      test-on-borrow: false
+      test-while-idle: true
+      test-on-return: false
+      max-active: 19
+      min-idle: 3  #最小连接池数量
+      max-wait: 60000
+      initial-size: 3
+      validation-query: select 1 from dual
+      filters: stat
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      pool-prepared-statements: false
+      max-open-prepared-statements: 19
+      max-pool-prepared-statement-per-connection-size: 100
+  profiles:
+    active: dev
+mybatis:
+  mapper-locations: classpath:mapping/**/*.xml

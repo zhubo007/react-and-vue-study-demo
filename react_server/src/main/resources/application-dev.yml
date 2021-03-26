@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    druid:
+      username: root
+      password: mktm4321
+      url: jdbc:mysql://localhost:3306/mktm?useUnicode=true&characterEncoding=utf8
