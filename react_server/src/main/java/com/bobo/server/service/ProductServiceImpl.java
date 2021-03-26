@@ -22,4 +22,14 @@ public class ProductServiceImpl implements ProductService {
     public int addProject(Product product) {
         return productMapper.insertSelective(product);
     }
+
+    @Override
+    public int deleteProject(Integer productId) {
+        return productMapper.deleteByPrimaryKey(productId);
+    }
+
+    @Override
+    public int updateProject(Product product) {
+        return productMapper.updateByPrimaryKeySelective(product);
+    }
 }

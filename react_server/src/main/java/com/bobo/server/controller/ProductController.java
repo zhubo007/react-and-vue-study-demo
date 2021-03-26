@@ -22,4 +22,14 @@ public class ProductController {
     public Object addProject(@RequestBody Product product){
         return productService.addProject(product);
     }
+
+    @PostMapping(path = "/update/{productId}")
+    public Object updateProject(@RequestBody Product product){
+        return productService.updateProject(product);
+    }
+
+    @PostMapping(path = "/delete/{productId}")
+    public Object deleteProject(@PathVariable(name = "productId") Integer productId){
+        return productService.deleteProject(productId);
+    }
 }
