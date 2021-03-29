@@ -9,6 +9,17 @@ const dateFormat = 'YYYY-MM-DD';
 const AddModal = ({ visible, onCreate, onAddCancel,brandList }) => {
     const [form] = Form.useForm();
 
+    const formItemLayout = {
+        labelCol: {
+            xs: { span: 24 },
+            sm: { span: 8 },
+        },
+        wrapperCol: {
+            xs: { span: 24 },
+            sm: { span: 16 },
+        },
+    };
+
     return (
         <Fragment>
             <Modal visible={visible} title="Title" width={750} onOk={() => {

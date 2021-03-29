@@ -16,8 +16,9 @@ var config = {
         "react-dom":"ReactDOM",
     },
     resolve: {
-        extensions: ['.js', '.jsx','.css'] //表示这几种文件的后缀名可以省略，按照从前到后的方式来进行补全
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.css'] //表示这几种文件的后缀名可以省略，按照从前到后的方式来进行补全
     },
+    devtool: 'source-map',// 输出 Source Map 方便在浏览器里调试 TypeScript 代码
     devServer: {
         contentBase: path.resolve(__dirname, "../dist"), //网站的根目录为 根目录/dist，这个路径一般与output.path一致，因为html插件生成的html5页是放在output.path这个目录下
         port: 9000,
@@ -45,11 +46,16 @@ var config = {
                     loader: 'babel-loader',
                     options: {
                         presets: ['react','env', 'stage-2'],
-                        plugins: [['import', {"libraryName": "antd", "style": "css"}]]
+                        plugins: [['import', {"libraryName": "antd", "style": "css"}],
+                            '@babel/plugin-proposal-class-properties']
                     }
                 },
                 include:path.resolve(__dirname, './src'),
             } ,
+            {
+                test: /\.tsx$/,
+                use: ['ts-loader']
+            },
             {
                 test: /\.(png|jpg|gif)$/,
                 use: [
