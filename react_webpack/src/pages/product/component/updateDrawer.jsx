@@ -2,7 +2,7 @@ import React, { PureComponent,Fragment } from 'react';
 import {connect } from 'react-redux';
 import { Button,Input,Form,DatePicker,Select,Drawer} from 'antd';
 import moment from "moment"
-import {actionCreator} from "../store";
+import {actionCreator} from "../store/index";
 const { Option } = Select;
 const { TextArea } = Input;
 const dateFormat = 'YYYY-MM-DD';

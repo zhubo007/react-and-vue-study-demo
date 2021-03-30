@@ -1,18 +1,13 @@
 
-import React, { PureComponent, Fragment } from 'react';
+import React, {Fragment } from 'react';
 import { connect } from 'react-redux';
-import { actionCreator } from './store';
-//import axios from './../../axios/index';
+import { actionCreator } from './store/index';
 import axios from 'axios';
-import { Table, Card, Select, Input, Button, message } from 'antd';
-import { fromJS } from 'immutable';
-import { AddModal } from './component';
+import { Table, Select, Input, Button, message } from 'antd';
+import { AddModal } from './component/index';
 import moment from 'moment';
 import '../../main.css'
-
 const Option = Select.Option;
-const Search = Input.Search;
-const { Column } = Table;
 
 const columns = [
     {
@@ -45,7 +40,7 @@ const columns = [
         title: '关注时间',
         dataIndex: 'followTime',
         key: 'followTime',
-        render: (value, rowData, index) => {
+        render: (value: any, rowData: any, index: number) => {
             return moment(value).format('YYYY-MM-DD HH:mm:ss');;
         },
     },
@@ -55,10 +50,32 @@ const columns = [
         key: 'reference'
     }
 ];
+interface ProductProps {
+    handleGetBrandList: (brandList: Object[]) => void;
+    brandList: Object[]
+}
+interface ProductState {
+    productName: string,
+    brandType: string,
+    productList: any[],
+    add_visible: boolean,
+    edit_visible: boolean,
+    selectedRowKeys: string[]
+}
 
-class Product extends PureComponent {
+interface Values {
+    productName: string;
+    followTime: string;
+    brandType: string;
+    startPrice: number;
+    expectPrice: number;
+    fiveLevel: number;
+    productDie: string;
+}
 
-    constructor(props) {
+class Product extends React.Component<ProductProps, ProductState> {
+
+    constructor(props: ProductProps) {
         super(props);
         this.state = {
             productName: '',
@@ -77,48 +94,46 @@ class Product extends PureComponent {
         this.request();
     }
 
-    onSelectChange = selectedRowKeys => {
+    onSelectChange = (selectedRowKeys: string[]) => {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys });
     };
 
     request = () => {
-        axios.get('/app/product/all', { params: { productName: this.state.productName, brandType: this.state.brandType } }).then((response) => {
+        axios.get('/app/product/all', { params: { productName: this.state.productName, brandType: this.state.brandType } }).then((response: any) => {
             this.setState({ productList: response.data })
         }).catch((error) => {
-            console.log(response)
+            console.log(error)
         })
-    }
-    onCreate = (values) => {
+    };
+    onCreate = (values: Values) => {
         axios.post(`/app/product/add`, values)
             .then(res => {
                 console.log('res=>', res);
-                this.setState({ add_visible: false })
+                this.setState({ add_visible: false });
                 message.success('新增商品成功');
             }).catch((error) => {
                 message.error(error);
-                console.log(response)
             })
-    }
+    };
     onAddCancel = () => {
         this.setState({ add_visible: false })
-    }
+    };
 
     render() {
         const { brandList } = this.props;
         const { selectedRowKeys } = this.state;
-        const rowSelection = {
+        const rowSelection: Object = {
             selectedRowKeys,
             type: 'checkbox',
             onChange: this.onSelectChange,
             selections: [
                 Table.SELECTION_ALL,
                 Table.SELECTION_INVERT,
-                //Table.SELECTION_NONE,
                 {
                     key: 'NONE SELECTED',
                     text: '全不选中',
-                    onSelect: changableRowKeys => {
+                    onSelect: (changeableRowKeys: any[]) => {
                         this.setState({ selectedRowKeys: [] });
                     },
                 },
@@ -128,11 +143,11 @@ class Product extends PureComponent {
             <Fragment>
                 <Button type="primary" onClick={() => this.setState({ add_visible: true })}>新增产品</Button>
                 <Button type="primary" onClick={() => this.setState({ edit_visible: true })}>编辑产品</Button>
-                <Select onChange={(option) => { this.setState({ brandType: option.value }) }}
-                    labelInValue id='brandInfo' size='default' style={{ width: 240 }}
+                <Select onChange={(option: any) => { this.setState({ brandType: option.value }) }}
+                    labelInValue id='brandInfo' style={{ width: 240 }}
                     placeholder="请选择品牌">
                     {
-                        brandList.map((item, index) => {
+                        brandList.map((item: any, index: number) => {
                             return <Option key={index} value={item.get('boxKey')}>{item.get('boxText')}</Option>
                         })
                     }
@@ -141,22 +156,22 @@ class Product extends PureComponent {
                     style={{ marginBottom: 8, width: '240px', height: '32px', paddingLeft: '12px', marginRight: '10px', marginLeft: '10px' }} placeholder="请输入搜索内容" />
                 <Button type="primary" onClick={() => this.request()}>搜索</Button>
                 <Table columns={columns} dataSource={this.state.productList} rowSelection={rowSelection} rowKey='productId' bordered
-                    pagination={{ showTotal: total => `共 ${total} 条`, position: 'bottom', showSizeChanger: true, pageSizeOptions: ['5', '10', '20', '30', '50'], defaultPageSize: 5, }} />
+                    pagination={{ showTotal: (total: number) => `共 ${total} 条`, position: ['topLeft', 'bottomRight'], showSizeChanger: true, pageSizeOptions: ['5', '10', '20', '30', '50'], defaultPageSize: 5, }} />
                 <AddModal visible={this.state.add_visible} onAddCancel={this.onAddCancel} onCreate={this.onCreate} brandList={brandList} />
             </Fragment>
         )
     }
 }
 
-const initMapStateToProps = (state) => {
+const initMapStateToProps = (state: any) => {
     return {
         brandList: state.getIn(['common_reducer', 'brandList'])
     }
 };
-const initMapDispatchToProps = (dispatch) => {
+const initMapDispatchToProps = (dispatch: any) => {
     return {
-        handleGetBrandList(brandList) {
-            if (brandList.size <= 0) {
+        handleGetBrandList(brandList: Object[]) {
+            if (brandList.length <= 0) {
                 dispatch(actionCreator.getBrandList(null, 'brandName'))
             }
         }
