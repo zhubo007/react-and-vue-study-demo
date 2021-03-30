@@ -5,7 +5,7 @@ const defaultState = fromJS({
     brandList:[]
 });
 
-export default (state=defaultState, action) => {
+export default (state=defaultState, action: any) => {
     switch (action.type) {
         case constants.BOX_BRAND_LIST_OPTION:
             return state.merge({
