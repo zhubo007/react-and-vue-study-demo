@@ -7,12 +7,26 @@ const path = require('path')
 const outputPath = path.resolve(__dirname, '..', 'dist');
 
 module.exports = merge(common, {
-  mode: 'development',
-  // shows a source map when in dev mode
-  devtool: 'eval-source-map',
-  devServer: {
-    contentBase: outputPath,
-    port: DEV_PORT,
-  },
+    mode: 'development',
+    // shows a source map when in dev mode
+    devtool: 'eval-source-map',
+    devServer: {
+        contentBase: outputPath,
+        port: DEV_PORT,
+        inline: true,
+        hot: false,
+        disableHostCheck: true,
+        historyApiFallback: true,
+        compress: true,
+        host: '0.0.0.0',
+        proxy: {
+            '/app': {
+                target: 'http://192.168.0.101:8080/mktm/api',
+                changeOrigin: true,
+                secure: false,
+                pathRewrite: {'^/app': ''}
+            }
+        }
+    },
 });
 

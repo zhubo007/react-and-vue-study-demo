@@ -1,26 +1,33 @@
 {
-    "presets": [ "react","env", "stage-0"],
-    "plugins": [
-        [
-          "import", {
-          "libraryName": "antd",
-          "style": true
-        }
-        ],
-        "transform-runtime",
-        "transform-decorators-legacy"
-      ],
-      "env": {
-        "production": {},
-        "development": {
-          "plugins": [
-            [
-              "dva-hmr", {
-              "container": "#app",
-              "quiet": false
-            }
-            ]
-          ]
-        }
+  "presets": [
+    "react",
+    [
+      "env"
+    ],
+    "stage-0"
+  ],
+  "plugins": [
+    "react-hot-loader/babel",
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "style": true
       }
+    ]
+  ],
+  "env": {
+    "production": {},
+    "development": {
+      "plugins": [
+        [
+          "dva-hmr",
+          {
+            "container": "#root",
+            "quiet": false
+          }
+        ]
+      ]
+    }
+  }
 }
