@@ -1,3 +1,3 @@
-import AddModal from './addModel.tsx';
+import AddModal from './addModel.jsx';
 
 export {AddModal };
