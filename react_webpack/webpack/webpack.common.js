@@ -9,13 +9,47 @@ module.exports = {
     entry: {
         main: './src/index.tsx',
     },
+    // presets: [
+    //     "@babel/plugin-proposal-function-bind",
+    // ],
+    // plugins: [
+    //     require("@babel/plugin-syntax-dynamic-import"),
+    //     [require("@babel/plugin-proposal-decorators"), { "legacy": true }],
+    //     [require("@babel/plugin-proposal-class-properties"), { "loose": false }],
+    // ],
     module: {
         rules: [
             // use ts-loader on tsx or ts files
+            // {
+            //     test: /\.tsx?$/,
+            //     use: 'ts-loader',
+            //     exclude: /node_modules/,
+            // },
             {
-                test: /\.tsx?$/,
-                use: 'ts-loader',
-                exclude: /node_modules/,
+                test: /\.(tsx|ts)?$/,
+                use: [
+                    {
+                        loader: 'react-hot-loader/webpack'
+                    }, {
+                        loader: 'babel-loader'
+                    }, {
+                        loader: 'ts-loader'
+                    }
+                ]
+            },
+            {
+                test: /\.less$/,
+                use: [
+                    {
+                        loader: "style-loader"
+                    },
+                    {
+                        loader: "css-loader"
+                    },
+                    {
+                        loader: "less-loader"
+                    }
+                ]
             },
             {
                 test: /\.css$/,
@@ -38,13 +72,19 @@ module.exports = {
                 test: /.(gif|jpg|jpeg| png|svg)$/,
                 use: [
                     {
-                        loader:'url-loader',
+                        loader: 'url-loader',
                         options: {
-                            limit:1024,
+                            limit: 1024,
                             name: '[name]-xxx.[ext]'
                         }
                     }
                 ]
+            },
+            {
+                enforce: "pre",
+                test: /\.js$/,
+                loader: "babel-loader",
+                exclude: /node_modules/
             },
             {
                 test: /\.(js|jsx)$/,

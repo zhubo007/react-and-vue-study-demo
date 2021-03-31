@@ -1,13 +1,10 @@
 {
   "presets": [
-    "react",
-    [
-      "env"
-    ],
-    "stage-0"
+    "@babel/preset-env"
   ],
   "plugins": [
-    "react-hot-loader/babel",
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-proposal-class-properties",
     [
       "import",
       {
@@ -15,19 +12,5 @@
         "style": true
       }
     ]
-  ],
-  "env": {
-    "production": {},
-    "development": {
-      "plugins": [
-        [
-          "dva-hmr",
-          {
-            "container": "#root",
-            "quiet": false
-          }
-        ]
-      ]
-    }
-  }
+  ]
 }
