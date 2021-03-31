@@ -21,7 +21,7 @@ module.exports = merge(common, {
         host: '0.0.0.0',
         proxy: {
             '/app': {
-                target: 'http://192.168.0.101:8080/mktm/api',
+                target: 'http://127.0.0.1:8080/mktm/api',
                 changeOrigin: true,
                 secure: false,
                 pathRewrite: {'^/app': ''}

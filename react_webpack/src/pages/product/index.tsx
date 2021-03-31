@@ -1,12 +1,12 @@
-
-import React, {Fragment } from 'react';
-import { connect } from 'react-redux';
-import { actionCreator } from './store/index';
+import React, {Fragment} from 'react';
+import {connect} from 'react-redux';
+import {actionCreator} from './store/index';
 import axios from 'axios';
-import { Table, Select, Input, Button, message } from 'antd';
-import { AddModal } from './component/index';
+import {Table, Select, Input, Button, message} from 'antd';
+import {AddModal} from './component/index';
 import moment from 'moment';
 import '../../main.css'
+
 const Option = Select.Option;
 
 const columns = [
@@ -41,7 +41,7 @@ const columns = [
         dataIndex: 'followTime',
         key: 'followTime',
         render: (value: any, rowData: any, index: number) => {
-            return moment(value).format('YYYY-MM-DD HH:mm:ss');;
+            return moment(value).format('YYYY-MM-DD HH:mm:ss');
         },
     },
     {
@@ -50,10 +50,12 @@ const columns = [
         key: 'reference'
     }
 ];
+
 interface ProductProps {
     handleGetBrandList: (brandList: Object[]) => void;
     brandList: Object[]
 }
+
 interface ProductState {
     productName: string,
     brandType: string,
@@ -95,13 +97,17 @@ class Product extends React.Component<ProductProps, ProductState> {
     }
 
     onSelectChange = (selectedRowKeys: string[]) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
-        this.setState({ selectedRowKeys });
+        this.setState({selectedRowKeys});
     };
 
     request = () => {
-        axios.get('/app/product/all', { params: { productName: this.state.productName, brandType: this.state.brandType } }).then((response: any) => {
-            this.setState({ productList: response.data })
+        axios.get('/app/product/all', {
+            params: {
+                productName: this.state.productName,
+                brandType: this.state.brandType
+            }
+        }).then((response: any) => {
+            this.setState({productList: response.data})
         }).catch((error) => {
             console.log(error)
         })
@@ -110,19 +116,19 @@ class Product extends React.Component<ProductProps, ProductState> {
         axios.post(`/app/product/add`, values)
             .then(res => {
                 console.log('res=>', res);
-                this.setState({ add_visible: false });
+                this.setState({add_visible: false});
                 message.success('新增商品成功');
             }).catch((error) => {
-                message.error(error);
-            })
+            message.error(error);
+        })
     };
     onAddCancel = () => {
-        this.setState({ add_visible: false })
+        this.setState({add_visible: false})
     };
 
     render() {
-        const { brandList } = this.props;
-        const { selectedRowKeys } = this.state;
+        const {brandList} = this.props;
+        const {selectedRowKeys} = this.state;
         const rowSelection: Object = {
             selectedRowKeys,
             type: 'checkbox',
@@ -134,30 +140,49 @@ class Product extends React.Component<ProductProps, ProductState> {
                     key: 'NONE SELECTED',
                     text: '全不选中',
                     onSelect: (changeableRowKeys: any[]) => {
-                        this.setState({ selectedRowKeys: [] });
+                        this.setState({selectedRowKeys: []});
                     },
                 },
             ]
         };
         return (
             <Fragment>
-                <Button type="primary" onClick={() => this.setState({ add_visible: true })}>新增产品</Button>
-                <Button type="primary" onClick={() => this.setState({ edit_visible: true })}>编辑产品</Button>
-                <Select onChange={(option: any) => { this.setState({ brandType: option.value }) }}
-                    labelInValue id='brandInfo' style={{ width: 240 }}
-                    placeholder="请选择品牌">
+                <Button type="primary" onClick={() => this.setState({add_visible: true})}>新增产品</Button>
+                <Button type="primary" onClick={() => this.setState({edit_visible: true})}>编辑产品</Button>
+                <Select onChange={(option: any) => {
+                    this.setState({brandType: option.value})
+                }}
+                        labelInValue id='brandInfo' style={{width: 240}}
+                        placeholder="请选择品牌">
                     {
                         brandList.map((item: any, index: number) => {
-                            return <Option key={index} value={item.get('boxKey')}>{item.get('boxText')}</Option>
+                            return <Option key={index} value={item['boxKey']}>{item['boxText']}</Option>
                         })
                     }
                 </Select>
-                <Input onChange={(event) => { this.setState({ productName: event.target.value }) }} value={this.state.productName}
-                    style={{ marginBottom: 8, width: '240px', height: '32px', paddingLeft: '12px', marginRight: '10px', marginLeft: '10px' }} placeholder="请输入搜索内容" />
+                <Input onChange={(event) => {
+                    this.setState({productName: event.target.value})
+                }} value={this.state.productName}
+                       style={{
+                           marginBottom: 8,
+                           width: '240px',
+                           height: '32px',
+                           paddingLeft: '12px',
+                           marginRight: '10px',
+                           marginLeft: '10px'
+                       }} placeholder="请输入搜索内容"/>
                 <Button type="primary" onClick={() => this.request()}>搜索</Button>
-                <Table columns={columns} dataSource={this.state.productList} rowSelection={rowSelection} rowKey='productId' bordered
-                    pagination={{ showTotal: (total: number) => `共 ${total} 条`, position: ['topLeft', 'bottomRight'], showSizeChanger: true, pageSizeOptions: ['5', '10', '20', '30', '50'], defaultPageSize: 5, }} />
-                <AddModal visible={this.state.add_visible} onAddCancel={this.onAddCancel} onCreate={this.onCreate} brandList={brandList} />
+                <Table columns={columns} dataSource={this.state.productList} rowSelection={rowSelection}
+                       rowKey='productId' bordered
+                       pagination={{
+                           showTotal: (total: number) => `共 ${total} 条`,
+                           position: ['bottomRight'],
+                           showSizeChanger: true,
+                           pageSizeOptions: ['5', '10', '20', '30', '50'],
+                           defaultPageSize: 5,
+                       }}/>
+                <AddModal visible={this.state.add_visible} onAddCancel={this.onAddCancel} onCreate={this.onCreate}
+                          brandList={brandList}/>
             </Fragment>
         )
     }
@@ -170,8 +195,10 @@ const initMapStateToProps = (state: any) => {
 };
 const initMapDispatchToProps = (dispatch: any) => {
     return {
-        handleGetBrandList(brandList: Object[]) {
-            if (brandList.length <= 0) {
+        handleGetBrandList(brandList: Array<any>) {
+            console.log(brandList.length);
+            if (brandList.length) {
+                console.log("searching......");
                 dispatch(actionCreator.getBrandList(null, 'brandName'))
             }
         }

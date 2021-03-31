@@ -100,7 +100,7 @@ const AddModal: React.FC<CollectionCreateFormProps> = ({
                                     {
                                         brandList.map((item, index: number) =>
                                             <Option key={index}
-                                                    value={item.get('boxKey')}>{item.get('boxText')}</Option>
+                                                    value={item['boxKey']}>{item['boxText']}</Option>
                                         )
                                     }
                                 </Select>

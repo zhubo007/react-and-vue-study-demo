@@ -8,8 +8,9 @@ const defaultState = fromJS({
 export default (state=defaultState, action: any) => {
     switch (action.type) {
         case constants.BOX_BRAND_LIST_OPTION:
+            //console.log(fromJS(action.brandList))
             return state.merge({
-                brandList: fromJS(action.brandList)
+                brandList: action.brandList
             });
         default:
             return state;
