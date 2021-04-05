@@ -89,6 +89,7 @@ class Product extends React.Component<ProductProps, ProductState> {
         };
         this.onAddCancel = this.onAddCancel.bind(this);
         this.onCreate = this.onCreate.bind(this);
+        this.onClickRow = this.onClickRow.bind(this);
     }
 
     componentDidMount() {
@@ -118,6 +119,7 @@ class Product extends React.Component<ProductProps, ProductState> {
                 console.log('res=>', res);
                 this.setState({add_visible: false});
                 message.success('新增商品成功');
+                this.request();
             }).catch((error) => {
             message.error(error);
         })
@@ -125,7 +127,17 @@ class Product extends React.Component<ProductProps, ProductState> {
     onAddCancel = () => {
         this.setState({add_visible: false})
     };
-
+    onClickRow = (record) => {
+        return {
+            onClick: () => {
+                //this.setState({selectedRowKeys: record['productId']});
+                alert("双击行")
+            },
+            onDoubleClick: event => {
+                alert("双击行")
+            }
+        };
+    }
     render() {
         const {brandList} = this.props;
         const {selectedRowKeys} = this.state;
@@ -179,7 +191,7 @@ class Product extends React.Component<ProductProps, ProductState> {
                            position: ['bottomRight'],
                            showSizeChanger: true,
                            pageSizeOptions: ['5', '10', '20', '30', '50'],
-                           defaultPageSize: 5,
+                           defaultPageSize: 5
                        }}/>
                 <AddModal visible={this.state.add_visible} onAddCancel={this.onAddCancel} onCreate={this.onCreate}
                           brandList={brandList}/>
@@ -196,9 +208,7 @@ const initMapStateToProps = (state: any) => {
 const initMapDispatchToProps = (dispatch: any) => {
     return {
         handleGetBrandList(brandList: Array<any>) {
-            console.log(brandList.length);
-            if (brandList.length) {
-                console.log("searching......");
+            if (brandList.length == 0 || typeof brandList.length == 'undefined') {
                 dispatch(actionCreator.getBrandList(null, 'brandName'))
             }
         }
