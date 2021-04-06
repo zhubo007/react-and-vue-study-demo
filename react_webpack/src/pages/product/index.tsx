@@ -127,13 +127,13 @@ class Product extends React.Component<ProductProps, ProductState> {
     onAddCancel = () => {
         this.setState({add_visible: false})
     };
-    onClickRow = (record) => {
+    onClickRow = (record: any) => {
         return {
             onClick: () => {
                 //this.setState({selectedRowKeys: record['productId']});
                 alert("双击行")
             },
-            onDoubleClick: event => {
+            onDoubleClick: (event: any) => {
                 alert("双击行")
             }
         };
