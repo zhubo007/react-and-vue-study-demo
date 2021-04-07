@@ -2,7 +2,7 @@
   "compilerOptions": {
     "strict": true,
     "allowSyntheticDefaultImports": true,
-//    "noImplicitAny": false,
+    //"noImplicitAny": false, //降低对类型的校验
     "moduleResolution": "Node",
     "sourceMap": true,
     "esModuleInterop": true,

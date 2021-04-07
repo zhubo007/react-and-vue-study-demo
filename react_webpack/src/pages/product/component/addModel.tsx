@@ -98,7 +98,7 @@ const AddModal: React.FC<CollectionCreateFormProps> = ({
                             <Form.Item name="brandType" rules={[{required: true, message: '请选择商品品牌!'}]}>
                                 <Select placeholder="请选择品牌">
                                     {
-                                        brandList.map((item, index: number) =>
+                                        brandList.map((item: any, index: number) =>
                                             <Option key={index}
                                                     value={item['boxKey']}>{item['boxText']}</Option>
                                         )

@@ -52,8 +52,8 @@ const columns = [
 ];
 
 interface ProductProps {
-    handleGetBrandList: (brandList: Object[]) => void;
-    brandList: Object[]
+    handleGetBrandList: (brandList: any[]) => void;
+    brandList: any[];
 }
 
 interface ProductState {
@@ -121,8 +121,8 @@ class Product extends React.Component<ProductProps, ProductState> {
                 message.success('新增商品成功');
                 this.request();
             }).catch((error) => {
-            message.error(error);
-        })
+                message.error(error);
+            })
     };
     onAddCancel = () => {
         this.setState({add_visible: false})
@@ -137,7 +137,7 @@ class Product extends React.Component<ProductProps, ProductState> {
                 alert("双击行")
             }
         };
-    }
+    };
     render() {
         const {brandList} = this.props;
         const {selectedRowKeys} = this.state;
@@ -207,7 +207,7 @@ const initMapStateToProps = (state: any) => {
 };
 const initMapDispatchToProps = (dispatch: any) => {
     return {
-        handleGetBrandList(brandList: Array<any>) {
+        handleGetBrandList(brandList: any[]) {
             if (brandList.length == 0 || typeof brandList.length == 'undefined') {
                 dispatch(actionCreator.getBrandList(null, 'brandName'))
             }
