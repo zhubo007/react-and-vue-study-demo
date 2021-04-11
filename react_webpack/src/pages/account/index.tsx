@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import '../../main.css';
 
@@ -8,6 +8,7 @@ interface AccountProps {
 interface AccountState {
 }
 
+const apiURI = process.env.REACT_APP_API_URL;
 
 class Account extends React.Component<AccountProps, AccountState> {
 
