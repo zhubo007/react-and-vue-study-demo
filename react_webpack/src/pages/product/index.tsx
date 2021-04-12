@@ -6,6 +6,7 @@ import {Table, Select, Input, Button, message} from 'antd';
 import {AddModal} from './component/index';
 import moment from 'moment';
 import '../../main.css'
+import {List} from "immutable";
 
 const Option = Select.Option;
 
@@ -51,6 +52,16 @@ const columns = [
     }
 ];
 
+export interface ProductObj {
+    productName: string;
+    followTime: string;
+    brandType: string;
+    startPrice: number;
+    expectPrice: number;
+    fiveLevel: number;
+    productDie: string;
+}
+
 interface ProductProps {
     handleGetBrandList: (brandList: any[]) => void;
     brandList: any[];
@@ -59,20 +70,10 @@ interface ProductProps {
 interface ProductState {
     productName: string,
     brandType: string,
-    productList: any[],
+    productList: ProductObj[],
     add_visible: boolean,
     edit_visible: boolean,
-    selectedRowKeys: string[]
-}
-
-interface Values {
-    productName: string;
-    followTime: string;
-    brandType: string;
-    startPrice: number;
-    expectPrice: number;
-    fiveLevel: number;
-    productDie: string;
+    selectedRowKeys: List<string>
 }
 
 class Product extends React.Component<ProductProps, ProductState> {
@@ -85,7 +86,7 @@ class Product extends React.Component<ProductProps, ProductState> {
             productList: [],
             add_visible: false,
             edit_visible: false,
-            selectedRowKeys: []
+            selectedRowKeys: List<string>()
         };
         this.onAddCancel = this.onAddCancel.bind(this);
         this.onCreate = this.onCreate.bind(this);
@@ -97,7 +98,7 @@ class Product extends React.Component<ProductProps, ProductState> {
         this.request();
     }
 
-    onSelectChange = (selectedRowKeys: string[]) => {
+    onSelectChange = (selectedRowKeys: List<string>) => {
         this.setState({selectedRowKeys});
     };
 
@@ -113,7 +114,7 @@ class Product extends React.Component<ProductProps, ProductState> {
             console.log(error)
         })
     };
-    onCreate = (values: Values) => {
+    onCreate = (values: ProductObj) => {
         axios.post(`/app/product/add`, values)
             .then(res => {
                 console.log('res=>', res);
@@ -151,8 +152,8 @@ class Product extends React.Component<ProductProps, ProductState> {
                 {
                     key: 'NONE SELECTED',
                     text: '全不选中',
-                    onSelect: (changeableRowKeys: any[]) => {
-                        this.setState({selectedRowKeys: []});
+                    onSelect: (changeableRowKeys: List<string>) => {
+                        this.setState({selectedRowKeys: List<string>()});
                     },
                 },
             ]

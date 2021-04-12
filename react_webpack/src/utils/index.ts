@@ -1,7 +1,11 @@
-export const isFalsy = (value) => value === 0 ? false : !value;
+import {useEffect, useState} from "react";
+import {array, number, object, string} from "prop-types";
+import {List} from "immutable";
+
+export const isFalsy = (value: any): boolean => value === 0 ? false : !value;
 
 //在一个函数里，改变传入的对象本身是不好的
-export const cleanObject = (object) => {
+export const cleanObject = (object: object) => {
     const result = {...object};
     Object.keys(result).forEach(key=>{
         const value = object[key];
@@ -12,10 +16,10 @@ export const cleanObject = (object) => {
     return result;
 };
 //Hook方法使用use开头
-export const useMount = (callback) => {
+export const useMount = (callback: () => void) => {
     useEffect(() => {
-        callback()
-    }, [])
+        callback();
+    }, []);
 };
 
 // const debounce = (func, delay) => {
@@ -33,13 +37,29 @@ export const useMount = (callback) => {
 //
 // const  log = debounce(() =>{console.log('call')},5000)
 
-export const useDebounce = (value, delay) => {
+export const useDebounce = <T>(value: T, delay?: number) => {
     const {debouncedValue, setDebouncedValue} = useState(value);
     useEffect(() => {
         //每次在value变化以后，设置一个定时器
         const timeout = setTimeout(() => setDebouncedValue(value), delay);
         //每次在上一个useEffect处理完以后再运行
         return () => clearTimeout(timeout)
-    },[value, delay]);
+    },(value, delay));
     return debouncedValue;
 };
+
+export const useArray = <T> (initialArray: T[])=>{
+    const [value, setValue] = useState(initialArray)
+
+    return {
+        value,
+        setValue,
+        add: (item: T) => setValue([...value, item])
+        clear: () => setValue([]),
+        removeIndex: (index: number) => {
+            const copy = [...value]
+            copy.splice(index, 1)
+            setValue(copy)
+        }
+    }
+}

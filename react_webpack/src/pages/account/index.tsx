@@ -1,14 +1,41 @@
 import React, {Fragment, useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import '../../main.css';
+import * as qs from 'qs';
+
+
+enum Color {
+  Blue,
+  Red,
+  Green
+}
+export interface Accounting {
+    dealNo: string;
+    productId: string;
+    seller: string;
+    buyer: string;
+    payWay: string;
+    payType: string;
+    productNum: number;
+    productPrice: number;
+    totalPrice: number;
+    recordTime: string;
+}
 
 interface AccountProps {
+    accounts: Accounting[];
+    param: {
+        startTime: string;
+        endTime: string;
+    };
+    setParam: (param: AccountProps['param']) => void;
 }
 
 interface AccountState {
+
 }
 
-const apiURI = process.env.REACT_APP_API_URL;
+//const apiURI = process.env.REACT_APP_API_URL;
 
 class Account extends React.Component<AccountProps, AccountState> {
 
@@ -16,7 +43,8 @@ class Account extends React.Component<AccountProps, AccountState> {
         super(props);
     }
 
-    render(){
+    // @ts-ignore
+    render() {
         return (
             <Fragment>
                 <h1>Hello, This is 记账功能页面</h1>
@@ -26,12 +54,10 @@ class Account extends React.Component<AccountProps, AccountState> {
 }
 
 const initMapStateToProps = (state: any) => {
-    return {
-    }
+    return {}
 };
 const initMapDispatchToProps = (dispatch: any) => {
-    return {
-    }
+    return {}
 };
 
 export default connect(initMapStateToProps, initMapDispatchToProps)(Account);
