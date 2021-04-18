@@ -1,6 +1,7 @@
 import React, {Fragment} from 'react';
 import {Button, Modal, Input, InputNumber, Form, DatePicker, Select, Row, Col} from 'antd';
-import {ProductObj} from "../../../entity/index"
+import {BrandObj, ProductObj} from "../../../entity/index"
+import {connect} from "react-redux";
 
 const {Option} = Select;
 const {TextArea} = Input;
@@ -13,6 +14,7 @@ interface CollectionCreateFormProps {
     onAddCancel: () => void;
     brandList: any[]
 }
+
 //无状态组件
 const AddModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAddCancel, brandList}) => {
     const [form] = Form.useForm();
@@ -86,7 +88,7 @@ const AddModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAdd
                             <Form.Item name="brandType" rules={[{required: true, message: '请选择商品品牌!'}]}>
                                 <Select placeholder="请选择品牌">
                                     {
-                                        brandList.map((item: any, index: number) => <Option key={index} value={item['boxKey']}>{item['boxText']}</Option>)
+                                        brandList.map((item: BrandObj, index: number) => <Option key={index} value={item.boxKey}>{item.boxText}</Option>)
                                     }
                                 </Select>
                             </Form.Item>
@@ -158,5 +160,12 @@ const AddModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAdd
         </Fragment>
     )
 }
-
-export default AddModal;
+//
+const initMapStateToProps = (state: any) => {
+    return {}
+};
+const initMapDispatchToProps = (dispatch: any) => {
+    return {}
+};
+export default connect(initMapStateToProps, initMapDispatchToProps)(AddModal);
+// export default AddModal;
