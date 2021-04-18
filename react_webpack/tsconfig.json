@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "strict": true,
+    "strictPropertyInitialization":false,//属性不用在构造器里面初始化
     "allowSyntheticDefaultImports": true,
     //"noImplicitAny": false, //降低对类型的校验
     "moduleResolution": "Node",

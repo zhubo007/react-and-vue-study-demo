@@ -1,12 +1,12 @@
-import React, {Fragment} from 'react';
-import {connect} from 'react-redux';
-import {actionCreator} from './store/index';
-import axios from 'axios';
-import {Table, Select, Input, Button, message} from 'antd';
-import {AddModal} from './component/index';
-import moment from 'moment';
+import React, {Fragment} from 'react'
+import {connect} from 'react-redux'
+import {actionCreator} from './store/index'
+import axios from 'axios'
+import {Table, Select, Input, Button, message} from 'antd'
+import {AddModal} from './component/index'
+import moment from 'moment'
 import '../../main.css'
-import {List} from "immutable";
+import {ProductObj, BrandObj} from "../../entity/index"
 
 const Option = Select.Option;
 
@@ -41,7 +41,7 @@ const columns = [
         title: '关注时间',
         dataIndex: 'followTime',
         key: 'followTime',
-        render: (value: any, rowData: any, index: number) => {
+        render: (value: string, rowData: ProductObj, index: number) => {
             return moment(value).format('YYYY-MM-DD HH:mm:ss');
         },
     },
@@ -51,29 +51,20 @@ const columns = [
         key: 'reference'
     }
 ];
-
-export interface ProductObj {
-    productName: string;
-    followTime: string;
-    brandType: string;
-    startPrice: number;
-    expectPrice: number;
-    fiveLevel: number;
-    productDie: string;
-}
-
+//不使用immutable brandList类型为BrandObj[]，使用immutable后brandList类型为List<BrandObj>
 interface ProductProps {
-    handleGetBrandList: (brandList: any[]) => void;
-    brandList: any[];
+    handleGetBrandList: (brandList: BrandObj[]) => void;
+    brandList: BrandObj[];
 }
 
 interface ProductState {
     productName: string,
     brandType: string,
     productList: ProductObj[],
+    product?: ProductObj;
     add_visible: boolean,
     edit_visible: boolean,
-    selectedRowKeys: List<string>
+    selectedRowKeys: string[]
 }
 
 class Product extends React.Component<ProductProps, ProductState> {
@@ -86,7 +77,7 @@ class Product extends React.Component<ProductProps, ProductState> {
             productList: [],
             add_visible: false,
             edit_visible: false,
-            selectedRowKeys: List<string>()
+            selectedRowKeys: []
         };
         this.onAddCancel = this.onAddCancel.bind(this);
         this.onCreate = this.onCreate.bind(this);
@@ -98,7 +89,7 @@ class Product extends React.Component<ProductProps, ProductState> {
         this.request();
     }
 
-    onSelectChange = (selectedRowKeys: List<string>) => {
+    onSelectChange = (selectedRowKeys: string[]) => {
         this.setState({selectedRowKeys});
     };
 
@@ -128,14 +119,14 @@ class Product extends React.Component<ProductProps, ProductState> {
     onAddCancel = () => {
         this.setState({add_visible: false})
     };
-    onClickRow = (record: any) => {
+    onClickRow = (record: ProductObj) => {
         return {
             onClick: () => {
                 //this.setState({selectedRowKeys: record['productId']});
                 alert("双击行")
             },
             onDoubleClick: (event: any) => {
-                alert("双击行")
+                console.log(event)
             }
         };
     };
@@ -152,8 +143,8 @@ class Product extends React.Component<ProductProps, ProductState> {
                 {
                     key: 'NONE SELECTED',
                     text: '全不选中',
-                    onSelect: (changeableRowKeys: List<string>) => {
-                        this.setState({selectedRowKeys: List<string>()});
+                    onSelect: (changeableRowKeys: string[]) => {
+                        this.setState({selectedRowKeys: []});
                     },
                 },
             ]
@@ -168,8 +159,8 @@ class Product extends React.Component<ProductProps, ProductState> {
                         labelInValue id='brandInfo' style={{width: 240}}
                         placeholder="请选择品牌">
                     {
-                        brandList.map((item: any, index: number) => {
-                            return <Option key={index} value={item['boxKey']}>{item['boxText']}</Option>
+                        brandList.map((item: BrandObj, index: number) => {
+                            return <Option key={index} value={item.boxKey}>{item.boxText}</Option>
                         })
                     }
                 </Select>
@@ -200,16 +191,20 @@ class Product extends React.Component<ProductProps, ProductState> {
         )
     }
 }
-
+//1. initMapStateToProps  initMapDispatchToProps也可以用在无状态组件当中
+//2. initMapStateToProps不使用immutable获取值的方式为 return {brandList: state.common_reducer.brandList}
 const initMapStateToProps = (state: any) => {
     return {
-        brandList: state.getIn(['common_reducer', 'brandList'])
+        brandList: state.getIn(['common_reducer','brandList']).toJS()
     }
 };
 const initMapDispatchToProps = (dispatch: any) => {
     return {
-        handleGetBrandList(brandList: any[]) {
-            if (brandList.length == 0 || typeof brandList.length == 'undefined') {
+        handleGetBrandList(brandList: BrandObj[]) {
+            // 简单的值，不需要发请求的值可以通过简单的dispatch(action)方式更改store中的值
+            // const action = {type: "add_product", value: ""};
+            // dispatch(action)
+            if (brandList.length==0){
                 dispatch(actionCreator.getBrandList(null, 'brandName'))
             }
         }

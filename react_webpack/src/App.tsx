@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import store from './store/index.js';
+import store from './store/index';
 //import Product from "./pages/product/index";
 // import {BrowserRouter, Route ,Switch} from 'react-router-dom';
 import MainApp from "./component/index";

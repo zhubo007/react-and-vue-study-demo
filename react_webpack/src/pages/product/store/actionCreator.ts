@@ -1,7 +1,8 @@
 import * as constants from "./constants";
 import axios from 'axios';
+import {BrandObj} from "../../../entity/index"
 
-export const setBrandList = (brandList: Array<any>) => ({
+export const setBrandList = (brandList: BrandObj[]) => ({
     type: constants.BOX_BRAND_LIST_OPTION,
     brandList,
 });
@@ -13,10 +14,10 @@ export const setBrandList = (brandList: Array<any>) => ({
 export const getBrandList = (boxId: any, boxName: string) => {
     return (dispatch: any) => {
         axios.get('/app/common/getBoxItem', {params:{boxId, boxName}}).then((response) => {
-            var nullOption = {boxId: "", boxKey: "", boxText: "---请选择---", sort: 0, boxName: "brandName"};
-            response.data.unshift(nullOption);
-            dispatch(setBrandList(response.data));
-            
+            let brandList: BrandObj[] = response.data;
+            const nullOption: BrandObj = {boxId: "", boxKey: "", boxText: "---请选择---", sort: 0, boxName: "brandName"};
+            brandList.unshift(nullOption);
+            dispatch(setBrandList(brandList));
         }).catch((error) => {
             console.log(error)
         })

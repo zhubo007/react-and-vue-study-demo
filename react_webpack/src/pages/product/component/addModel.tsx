@@ -1,37 +1,25 @@
 import React, {Fragment} from 'react';
 import {Button, Modal, Input, InputNumber, Form, DatePicker, Select, Row, Col} from 'antd';
+import {ProductObj} from "../../../entity/index"
+
 const {Option} = Select;
 const {TextArea} = Input;
-const dateFormat = 'YYYY-MM-DD';
 
-interface Values {
-    productName: string;
-    followTime: string;
-    brandType: string;
-    startPrice: number;
-    expectPrice: number;
-    fiveLevel: number;
-    productDie: string;
-}
+const dateFormat = 'YYYY-MM-DD';
 
 interface CollectionCreateFormProps {
     visible: boolean;
-    onCreate: (values: Values) => void;
+    onCreate: (values: ProductObj) => void;
     onAddCancel: () => void;
     brandList: any[]
 }
-
-const AddModal: React.FC<CollectionCreateFormProps> = ({
-                                                           visible,
-                                                           onCreate,
-                                                           onAddCancel,
-                                                           brandList
-}) => {
+//无状态组件
+const AddModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAddCancel, brandList}) => {
     const [form] = Form.useForm();
     return (
         <Fragment>
             <Modal visible={visible} title="Title" width={750} onOk={() => {
-                form.validateFields().then((values) => {
+                form.validateFields().then((values: ProductObj) => {
                     onCreate(values);
                     form.resetFields();
                 }).catch((info) => {
@@ -40,7 +28,7 @@ const AddModal: React.FC<CollectionCreateFormProps> = ({
             }} onCancel={onAddCancel}
                    footer={[<Button key="back" onClick={onAddCancel}>关闭</Button>,
                        <Button key="submit" type="primary" onClick={() => {
-                           form.validateFields().then((values) => {
+                           form.validateFields().then((values: ProductObj) => {
                                onCreate(values);
                                form.resetFields();
                            }).catch((info) => {
@@ -98,10 +86,7 @@ const AddModal: React.FC<CollectionCreateFormProps> = ({
                             <Form.Item name="brandType" rules={[{required: true, message: '请选择商品品牌!'}]}>
                                 <Select placeholder="请选择品牌">
                                     {
-                                        brandList.map((item: any, index: number) =>
-                                            <Option key={index}
-                                                    value={item['boxKey']}>{item['boxText']}</Option>
-                                        )
+                                        brandList.map((item: any, index: number) => <Option key={index} value={item['boxKey']}>{item['boxText']}</Option>)
                                     }
                                 </Select>
                             </Form.Item>
