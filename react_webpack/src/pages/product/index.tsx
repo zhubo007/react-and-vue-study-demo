@@ -151,8 +151,8 @@ class Product extends React.Component<ProductProps, ProductState> {
         };
         return (
             <Fragment>
-                <Button type="primary" onClick={() => this.setState({add_visible: true})}>新增产品</Button>
-                <Button type="primary" onClick={() => this.setState({edit_visible: true})}>编辑产品</Button>
+                <Button type="primary" onClick={() => this.setState({add_visible: true})} style={{marginRight: '8px'}}>新增产品</Button>
+                <Button type="primary" onClick={() => this.setState({edit_visible: true})} style={{marginRight: '8px'}}>编辑产品</Button>
                 <Select onChange={(option: any) => {
                     this.setState({brandType: option.value})
                 }}
@@ -172,8 +172,8 @@ class Product extends React.Component<ProductProps, ProductState> {
                            width: '240px',
                            height: '32px',
                            paddingLeft: '12px',
-                           marginRight: '10px',
-                           marginLeft: '10px'
+                           marginRight: '8px',
+                           marginLeft: '8px'
                        }} placeholder="请输入搜索内容"/>
                 <Button type="primary" onClick={() => this.request()}>搜索</Button>
                 <Table columns={columns} dataSource={this.state.productList} rowSelection={rowSelection}

@@ -25,11 +25,15 @@
     total_price, platform_id, discount_die, feature_die, record_time, picture_one, picture_two, 
     picture_three, is_valid_data
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from trade_common
-    where deal_no = #{dealNo,jdbcType=VARCHAR}
+    <where>
+      <if test="dealNo != '' and dealNo != null">
+        and deal_no = #{dealNo,jdbcType=VARCHAR}
+      </if>
+    </where>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from trade_common

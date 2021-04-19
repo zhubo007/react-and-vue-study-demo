@@ -1,5 +1,5 @@
 import Product from '../../pages/product/index';
-import Account from '../../pages/account/index';
+import Account from '../../pages/tradeCommon/index';
 
 export const componentMap: { [key: string]: any } = {
     'Product': Product,

@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import {Button, Modal, Input, InputNumber, Form, DatePicker, Select, Row, Col} from 'antd';
-import {BrandObj, ProductObj} from "../../../entity/index"
+import { ProductObj} from "../../../entity/index"
 import {connect} from "react-redux";
 
 const {Option} = Select;
@@ -11,12 +11,11 @@ const dateFormat = 'YYYY-MM-DD';
 interface CollectionCreateFormProps {
     visible: boolean;
     onCreate: (values: ProductObj) => void;
-    onAddCancel: () => void;
-    brandList: BrandObj[]
+    onAddCancel: () => void
 }
 
 //无状态组件
-const AddModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAddCancel, brandList}) => {
+const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAddCancel}) => {
     const [form] = Form.useForm();
     return (
         <Fragment>
@@ -70,12 +69,12 @@ const AddModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAdd
                     <Row gutter={24}>
                         <Col span={4}>
                             <div className="ant-col ant-form-item-label">
-                                <label htmlFor="followTime" className="ant-form-item-required"
+                                <label htmlFor="recordTime" className="ant-form-item-required"
                                        title="首次跟踪时间">首次跟踪时间</label>
                             </div>
                         </Col>
                         <Col span={8}>
-                            <Form.Item name="followTime" rules={[{required: true, message: '首次跟踪时间不能为空!'}]}>
+                            <Form.Item name="recordTime" rules={[{required: true, message: '首次跟踪时间不能为空!'}]}>
                                 <DatePicker style={{width: '100%'}} format={dateFormat}/>
                             </Form.Item>
                         </Col>
@@ -83,15 +82,6 @@ const AddModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAdd
                             <div className="ant-col ant-form-item-label">
                                 <label htmlFor="brandType" className="ant-form-item-required" title="商品品牌">商品品牌</label>
                             </div>
-                        </Col>
-                        <Col span={8}>
-                            <Form.Item name="brandType" rules={[{required: true, message: '请选择商品品牌!'}]}>
-                                <Select placeholder="请选择品牌">
-                                    {
-                                        brandList.map((item: BrandObj, index: number) => <Option key={index} value={item.boxKey}>{item.boxText}</Option>)
-                                    }
-                                </Select>
-                            </Form.Item>
                         </Col>
                     </Row>
                     <Row gutter={24}>
@@ -167,5 +157,4 @@ const initMapStateToProps = (state: any) => {
 const initMapDispatchToProps = (dispatch: any) => {
     return {}
 };
-export default connect(initMapStateToProps, initMapDispatchToProps)(AddModal);
-// export default AddModal;
+export default connect(initMapStateToProps, initMapDispatchToProps)(AddAccountModal);

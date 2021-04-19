@@ -31,9 +31,27 @@ export interface BrandObj {
     boxName: string;
 }
 
-export interface productState {
-    brandList: BrandObj[]
+export interface TradeCommonEntity {
+    dealNo: string;
+    productId: string;
+    seller: string;
+    buyer: string;
+    payWay: string;
+    payType: string;
+    productNum: number;
+    productPrice: number;
+    totalPrice: number;
+    recordTime: string;
 }
+interface AccountProps {
+    accounts: TradeCommonEntity[];
+    param: {
+        startTime: string;
+        endTime: string;
+    };
+    setParam: (param: AccountProps['param']) => void;
+}
+
 class User {
     name: string;
     age: number;
