@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import {Button, Modal, Input, InputNumber, Form, DatePicker, Select, Row, Col} from 'antd';
-import {BoxItemEntity, BrandObj, TradeCommonEntity} from "../../../entity/index"
+import {BoxItemEntity, BrandObj, ProductObj, TradeCommonEntity} from "../../../entity/index"
 import {connect} from "react-redux";
 
 const {Option} = Select;
@@ -14,13 +14,12 @@ interface CollectionCreateFormProps {
     onAddCancel: () => void;
     platformList: BoxItemEntity[],
     payWayList: BoxItemEntity[],
+    productList: ProductObj[],
 }
 
 //无状态组件
-const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAddCancel,platformList, payWayList}) => {
+const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAddCancel,platformList, payWayList, productList}) => {
     const [form] = Form.useForm();
-    //const {platformList} = this.props;
-    console.log(platformList)
     return (
         <Fragment>
             <Modal visible={visible} title="Title" width={750} onOk={() => {
@@ -44,27 +43,17 @@ const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate
                     <Row gutter={24}>
                         <Col span={4}>
                             <div className="ant-col ant-form-item-label">
-                                <label htmlFor="productName" className="ant-form-item-required"
-                                       title="首次跟踪时间">商品名称</label>
+                                <label htmlFor="productId" className="ant-form-item-required"
+                                       title="商品名称">商品名称</label>
                             </div>
                         </Col>
-                        <Col span={15}>
-                            <Form.Item name="productName" rules={[
-                                {required: true, message: '商品名称不能为空!'},
-                                {
-                                    validator: (_, value) => {
-                                        if (!value) {
-                                            return Promise.resolve();
-                                        }
-                                        let validateResult = /(^[a-zA-Z0-9_-]{2,100}$)|(^[\u4E00-\u9FA5a-zA-Z0-9]{2,20}$)/;  // 自定义规则
-                                        if (!validateResult.test(value)) {
-                                            return Promise.reject(new Error('2-100为的数字与字母的组合，或2-20位的中文'));
-                                        }
-                                        return Promise.resolve();
+                        <Col span={8}>
+                            <Form.Item name="productId" rules={[{required: true, message: '商品名称不能为空!'},]}>
+                                <Select placeholder="请选择商品名称">
+                                    {
+                                        productList.map((item: ProductObj, index: number) => <Option key={index} value={item.productId}>{item.productName}</Option>)
                                     }
-                                },
-                            ]}>
-                                <Input placeholder='请输入商品名称'/>
+                                </Select>
                             </Form.Item>
                         </Col>
                     </Row>

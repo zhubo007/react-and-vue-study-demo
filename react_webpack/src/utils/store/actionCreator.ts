@@ -1,6 +1,6 @@
 import * as constants from "./constants";
 import axios from 'axios/index';
-import {BoxItemEntity} from "../../entity/index"
+import {BoxItemEntity, ProductObj} from "../../entity/index"
 
 export const setPlatformList = (platformList: BoxItemEntity[]) => ({
     type: constants.PLATFORM_LIST_OPTION,
@@ -10,6 +10,11 @@ export const setPlatformList = (platformList: BoxItemEntity[]) => ({
 export const setPayWayList = (payWayList: BoxItemEntity[]) => ({
     type: constants.PAY_WAY_LIST_OPTION,
     payWayList,
+});
+
+export const setProductList = (productList: ProductObj[]) => ({
+    type: constants.SELECT_PRODUCT_LIST_OPTION,
+    productList,
 });
 /**
  *
@@ -28,6 +33,17 @@ export const getBoxItemList = (boxId: any, boxName: string) => {
             if ('payWay'===boxName) {
                 dispatch(setPayWayList(boxItemList));
             }
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+};
+
+export const getProductList = () => {
+    return (dispatch: any) => {
+        axios.get('/app/product/all', {params:{productName:"", brandType:""}}).then((response) => {
+            let productList: ProductObj[] = response.data;
+            dispatch(setProductList(productList));
         }).catch((error) => {
             console.log(error)
         })

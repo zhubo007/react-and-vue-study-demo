@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import '../../main.css';
 import {Button, Input, message, Select, Table} from "antd";
 import moment from 'moment'
-import {BoxItemEntity, TradeCommonEntity} from "../../entity/index";
+import {BoxItemEntity, ProductObj, TradeCommonEntity} from "../../entity/index";
 import axios from "axios";
 import AddAccountModal from "./component/addAccountModal";
 import {actionCreator} from "../../utils/store/index";
@@ -11,17 +11,19 @@ import {actionCreator} from "../../utils/store/index";
 const Option = Select.Option;
 
 interface TradeCommonProps {
-    platformList: BoxItemEntity[],
-    payWayList: BoxItemEntity[],
+    platformList: BoxItemEntity[]
+    payWayList: BoxItemEntity[]
+    productList: ProductObj[]
     handleBoxItemList: (boxItemList: BoxItemEntity[], boxName: string)=>void
+    handleProductList: () => void
 }
 
 interface TradeCommonState {
     tradeCommonList: TradeCommonEntity[]
     selectedRowKeys: string[]
     searchValue: string
-    add_visible: boolean,
-    platformId: string,
+    add_visible: boolean
+    platformId: string
     payWay: string
 }
 
@@ -43,6 +45,7 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
         this.request();
         this.props.handleBoxItemList(this.props.platformList,'platform');
         this.props.handleBoxItemList(this.props.payWayList,'payWay');
+        this.props.handleProductList()
     }
 
     request = () => {
@@ -79,7 +82,7 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
     };
     render() {
         const {selectedRowKeys} = this.state;
-        const {platformList, payWayList} = this.props;
+        const {platformList, payWayList, productList} = this.props;
         const rowSelection: object = {
             selectedRowKeys,
             type: 'checkbox',
@@ -172,7 +175,8 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
 const mapStateToProps = (state: any) => {
     return {
         platformList: state.getIn(['common_reducer','platformList']).toJS(),
-        payWayList: state.getIn(['common_reducer','payWayList']).toJS()
+        payWayList: state.getIn(['common_reducer','payWayList']).toJS(),
+        productList: state.getIn(['common_reducer','productList']).toJS()
     }
 };
 const mapDispatchToProps = (dispatch: any) => {
@@ -181,6 +185,9 @@ const mapDispatchToProps = (dispatch: any) => {
             if (boxItemList.length==0){
                 dispatch(actionCreator.getBoxItemList(null, boxName))
             }
+        },
+        handleProductList() {
+            dispatch(actionCreator.getProductList())
         }
     }
 };

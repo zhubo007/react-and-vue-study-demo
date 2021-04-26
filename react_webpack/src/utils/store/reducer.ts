@@ -3,7 +3,8 @@ import * as constants from "./constants";
 
 const defaultState =fromJS({
     platformList:[],
-    payWayList: []
+    payWayList: [],
+    productList: [],
 });
 
 export default (state=defaultState, action: any) => {
@@ -15,6 +16,10 @@ export default (state=defaultState, action: any) => {
         case constants.PAY_WAY_LIST_OPTION:
             return state.merge({
                 payWayList: fromJS(action.payWayList)
+            });
+        case constants.SELECT_PRODUCT_LIST_OPTION:
+            return state.merge({
+                productList: fromJS(action.productList)
             });
         default:
             return state;

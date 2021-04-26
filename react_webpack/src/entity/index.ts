@@ -1,6 +1,6 @@
 export interface ProductObj {
 
-    productId?: string;//可选变量
+    productId: string;//可选变量
 
     productName: string;
 
