@@ -12,7 +12,7 @@ export const setBrandList = (brandList: BrandObj[]) => ({
  * @param {String} boxId
  * @param {String} boxName
  */
-export const getBrandList = (boxId: any, boxName: string) => {
+export const getBoxItemList = (boxId: any, boxName: string) => {
     return (dispatch: any) => {
         axios.get('/app/common/getBoxItem', {params:{boxId, boxName}}).then((response) => {
             let brandList: BrandObj[] = response.data;

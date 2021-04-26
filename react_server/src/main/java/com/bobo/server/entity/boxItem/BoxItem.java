@@ -11,6 +11,8 @@ public class BoxItem {
 
     private String boxName;
 
+    private String boxCode;
+
     public String getBoxId() {
         return boxId;
     }
@@ -49,5 +51,13 @@ public class BoxItem {
 
     public void setBoxName(String boxName) {
         this.boxName = boxName == null ? null : boxName.trim();
+    }
+
+    public String getBoxCode() {
+        return boxCode;
+    }
+
+    public void setBoxCode(String boxCode) {
+        this.boxCode = boxCode;
     }
 }

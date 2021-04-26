@@ -195,7 +195,7 @@ class Product extends React.Component<ProductProps, ProductState> {
 //2. initMapStateToProps不使用immutable获取值的方式为 return {brandList: state.common_reducer.brandList}
 const initMapStateToProps = (state: any) => {
     return {
-        brandList: state.getIn(['common_reducer','brandList']).toJS()
+        brandList: state.getIn(['product_reducer','brandList']).toJS()
     }
 };
 const initMapDispatchToProps = (dispatch: any) => {

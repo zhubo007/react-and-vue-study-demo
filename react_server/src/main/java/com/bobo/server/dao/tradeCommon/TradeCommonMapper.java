@@ -14,7 +14,7 @@ public interface TradeCommonMapper {
 
     int insertSelective(TradeCommon record);
 
-    List<TradeCommon> selectByPrimaryKey(@Param("dealNo") String dealNo);
+    List<TradeCommon> selectByPrimaryKey(@Param("dealNo") String dealNo, @Param("platformId") String platformId, @Param("payWay") String payWay);
 
     int updateByPrimaryKeySelective(TradeCommon record);
 

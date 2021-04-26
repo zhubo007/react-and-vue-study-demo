@@ -8,9 +8,9 @@ public class TradeCommon {
 
     private Integer productId;
 
-    private Integer seller;
+    private String seller;
 
-    private Integer buyer;
+    private String buyer;
 
     private String payWay;
 
@@ -22,7 +22,7 @@ public class TradeCommon {
 
     private BigDecimal totalPrice;
 
-    private Integer platformId;
+    private String platformId;
 
     private String discountDie;
 
@@ -37,6 +37,22 @@ public class TradeCommon {
     private String pictureThree;
 
     private Integer isValidData;
+
+    private String platformName;
+
+    private String payWayName;
+
+    private String buyerName;
+
+    private String sellerName;
+
+    private String brandName;
+
+    private String productName;
+
+    private BigDecimal expectPrice;
+
+    private BigDecimal startPrice;
 
     public String getDealNo() {
         return dealNo;
@@ -54,19 +70,19 @@ public class TradeCommon {
         this.productId = productId;
     }
 
-    public Integer getSeller() {
+    public String getSeller() {
         return seller;
     }
 
-    public void setSeller(Integer seller) {
+    public void setSeller(String seller) {
         this.seller = seller;
     }
 
-    public Integer getBuyer() {
+    public String getBuyer() {
         return buyer;
     }
 
-    public void setBuyer(Integer buyer) {
+    public void setBuyer(String buyer) {
         this.buyer = buyer;
     }
 
@@ -110,11 +126,11 @@ public class TradeCommon {
         this.totalPrice = totalPrice;
     }
 
-    public Integer getPlatformId() {
+    public String getPlatformId() {
         return platformId;
     }
 
-    public void setPlatformId(Integer platformId) {
+    public void setPlatformId(String platformId) {
         this.platformId = platformId;
     }
 
@@ -172,5 +188,73 @@ public class TradeCommon {
 
     public void setIsValidData(Integer isValidData) {
         this.isValidData = isValidData;
+    }
+
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
+    }
+
+    public String getPayWayName() {
+        return payWayName;
+    }
+
+    public void setPayWayName(String payWayName) {
+        this.payWayName = payWayName;
+    }
+
+    public String getBuyerName() {
+        return buyerName;
+    }
+
+    public void setBuyerName(String buyerName) {
+        this.buyerName = buyerName;
+    }
+
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
+    }
+
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public TradeCommon setBrandName(String brandName) {
+        this.brandName = brandName;
+        return this;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public TradeCommon setProductName(String productName) {
+        this.productName = productName;
+        return this;
+    }
+
+    public BigDecimal getExpectPrice() {
+        return expectPrice;
+    }
+
+    public TradeCommon setExpectPrice(BigDecimal expectPrice) {
+        this.expectPrice = expectPrice;
+        return this;
+    }
+
+    public BigDecimal getStartPrice() {
+        return startPrice;
+    }
+
+    public TradeCommon setStartPrice(BigDecimal startPrice) {
+        this.startPrice = startPrice;
+        return this;
     }
 }

@@ -7,5 +7,9 @@ import java.util.List;
 
 public interface TradeCommonService {
 
-    List<TradeCommon> getAllTradeCommon();
+    List<TradeCommon> getAllTradeCommon(String dealNo, String platformId, String payWay);
+
+    TradeCommon addTradeCommon(TradeCommon tradeCommon);
+
+    TradeCommon updateTradeCommon(TradeCommon tradeCommon);
 }

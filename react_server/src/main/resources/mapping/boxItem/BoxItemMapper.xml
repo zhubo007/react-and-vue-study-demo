@@ -7,9 +7,10 @@
     <result column="box_text" jdbcType="VARCHAR" property="boxText" />
     <result column="sort" jdbcType="INTEGER" property="sort" />
     <result column="box_name" jdbcType="VARCHAR" property="boxName" />
+    <result column="box_code" jdbcType="VARCHAR" property="boxCode" />
   </resultMap>
   <sql id="Base_Column_List">
-    box_id, box_key, box_text, sort, box_name
+    box_id, box_key, box_text, sort, box_name, box_code
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 

@@ -43,6 +43,21 @@ export interface TradeCommonEntity {
     totalPrice: number;
     recordTime: string;
 }
+
+export interface BoxItemEntity {
+    boxId?: string;//可选变量
+
+    boxKey: string;
+
+    boxText: string;
+
+    sort: number;
+
+    boxName: string;
+
+    boxCode: string
+}
+
 interface AccountProps {
     accounts: TradeCommonEntity[];
     param: {

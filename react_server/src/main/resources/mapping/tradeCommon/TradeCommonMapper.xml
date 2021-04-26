@@ -4,14 +4,14 @@
   <resultMap id="BaseResultMap" type="com.bobo.server.entity.tradeCommon.TradeCommon">
     <id column="deal_no" jdbcType="VARCHAR" property="dealNo" />
     <result column="product_id" jdbcType="INTEGER" property="productId" />
-    <result column="seller" jdbcType="INTEGER" property="seller" />
-    <result column="buyer" jdbcType="INTEGER" property="buyer" />
+    <result column="seller" jdbcType="VARCHAR" property="seller" />
+    <result column="buyer" jdbcType="VARCHAR" property="buyer" />
     <result column="pay_way" jdbcType="VARCHAR" property="payWay" />
     <result column="pay_type" jdbcType="INTEGER" property="payType" />
     <result column="product_num" jdbcType="INTEGER" property="productNum" />
     <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
     <result column="total_price" jdbcType="DECIMAL" property="totalPrice" />
-    <result column="platform_id" jdbcType="INTEGER" property="platformId" />
+    <result column="platform_id" jdbcType="VARCHAR" property="platformId" />
     <result column="discount_die" jdbcType="VARCHAR" property="discountDie" />
     <result column="feature_die" jdbcType="VARCHAR" property="featureDie" />
     <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
@@ -19,19 +19,42 @@
     <result column="picture_two" jdbcType="VARCHAR" property="pictureTwo" />
     <result column="picture_three" jdbcType="VARCHAR" property="pictureThree" />
     <result column="is_valid_data" jdbcType="INTEGER" property="isValidData" />
+
+    <result column="platform_name" jdbcType="VARCHAR" property="platformName" />
+    <result column="pay_way_name" jdbcType="VARCHAR" property="payWayName" />
+    <result column="buyer_name" jdbcType="VARCHAR" property="buyerName" />
+    <result column="seller_name" jdbcType="VARCHAR" property="sellerName" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="start_price" jdbcType="DECIMAL" property="startPrice" />
+    <result column="expect_price" jdbcType="DECIMAL" property="expectPrice" />
+    <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
   </resultMap>
   <sql id="Base_Column_List">
-    deal_no, product_id, seller, buyer, pay_way, pay_type, product_num, product_price, 
-    total_price, platform_id, discount_die, feature_die, record_time, picture_one, picture_two, 
-    picture_three, is_valid_data
+    t.deal_no, t.product_id, t.seller, buyer, t.pay_way, t.pay_type, t.product_num, t.product_price,
+    t.total_price, t.platform_id, t.discount_die, t.feature_die, t.record_time, t.picture_one, t.picture_two,
+    t.picture_three, t.is_valid_data,
+    cbi.box_text as platform_name,cbi1.box_text as pay_way_name,su.real_name buyer_name,su1.real_name seller_name,
+    sp.product_name, sp.start_price, sp.expect_price,cbi2.box_text as brand_name
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from trade_common
+    from trade_common t
+    left join comb_box_item cbi on cbi.box_code=t.platform_id and cbi.box_name='platform'
+    left join comb_box_item cbi1 on cbi1.box_code=t.pay_way and cbi1.box_name='payWay'
+    left join su_user su on su.user_id = t.buyer
+    left join su_user su1 on su1.user_id = t.seller
+    left join su_product sp on sp.product_id = t.product_id
+    left join comb_box_item cbi2 on cbi2.box_key= sp.brand_type
     <where>
       <if test="dealNo != '' and dealNo != null">
-        and deal_no = #{dealNo,jdbcType=VARCHAR}
+        and t.deal_no = #{dealNo,jdbcType=VARCHAR}
+      </if>
+      <if test="platformId != '' and platformId != null">
+        and t.platform_id = #{platformId}
+      </if>
+      <if test="payWay != '' and payWay != null">
+        and t.pay_way = #{payWay}
       </if>
     </where>
   </select>
@@ -46,8 +69,8 @@
       platform_id, discount_die, feature_die, 
       record_time, picture_one, picture_two, 
       picture_three, is_valid_data)
-    values (#{dealNo,jdbcType=VARCHAR}, #{productId,jdbcType=INTEGER}, #{seller,jdbcType=INTEGER}, 
-      #{buyer,jdbcType=INTEGER}, #{payWay,jdbcType=VARCHAR}, #{payType,jdbcType=INTEGER}, 
+    values (#{dealNo,jdbcType=VARCHAR}, #{productId,jdbcType=INTEGER}, #{seller,jdbcType=VARCHAR},
+      #{buyer,jdbcType=VARCHAR}, #{payWay,jdbcType=VARCHAR}, #{payType,jdbcType=INTEGER},
       #{productNum,jdbcType=INTEGER}, #{productPrice,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL}, 
       #{platformId,jdbcType=INTEGER}, #{discountDie,jdbcType=VARCHAR}, #{featureDie,jdbcType=VARCHAR}, 
       #{recordTime,jdbcType=TIMESTAMP}, #{pictureOne,jdbcType=VARCHAR}, #{pictureTwo,jdbcType=VARCHAR}, 
@@ -116,10 +139,10 @@
         #{productId,jdbcType=INTEGER},
       </if>
       <if test="seller != null">
-        #{seller,jdbcType=INTEGER},
+        #{seller,jdbcType=VARCHAR},
       </if>
       <if test="buyer != null">
-        #{buyer,jdbcType=INTEGER},
+        #{buyer,jdbcType=VARCHAR},
       </if>
       <if test="payWay != null">
         #{payWay,jdbcType=VARCHAR},
@@ -169,10 +192,10 @@
         product_id = #{productId,jdbcType=INTEGER},
       </if>
       <if test="seller != null">
-        seller = #{seller,jdbcType=INTEGER},
+        seller = #{seller,jdbcType=VARCHAR},
       </if>
       <if test="buyer != null">
-        buyer = #{buyer,jdbcType=INTEGER},
+        buyer = #{buyer,jdbcType=VARCHAR},
       </if>
       <if test="payWay != null">
         pay_way = #{payWay,jdbcType=VARCHAR},
@@ -219,8 +242,8 @@
   <update id="updateByPrimaryKey" parameterType="com.bobo.server.entity.tradeCommon.TradeCommon">
     update trade_common
     set product_id = #{productId,jdbcType=INTEGER},
-      seller = #{seller,jdbcType=INTEGER},
-      buyer = #{buyer,jdbcType=INTEGER},
+      seller = #{seller,jdbcType=VARCHAR},
+      buyer = #{buyer,jdbcType=VARCHAR},
       pay_way = #{payWay,jdbcType=VARCHAR},
       pay_type = #{payType,jdbcType=INTEGER},
       product_num = #{productNum,jdbcType=INTEGER},

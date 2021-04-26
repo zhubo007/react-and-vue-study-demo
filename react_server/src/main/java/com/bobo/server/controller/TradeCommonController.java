@@ -14,8 +14,8 @@ public class TradeCommonController {
     private TradeCommonService tradeCommonService;
 
     @GetMapping(path = "/all")
-    public Object getAllProject(){
-        return tradeCommonService.getAllTradeCommon();
+    public Object getAllProject(String dealNo, String platformId, String payWay){
+        return tradeCommonService.getAllTradeCommon(dealNo, platformId, payWay);
     }
 
 }
