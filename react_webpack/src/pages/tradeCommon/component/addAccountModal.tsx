@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import {Button, Modal, Input, InputNumber, Form, DatePicker, Select, Row, Col} from 'antd';
-import { ProductObj} from "../../../entity/index"
+import {BoxItemEntity, BrandObj, TradeCommonEntity} from "../../../entity/index"
 import {connect} from "react-redux";
 
 const {Option} = Select;
@@ -10,26 +10,29 @@ const dateFormat = 'YYYY-MM-DD';
 
 interface CollectionCreateFormProps {
     visible: boolean;
-    onCreate: (values: ProductObj) => void;
-    onAddCancel: () => void
+    onCreate: (values: TradeCommonEntity) => void;
+    onAddCancel: () => void;
+    platformList: BoxItemEntity[],
+    payWayList: BoxItemEntity[],
 }
 
 //无状态组件
-const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAddCancel}) => {
+const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAddCancel,platformList, payWayList}) => {
     const [form] = Form.useForm();
+    //const {platformList} = this.props;
+    console.log(platformList)
     return (
         <Fragment>
             <Modal visible={visible} title="Title" width={750} onOk={() => {
-                form.validateFields().then((values: ProductObj) => {
+                form.validateFields().then((values: TradeCommonEntity) => {
                     onCreate(values);
                     form.resetFields();
                 }).catch((info) => {
                     console.log('Validate Failed:', info);
                 });
-            }} onCancel={onAddCancel}
-                   footer={[<Button key="back" onClick={onAddCancel}>关闭</Button>,
+            }} onCancel={onAddCancel} footer={[<Button key="back" onClick={onAddCancel}>关闭</Button>,
                        <Button key="submit" type="primary" onClick={() => {
-                           form.validateFields().then((values: ProductObj) => {
+                           form.validateFields().then((values: TradeCommonEntity) => {
                                onCreate(values);
                                form.resetFields();
                            }).catch((info) => {
@@ -38,7 +41,6 @@ const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate
                        }}>确定</Button>]}>
 
                 <Form form={form} initialValues={{'gender': 'M',}}>
-
                     <Row gutter={24}>
                         <Col span={4}>
                             <div className="ant-col ant-form-item-label">
@@ -70,75 +72,88 @@ const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate
                         <Col span={4}>
                             <div className="ant-col ant-form-item-label">
                                 <label htmlFor="recordTime" className="ant-form-item-required"
-                                       title="首次跟踪时间">首次跟踪时间</label>
+                                       title="购买时间">购买时间</label>
                             </div>
                         </Col>
                         <Col span={8}>
-                            <Form.Item name="recordTime" rules={[{required: true, message: '首次跟踪时间不能为空!'}]}>
+                            <Form.Item name="recordTime" rules={[{required: true, message: '购买时间不能为空!'}]}>
                                 <DatePicker style={{width: '100%'}} format={dateFormat}/>
                             </Form.Item>
                         </Col>
                         <Col span={4}>
                             <div className="ant-col ant-form-item-label">
-                                <label htmlFor="brandType" className="ant-form-item-required" title="商品品牌">商品品牌</label>
+                                <label htmlFor="payWay" className="ant-form-item-required" title="支付方式">支付方式</label>
                             </div>
+                        </Col>
+                        <Col span={8}>
+                            <Form.Item name="payWay" rules={[{required: true, message: '请选择支付方式!'}]}>
+                                <Select placeholder="请选择支付方式">
+                                    {
+                                        payWayList.map((item: BoxItemEntity, index: number) => <Option key={index} value={item.boxCode}>{item.boxText}</Option>)
+                                    }
+                                </Select>
+                            </Form.Item>
                         </Col>
                     </Row>
                     <Row gutter={24}>
                         <Col span={4}>
                             <div className="ant-col ant-form-item-label">
-                                <label htmlFor="startPrice" className="ant-form-item-required" title="关注价格">关注价格</label>
+                                <label htmlFor="platformId" className="ant-form-item-required" title="购买平台">购买平台</label>
                             </div>
                         </Col>
                         <Col span={8}>
-                            <Form.Item name="startPrice" rules={[{required: true, message: '请填写关注价格!'}]}>
-                                <InputNumber placeholder='请填写关注价格' style={{width: 218}}/>
+                            <Form.Item name="platformId" rules={[{required: true, message: '请选择购买平台!'}]}>
+                                <Select placeholder="请选择购买平台">
+                                    {
+                                        platformList.map((item: BoxItemEntity, index: number) => <Option key={index} value={item.boxCode}>{item.boxText}</Option>)
+                                    }
+                                </Select>
                             </Form.Item>
                         </Col>
 
                         <Col span={4}>
                             <div className="ant-col ant-form-item-label">
-                                <label htmlFor="expectPrice" className="ant-form-item-required"
-                                       title="预期价格">预期价格</label>
+                                <label htmlFor="productNum" className="ant-form-item-required"
+                                       title="商品数量">商品数量</label>
                             </div>
                         </Col>
                         <Col span={8}>
-                            <Form.Item name="expectPrice" rules={[{required: true, message: '请填写预期价格!'}]}>
-                                <InputNumber placeholder='请填写预期价格' style={{width: 218}}/>
+                            <Form.Item name="productNum" rules={[{required: true, message: '请填写商品数量!'}]}>
+                                <InputNumber placeholder='请填写商品数量' style={{width: '100%'}}/>
                             </Form.Item>
                         </Col>
                     </Row>
                     <Row gutter={24}>
                         <Col span={4}>
                             <div className="ant-col ant-form-item-label">
-                                <label htmlFor="fiveLevel" title="商品级别">&nbsp;&nbsp;&nbsp;商品级别</label>
+                                <label htmlFor="productPrice" className="ant-form-item-required" title="商品单价">&nbsp;&nbsp;&nbsp;商品单价</label>
                             </div>
                         </Col>
                         <Col span={8}>
-                            <Form.Item name="fiveLevel" rules={[{required: true, message: '请填写商品级别!'}]}>
-                                <InputNumber placeholder='请填写商品级别'/>
+                            <Form.Item name="productPrice" rules={[{required: true, message: '请填写商品单价!'}]}>
+                                <InputNumber placeholder='请填写商品单价' style={{width: '100%'}}/>
                             </Form.Item>
                         </Col>
 
                         <Col span={4}>
                             <div className="ant-col ant-form-item-label">
-                                <label htmlFor="reference" title="推荐人">&nbsp;&nbsp;&nbsp;推荐人</label>
+                                <label htmlFor="totalPrice" className="ant-form-item-required" title="实付款">&nbsp;&nbsp;&nbsp;实付款</label>
                             </div>
                         </Col>
                         <Col span={8}>
-                            <Form.Item name="reference">
-                                <Input placeholder='推荐人'/>
+                            <Form.Item name="totalPrice">
+                                <InputNumber placeholder='请填写实付款' style={{width: '100%'}}/>
                             </Form.Item>
                         </Col>
                     </Row>
                     <Row gutter={24}>
                         <Col span={4}>
                             <div className="ant-col ant-form-item-label">
-                                <label htmlFor="productDie" className="ant-form-item-required" title="商品描述">商品描述</label>
+                                <label htmlFor="discountDie" className="ant-form-item-required" title="优惠描述">优惠描述</label>
                             </div>
                         </Col>
                         <Col span={20}>
-                            <Form.Item name="productDie" rules={[{required: true, message: '请填写商品描述!'}]}>
+                            <Form.Item name="discountDie" rules={[{required: true, message: '请填写优惠详情!'}]}>
                                 <TextArea rows={4}/>
                             </Form.Item>
                         </Col>
@@ -152,9 +167,14 @@ const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate
 }
 //
 const initMapStateToProps = (state: any) => {
-    return {}
+    return {
+        platformList: state.getIn(['common_reducer','platformList']).toJS(),
+        payWayList: state.getIn(['common_reducer','payWayList']).toJS()
+    }
 };
 const initMapDispatchToProps = (dispatch: any) => {
-    return {}
+    return {
+
+    }
 };
 export default connect(initMapStateToProps, initMapDispatchToProps)(AddAccountModal);
