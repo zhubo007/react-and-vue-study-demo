@@ -30,7 +30,6 @@ export interface BrandObj {
 
     boxName: string;
 }
-
 export interface TradeCommonEntity {
     dealNo: string;
     productId: string;

@@ -14,7 +14,7 @@ interface TradeCommonProps {
     platformList: BoxItemEntity[]
     payWayList: BoxItemEntity[]
     productList: ProductObj[]
-    handleBoxItemList: (boxItemList: BoxItemEntity[], boxName: string)=>void
+    handleBoxItemList: (boxItemList: BoxItemEntity[], boxName: string) => void
     handleProductList: () => void
 }
 
@@ -43,8 +43,8 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
 
     componentDidMount() {
         this.request();
-        this.props.handleBoxItemList(this.props.platformList,'platform');
-        this.props.handleBoxItemList(this.props.payWayList,'payWay');
+        this.props.handleBoxItemList(this.props.platformList, 'platform');
+        this.props.handleBoxItemList(this.props.payWayList, 'payWay');
         this.props.handleProductList()
     }
 
@@ -80,6 +80,7 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
             message.error(error);
         })
     };
+
     render() {
         const {selectedRowKeys} = this.state;
         const {platformList, payWayList, productList} = this.props;
@@ -102,11 +103,12 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
 
         return (
             <Fragment>
-                <Button type="primary" onClick={() => this.setState({add_visible: true})} style={{marginRight: '8px'}}>新增消费记录</Button>
+                <Button type="primary" onClick={() => this.setState({add_visible: true})}
+                        style={{marginRight: '8px'}}>新增消费记录</Button>
                 <Select onChange={(option: any) => {
                     this.setState({platformId: option.value})
                 }}
-                        labelInValue id='platformInfo' style={{width: 240,marginRight: '8px'}}
+                        labelInValue id='platformInfo' style={{width: 240, marginRight: '8px'}}
                         placeholder="请选择购买平台">
                     {
                         platformList.map((item: BoxItemEntity, index: number) => {
@@ -153,7 +155,8 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
                     <Table.Column title={"品牌名称"} dataIndex={"brandName"} key={"brandName"}/>
                     <Table.Column title={"购买者ID"} dataIndex={"buyer"} key={"buyer"} className={'hideColumn'}/>
                     <Table.Column title={"购买者"} dataIndex={"buyerName"} key={"buyerName"}/>
-                    <Table.Column title={"购买平台ID"} dataIndex={"platformId"} key={"platformId"} className={'hideColumn'}/>
+                    <Table.Column title={"购买平台ID"} dataIndex={"platformId"} key={"platformId"}
+                                  className={'hideColumn'}/>
                     <Table.Column title={"购买平台"} dataIndex={"platformName"} key={"platformName"}/>
                     <Table.Column title={"卖家ID"} dataIndex={"seller"} key={"seller"} className={'hideColumn'}/>
                     <Table.Column title={"卖家"} dataIndex={"sellerName"} key={"sellerName"}/>
@@ -162,11 +165,13 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
                     <Table.Column title={"商品数量"} dataIndex={"productNum"} key={"productNum"}/>
                     <Table.Column title={"商品单价"} dataIndex={"productPrice"} key={"productPrice"}/>
                     <Table.Column title={"实付款"} dataIndex={"totalPrice"} key={"totalPrice"}/>
-                    <Table.Column title={"记账日期"} dataIndex={"recordTime"} key={"recordTime"} render={(value: string, rowData: TradeCommon, index: number) => {
-                        return moment(value).format('YYYY-MM-DD HH:mm:ss');
-                    }}/>
+                    <Table.Column title={"记账日期"} dataIndex={"recordTime"} key={"recordTime"}
+                                  render={(value: string, rowData: TradeCommon, index: number) => {
+                                      return moment(value).format('YYYY-MM-DD HH:mm:ss');
+                                  }}/>
                 </Table>
-                <AddAccountModal visible={this.state.add_visible} onAddCancel={this.onAddCancel} onCreate={this.onCreate}/>
+                <AddAccountModal visible={this.state.add_visible} onAddCancel={this.onAddCancel}
+                                 onCreate={this.onCreate}/>
             </Fragment>
         )
     }
@@ -174,15 +179,15 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
 
 const mapStateToProps = (state: any) => {
     return {
-        platformList: state.getIn(['common_reducer','platformList']).toJS(),
-        payWayList: state.getIn(['common_reducer','payWayList']).toJS(),
-        productList: state.getIn(['common_reducer','productList']).toJS()
+        platformList: state.getIn(['common_reducer', 'platformList']).toJS(),
+        payWayList: state.getIn(['common_reducer', 'payWayList']).toJS(),
+        productList: state.getIn(['common_reducer', 'productList']).toJS()
     }
 };
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        handleBoxItemList(boxItemList: BoxItemEntity[],boxName: string) {
-            if (boxItemList.length==0){
+        handleBoxItemList(boxItemList: BoxItemEntity[], boxName: string) {
+            if (boxItemList.length == 0) {
                 dispatch(actionCreator.getBoxItemList(null, boxName))
             }
         },
