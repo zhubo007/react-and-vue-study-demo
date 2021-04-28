@@ -3,18 +3,20 @@ import {connect} from 'react-redux';
 import '../../main.css';
 import {Button, Input, message, Select, Table} from "antd";
 import moment from 'moment'
-import {BoxItemEntity, ProductObj, TradeCommonEntity} from "../../entity/index";
+import {BoxItemEntity, ProductObj, TradeCommonEntity, UserEntity} from "../../entity/index";
 import axios from "axios";
 import AddAccountModal from "./component/addAccountModal";
 import {actionCreator} from "../../utils/store/index";
 
 const Option = Select.Option;
 
-interface TradeCommonProps {
+export interface TradeCommonProps {
     platformList: BoxItemEntity[]
     payWayList: BoxItemEntity[]
     productList: ProductObj[]
+    userList: UserEntity[]
     handleBoxItemList: (boxItemList: BoxItemEntity[], boxName: string) => void
+    handleGetUserList: () => void
     handleProductList: () => void
 }
 
@@ -170,7 +172,7 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
                                       return moment(value).format('YYYY-MM-DD HH:mm:ss');
                                   }}/>
                 </Table>
-                <AddAccountModal visible={this.state.add_visible} onAddCancel={this.onAddCancel}
+                <AddAccountModal visible={this.state.add_visible} onAddCancel={this.onAddCancel} props={this.props}
                                  onCreate={this.onCreate}/>
             </Fragment>
         )
@@ -181,7 +183,8 @@ const mapStateToProps = (state: any) => {
     return {
         platformList: state.getIn(['common_reducer', 'platformList']).toJS(),
         payWayList: state.getIn(['common_reducer', 'payWayList']).toJS(),
-        productList: state.getIn(['common_reducer', 'productList']).toJS()
+        productList: state.getIn(['common_reducer', 'productList']).toJS(),
+        userList: state.getIn(['common_reducer', 'userList']).toJS()
     }
 };
 const mapDispatchToProps = (dispatch: any) => {
@@ -193,6 +196,9 @@ const mapDispatchToProps = (dispatch: any) => {
         },
         handleProductList() {
             dispatch(actionCreator.getProductList())
+        },
+        handleGetUserList(){
+            dispatch(actionCreator.getUserList())
         }
     }
 };

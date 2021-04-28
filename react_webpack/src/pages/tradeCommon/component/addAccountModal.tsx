@@ -1,8 +1,8 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import {Button, Modal, Input, InputNumber, Form, DatePicker, Select, Row, Col} from 'antd';
-import {BoxItemEntity, ProductObj, TradeCommonEntity} from "../../../entity/index"
+import {BoxItemEntity, ProductObj, TradeCommonEntity, UserEntity} from "../../../entity/index"
 import {connect} from "react-redux";
-import {fromJS} from 'immutable';
+import {TradeCommonProps} from "../index";
 
 const {Option} = Select;
 const {TextArea} = Input;
@@ -10,20 +10,22 @@ const {TextArea} = Input;
 const dateFormat = 'YYYY-MM-DD';
 
 interface CollectionCreateFormProps {
-    visible: boolean;
-    onCreate: (values: TradeCommonEntity) => void;
-    onAddCancel: () => void;
-    platformList: BoxItemEntity[],
-    payWayList: BoxItemEntity[],
-    productList: ProductObj[],
+    visible: boolean
+    onCreate: (values: TradeCommonEntity) => void
+    onAddCancel: () => void
+    //handleGetUserList: () => void
+    props: TradeCommonProps
 }
 
 //无状态组件
-const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAddCancel, platformList, payWayList, productList}) => {
+const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAddCancel, props}) => {
     const [form] = Form.useForm();
     const [param, setParam] = useState({
-        product: {}
+        brandName: ''
     });
+    useEffect( () =>{
+       props.handleGetUserList();
+    },[]);
     return (
         <Fragment>
             <Modal visible={visible} title="Title" width={750} onOk={() => {
@@ -55,12 +57,12 @@ const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate
                             <Form.Item name="productId" rules={[{required: true, message: '商品名称不能为空!'},]}>
                                 <Select labelInValue placeholder="请选择商品名称" onChange={(value, option) =>{
                                     const productOption = JSON.parse(JSON.stringify(option));
-                                    // const productOption = fromJS(option);
-                                    console.log(productOption.item)
-                                    setParam({...param, product: productOption.item})
+                                    // setParam({brandName: productOption.item['brandName']})
+                                    //console.log(param.brandName)
+                                    form.setFieldsValue({brandName: productOption.item['brandName']})
                                 }}>
                                     {
-                                        productList.map((item: ProductObj, index: number) => <Option key={index} value={item.productId} item={item}>{item.productName}</Option>)
+                                        props.productList.map((item: ProductObj, index: number) => <Option key={index} value={item.productId} item={item}>{item.productName}</Option>)
                                     }
                                 </Select>
                             </Form.Item>
@@ -74,7 +76,38 @@ const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate
                         </Col>
                         <Col span={8}>
                             <Form.Item name="brandName" rules={[{required: true, message: '请填写品牌!'}]}>
-                                <InputNumber placeholder='请填写品牌' style={{width: '100%'}}/>
+                                <Input placeholder='请填写品牌' style={{width: '100%'}} value={param.brandName} disabled={true}/>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={24}>
+                        <Col span={4}>
+                            <div className="ant-col ant-form-item-label">
+                                <label htmlFor="buyer" className="ant-form-item-required" title="买家">买家</label>
+                            </div>
+                        </Col>
+                        <Col span={8}>
+                            <Form.Item name="buyer" rules={[{required: true, message: '请选择买家!'}]}>
+                                <Select placeholder="请选择买家">
+                                    {
+                                        props.userList.map((item: UserEntity, index: number) => <Option key={index} value={item.userId}>{item.realName}</Option>)
+                                    }
+                                </Select>
+                            </Form.Item>
+                        </Col>
+
+                        <Col span={4}>
+                            <div className="ant-col ant-form-item-label">
+                                <label htmlFor="seller" className="ant-form-item-required" title="卖家">卖家</label>
+                            </div>
+                        </Col>
+                        <Col span={8}>
+                            <Form.Item name="seller" rules={[{required: true, message: '请选择卖家!'}]}>
+                                <Select placeholder="请选择卖家">
+                                    {
+                                        props.userList.map((item: UserEntity, index: number) => <Option key={index} value={item.userId}>{item.realName}</Option>)
+                                    }
+                                </Select>
                             </Form.Item>
                         </Col>
                     </Row>
@@ -99,7 +132,7 @@ const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate
                             <Form.Item name="payWay" rules={[{required: true, message: '请选择支付方式!'}]}>
                                 <Select placeholder="请选择支付方式">
                                     {
-                                        payWayList.map((item: BoxItemEntity, index: number) => <Option key={index}
+                                        props.payWayList.map((item: BoxItemEntity, index: number) => <Option key={index}
                                                                                                        value={item.boxCode}>{item.boxText}</Option>)
                                     }
                                 </Select>
@@ -116,7 +149,7 @@ const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate
                             <Form.Item name="platformId" rules={[{required: true, message: '请选择购买平台!'}]}>
                                 <Select placeholder="请选择购买平台">
                                     {
-                                        platformList.map((item: BoxItemEntity, index: number) => <Option key={index}
+                                        props.platformList.map((item: BoxItemEntity, index: number) => <Option key={index}
                                                                                                          value={item.boxCode}>{item.boxText}</Option>)
                                     }
                                 </Select>
@@ -183,12 +216,10 @@ const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate
 //
 const initMapStateToProps = (state: any) => {
     return {
-        platformList: state.getIn(['common_reducer', 'platformList']).toJS(),
-        payWayList: state.getIn(['common_reducer', 'payWayList']).toJS(),
-        productList: state.getIn(['common_reducer', 'productList']).toJS()
     }
 };
 const initMapDispatchToProps = (dispatch: any) => {
-    return {}
+    return {
+    }
 };
 export default connect(initMapStateToProps, initMapDispatchToProps)(AddAccountModal);

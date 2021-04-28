@@ -56,7 +56,22 @@ export interface BoxItemEntity {
 
     boxCode: string
 }
+export interface UserEntity {
 
+    userId: string;
+
+    userName: string;
+
+    realName: string;
+
+    age: number;
+
+    gender: string;
+
+    lastLoginTime: string;
+
+    isActive: number;
+}
 interface AccountProps {
     accounts: TradeCommonEntity[];
     param: {

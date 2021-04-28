@@ -29,18 +29,18 @@
         </javaTypeResolver>
 
         <!-- 指定javabean生成的位置 -->
-        <javaModelGenerator targetPackage="com.bobo.server.entity.boxItem"
+        <javaModelGenerator targetPackage="com.bobo.server.entity.user"
                             targetProject="src/main/java">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="mapping.boxItem"  targetProject="src/main/resources">
+        <sqlMapGenerator targetPackage="mapping.user"  targetProject="src/main/resources">
             <!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false -->
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
         
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.bobo.server.dao.boxItem" targetProject=".\src\main\java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.bobo.server.dao.user" targetProject=".\src\main\java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
@@ -53,7 +53,9 @@
         <!--<table tableName="trade_common" domainObjectName="TradeCommon" enableCountByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>-->
 
-        <table tableName="comb_box_item" domainObjectName="BoxItem" enableCountByExample="false"
+        <!--<table tableName="comb_box_item" domainObjectName="BoxItem" enableCountByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>-->
+        <table tableName="su_user" domainObjectName="User" enableCountByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>
     </context>
 </generatorConfiguration>

@@ -5,6 +5,7 @@ const defaultState =fromJS({
     platformList:[],
     payWayList: [],
     productList: [],
+    userList: []
 });
 
 export default (state=defaultState, action: any) => {
@@ -20,6 +21,10 @@ export default (state=defaultState, action: any) => {
         case constants.SELECT_PRODUCT_LIST_OPTION:
             return state.merge({
                 productList: fromJS(action.productList)
+            });
+        case constants.SELECT_USER_LIST_OPTION:
+            return state.merge({
+                userList: fromJS(action.userList)
             });
         default:
             return state;

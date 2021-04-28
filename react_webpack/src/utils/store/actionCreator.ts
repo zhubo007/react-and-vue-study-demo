@@ -1,6 +1,6 @@
 import * as constants from "./constants";
 import axios from 'axios/index';
-import {BoxItemEntity, ProductObj} from "../../entity/index"
+import {BoxItemEntity, ProductObj, UserEntity} from "../../entity/index"
 
 export const setPlatformList = (platformList: BoxItemEntity[]) => ({
     type: constants.PLATFORM_LIST_OPTION,
@@ -15,6 +15,10 @@ export const setPayWayList = (payWayList: BoxItemEntity[]) => ({
 export const setProductList = (productList: ProductObj[]) => ({
     type: constants.SELECT_PRODUCT_LIST_OPTION,
     productList,
+});
+export const setUserList = (userList: UserEntity[]) => ({
+    type: constants.SELECT_USER_LIST_OPTION,
+    userList,
 });
 /**
  *
@@ -44,6 +48,18 @@ export const getProductList = () => {
         axios.get('/app/product/all', {params:{productName:"", brandType:""}}).then((response) => {
             let productList: ProductObj[] = response.data;
             dispatch(setProductList(productList));
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+};
+
+export const getUserList = () => {
+    return (dispatch: any) => {
+        axios.get('/app/user/all', {params:{}}).then((response) => {
+            let userList: UserEntity[] = response.data;
+            console.log(userList)
+            dispatch(setUserList(userList));
         }).catch((error) => {
             console.log(error)
         })
