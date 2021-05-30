@@ -1,28 +1,28 @@
 import React, {Fragment, useState, useEffect} from 'react';
-import {Button, Modal, Input, InputNumber, Form, DatePicker, Select, Row, Col} from 'antd';
+import {Button, Modal, Input, InputNumber, Form, DatePicker, Select, Row, Col, Table} from 'antd';
 import {BoxItemEntity, ProductObj, TradeCommonEntity, UserEntity} from "../../../entity/index"
 import {connect} from "react-redux";
 import {TradeCommonProps} from "../index";
+import moment from 'moment'
 
 const {Option} = Select;
 const {TextArea} = Input;
 
-const dateFormat = 'YYYY-MM-DD';
+const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 
 interface CollectionCreateFormProps {
     visible: boolean
     onCreate: (values: TradeCommonEntity) => void
     onAddCancel: () => void
+    tradeCommon: TradeCommonEntity
     //handleGetUserList: () => void
     props: TradeCommonProps
 }
 
 //无状态组件
-const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAddCancel, props}) => {
+const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAddCancel, tradeCommon,props}) => {
     const [form] = Form.useForm();
-    const [param, setParam] = useState({
-        brandName: ''
-    });
+    form.setFieldsValue({ ...tradeCommon,recordTime: moment(tradeCommon.recordTime==''?new Date(): tradeCommon.recordTime, dateFormat)});
     useEffect( () =>{
        props.handleGetUserList();
     },[]);
@@ -45,7 +45,13 @@ const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate
                     });
                 }}>确定</Button>]}>
 
-                <Form form={form} initialValues={{'gender': 'M',}}>
+                <Form form={form}>
+                    <Form.Item name="dealNo" className={'hideColumn'}>
+                        <Input disabled={true}/>
+                    </Form.Item>
+                    <Form.Item name="brandId" className={'hideColumn'}>
+                        <Input disabled={true}/>
+                    </Form.Item>
                     <Row gutter={24}>
                         <Col span={4}>
                             <div className="ant-col ant-form-item-label">
@@ -55,11 +61,12 @@ const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate
                         </Col>
                         <Col span={8}>
                             <Form.Item name="productId" rules={[{required: true, message: '商品名称不能为空!'},]}>
-                                <Select labelInValue placeholder="请选择商品名称" onChange={(value, option) =>{
+                                <Select placeholder="请选择商品名称" onChange={(value, option) =>{
                                     const productOption = JSON.parse(JSON.stringify(option));
-                                    // setParam({brandName: productOption.item['brandName']})
-                                    //console.log(param.brandName)
-                                    form.setFieldsValue({brandName: productOption.item['brandName']})
+                                    form.setFieldsValue({
+                                        brandName: productOption.item['brandName'],
+                                        brandId: productOption.item['brandId'],
+                                    })
                                 }}>
                                     {
                                         props.productList.map((item: ProductObj, index: number) => <Option key={index} value={item.productId} item={item}>{item.productName}</Option>)
@@ -76,7 +83,7 @@ const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate
                         </Col>
                         <Col span={8}>
                             <Form.Item name="brandName" rules={[{required: true, message: '请填写品牌!'}]}>
-                                <Input placeholder='请填写品牌' style={{width: '100%'}} value={param.brandName} disabled={true}/>
+                                <Input placeholder='请填写品牌' style={{width: '100%'}} disabled={true}/>
                             </Form.Item>
                         </Col>
                     </Row>

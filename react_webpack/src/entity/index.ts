@@ -1,6 +1,6 @@
 export interface ProductObj {
 
-    productId: string;//可选变量
+    productId: number;//可选变量
 
     productName: string;
 
@@ -17,6 +17,8 @@ export interface ProductObj {
     productDie: string;
 
     brandName?: string;
+
+    reference: string
 }
 export interface BrandObj {
 
@@ -26,13 +28,15 @@ export interface BrandObj {
 
     boxText: string;
 
+    boxCode: string;
+
     sort: number;
 
     boxName: string;
 }
 export interface TradeCommonEntity {
     dealNo: string;
-    productId: string;
+    productId: number;
     seller: string;
     buyer: string;
     payWay: string;
@@ -41,6 +45,9 @@ export interface TradeCommonEntity {
     productPrice: number;
     totalPrice: number;
     recordTime: string;
+    discountDie: string
+    platformId: string
+    brandName: string
 }
 
 export interface BoxItemEntity {

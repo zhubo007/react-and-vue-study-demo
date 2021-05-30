@@ -58,7 +58,6 @@ export const getUserList = () => {
     return (dispatch: any) => {
         axios.get('/app/user/all', {params:{}}).then((response) => {
             let userList: UserEntity[] = response.data;
-            console.log(userList)
             dispatch(setUserList(userList));
         }).catch((error) => {
             console.log(error)

@@ -1,9 +1,11 @@
 import Product from '../../pages/product/index';
 import Account from '../../pages/tradeCommon/index';
+import Market from '../../pages/market/index';
 
 export const componentMap: { [key: string]: any } = {
     'Product': Product,
-    'Account': Account
+    'Account': Account,
+    'Market': Market
 };
 
 export const menus = [

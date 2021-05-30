@@ -1,26 +1,35 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {Button, Modal, Input, InputNumber, Form, DatePicker, Select, Row, Col} from 'antd';
 import {BrandObj, ProductObj} from "../../../entity/index"
 import {connect} from "react-redux";
-
+import moment from 'moment'
 const {Option} = Select;
 const {TextArea} = Input;
 
-const dateFormat = 'YYYY-MM-DD';
+const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 
 interface CollectionCreateFormProps {
-    visible: boolean;
+    add_edit_visible: boolean;
     onCreate: (values: ProductObj) => void;
     onAddCancel: () => void;
-    brandList: BrandObj[]
+    brandList: BrandObj[],
+    product: ProductObj
 }
 
 //无状态组件
-const AddModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAddCancel, brandList}) => {
+const AddModal: React.FC<CollectionCreateFormProps> = ({add_edit_visible, onCreate, onAddCancel, brandList, product}) => {
     const [form] = Form.useForm();
+    form.setFieldsValue({ ...product,followTime: moment(product.followTime==''?new Date(): product.followTime, dateFormat)});
+
+    //const [param, setParam] = useState(newProduct);
+    //setParam({...product})
+    // useEffect( () =>{
+    //
+    // },[]);
+
     return (
         <Fragment>
-            <Modal visible={visible} title="Title" width={750} onOk={() => {
+            <Modal visible={add_edit_visible} title="Title" width={750} onOk={() => {
                 form.validateFields().then((values: ProductObj) => {
                     onCreate(values);
                     form.resetFields();
@@ -38,8 +47,10 @@ const AddModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAdd
                            });
                        }}>确定</Button>]}>
 
-                <Form form={form} initialValues={{'gender': 'M',}}>
-
+                <Form form={form}>
+                    <Form.Item name="productId" className={'hideColumn'}>
+                        <InputNumber disabled={true}/>
+                    </Form.Item>
                     <Row gutter={24}>
                         <Col span={4}>
                             <div className="ant-col ant-form-item-label">
@@ -75,8 +86,8 @@ const AddModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAdd
                             </div>
                         </Col>
                         <Col span={8}>
-                            <Form.Item name="followTime" rules={[{required: true, message: '首次跟踪时间不能为空!'}]}>
-                                <DatePicker style={{width: '100%'}} format={dateFormat}/>
+                            <Form.Item name="followTime" rules={[{required: true, message: '首次跟踪时间不能为空!', }]}>
+                                <DatePicker style={{width: '100%'}} format={dateFormat} />
                             </Form.Item>
                         </Col>
                         <Col span={4}>
@@ -88,7 +99,7 @@ const AddModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAdd
                             <Form.Item name="brandType" rules={[{required: true, message: '请选择商品品牌!'}]}>
                                 <Select placeholder="请选择品牌">
                                     {
-                                        brandList.map((item: BrandObj, index: number) => <Option key={index} value={item.boxKey}>{item.boxText}</Option>)
+                                        brandList.map((item: BrandObj, index: number) => <Option key={index} value={item.boxCode}>{item.boxText}</Option>)
                                     }
                                 </Select>
                             </Form.Item>
@@ -168,4 +179,3 @@ const initMapDispatchToProps = (dispatch: any) => {
     return {}
 };
 export default connect(initMapStateToProps, initMapDispatchToProps)(AddModal);
-// export default AddModal;

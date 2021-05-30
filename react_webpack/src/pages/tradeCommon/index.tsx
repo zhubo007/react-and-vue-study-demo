@@ -1,10 +1,11 @@
 import React, {Fragment} from 'react';
 import {connect} from 'react-redux';
 import '../../main.css';
-import {Button, Input, message, Select, Table} from "antd";
+import {Button, Input, message, Select, Table, Modal} from "antd";
 import moment from 'moment'
-import {BoxItemEntity, ProductObj, TradeCommonEntity, UserEntity} from "../../entity/index";
+import {BoxItemEntity, BrandObj, ProductObj, TradeCommonEntity, UserEntity} from "../../entity/index";
 import axios from "axios";
+
 import AddAccountModal from "./component/addAccountModal";
 import {actionCreator} from "../../utils/store/index";
 
@@ -24,10 +25,16 @@ interface TradeCommonState {
     tradeCommonList: TradeCommonEntity[]
     selectedRowKeys: string[]
     searchValue: string
-    add_visible: boolean
+    add_edit_visible: boolean
+    delete_visible: boolean
     platformId: string
-    payWay: string
+    payWay: string,
+    tradeCommon: TradeCommonEntity,
+    index: number
 }
+
+const newTradeCommon: TradeCommonEntity = {dealNo: '', productId: NaN, seller: '', buyer: '', payWay: '', payType: '', productNum: NaN, productPrice: NaN,
+    totalPrice: NaN, recordTime: '',discountDie: '',platformId: '',brandName: ''};
 
 class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
 
@@ -37,9 +44,12 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
             tradeCommonList: [],
             selectedRowKeys: [],
             searchValue: '',
-            add_visible: false,
+            add_edit_visible: false,
+            delete_visible: false,
             platformId: '',
-            payWay: ''
+            payWay: '',
+            tradeCommon: newTradeCommon,
+            index: NaN
         }
     }
 
@@ -65,27 +75,47 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
     };
 
     onAddCancel = () => {
-        this.setState({add_visible: false})
+        this.setState({add_edit_visible: false})
     };
 
-    onSelectChange = (selectedRowKeys: string[]) => {
+    onSelectChange = (selectedRowKeys: string[], tradeCommon: TradeCommonEntity) => {
         this.setState({selectedRowKeys});
     };
-    onCreate = (values: any) => {
-        axios.post(`/app/tradeCommonController/add`, values)
+    onCreate = (values: TradeCommonEntity) => {
+        let requestURL = `/app/tradeCommonController/add`;
+        if (''!=values.dealNo){
+            requestURL = `/app/tradeCommonController/update/${values.dealNo}`
+        }
+        axios.post(requestURL, {...values})
             .then(res => {
-                console.log('res=>', res);
-                this.setState({add_visible: false});
-                message.success('新增商品成功');
+                this.setState({add_edit_visible: false});
+                message.success('操作成功');
                 this.request();
             }).catch((error) => {
-            message.error(error);
+            message.error('操作失败');
         })
+    };
+    onDelete = () => {
+        const keys = this.state.selectedRowKeys;
+        if (keys.length == 0) {
+            alert("请选择消费记录");
+            return;
+        }
+        keys.forEach((value: string, index: number) => {
+            axios.post(`/app/tradeCommonController/delete/${value}`, this.state.selectedRowKeys)
+                .then(res => {
+                    this.request();
+                }).catch((error) => {
+                message.error("删除异常");
+            })
+        })
+        message.success('消费记录删除成功');
+        this.setState({delete_visible: false})
     };
 
     render() {
-        const {selectedRowKeys} = this.state;
-        const {platformList, payWayList, productList} = this.props;
+        const {selectedRowKeys, tradeCommonList, add_edit_visible, delete_visible, searchValue, tradeCommon} = this.state;
+        const {platformList, payWayList} = this.props;
         const rowSelection: object = {
             selectedRowKeys,
             type: 'checkbox',
@@ -105,8 +135,31 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
 
         return (
             <Fragment>
-                <Button type="primary" onClick={() => this.setState({add_visible: true})}
+                <Button type="primary" onClick={() => this.setState({add_edit_visible: true, tradeCommon: newTradeCommon})}
                         style={{marginRight: '8px'}}>新增消费记录</Button>
+                <Button type="primary" onClick={() => {
+                    if (selectedRowKeys.length == 0){
+                        message.warn("请选择一条数据进行编辑");
+                    }else if(selectedRowKeys.length > 1){
+                        message.warn("一次只能对一条数据进行编辑");
+                    }else {
+                        const dealNo = selectedRowKeys[0];
+                        tradeCommonList.forEach((value: TradeCommonEntity, index: number, array: TradeCommonEntity[]) => {
+                            if (value.dealNo == dealNo) {
+                                this.setState({add_edit_visible: true, tradeCommon: value})
+                                return
+                            }
+                        })
+                    }
+                }} style={{marginRight: '8px'}}>编辑产品</Button>
+                <Button type="primary" danger onClick={() => {
+                    if (selectedRowKeys.length == 0){
+                        message.warn("请选择一条数据进行删除");
+                    }else {
+                        this.setState({delete_visible: true})
+                    }
+                }}
+                        style={{marginRight: '8px'}}>删除消费记录</Button>
                 <Select onChange={(option: any) => {
                     this.setState({platformId: option.value})
                 }}
@@ -131,7 +184,7 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
                 </Select>
                 <Input onChange={(event) => {
                     this.setState({searchValue: event.target.value})
-                }} value={this.state.searchValue}
+                }} value={searchValue}
                        style={{
                            marginBottom: 8,
                            width: '240px',
@@ -142,13 +195,13 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
                        }} placeholder="请输入搜索内容"/>
                 <Button type="primary" onClick={() => this.request()}>搜索</Button>
                 <h1>Hello, This is 记账功能页面</h1>
-                <Table dataSource={this.state.tradeCommonList} rowSelection={rowSelection}
+                <Table dataSource={tradeCommonList} rowSelection={rowSelection}
                        rowKey='dealNo' bordered
                        pagination={{
                            showTotal: (total: number) => `共 ${total} 条`,
                            position: ['bottomRight'],
                            showSizeChanger: true,
-                           pageSizeOptions: ['5', '10', '20', '30', '50'],
+                           pageSizeOptions: ['5', '15', '30', '40', '50'],
                            defaultPageSize: 5
                        }}>
                     <Table.Column title={"交易单号"} dataIndex={"dealNo"} key={"dealNo"}/>
@@ -172,8 +225,18 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
                                       return moment(value).format('YYYY-MM-DD HH:mm:ss');
                                   }}/>
                 </Table>
-                <AddAccountModal visible={this.state.add_visible} onAddCancel={this.onAddCancel} props={this.props}
-                                 onCreate={this.onCreate}/>
+                <AddAccountModal visible={add_edit_visible} onAddCancel={this.onAddCancel} props={this.props}
+                                 onCreate={this.onCreate} tradeCommon={tradeCommon}/>
+                <Modal
+                    title="系统提醒"
+                    visible={delete_visible}
+                    onOk={this.onDelete}
+                    onCancel={() => this.setState({delete_visible: false})}
+                    okText="确认"
+                    cancelText="取消"
+                >
+                    <p>确认删除选择的消费记录？</p>
+                </Modal>
             </Fragment>
         )
     }
@@ -197,7 +260,7 @@ const mapDispatchToProps = (dispatch: any) => {
         handleProductList() {
             dispatch(actionCreator.getProductList())
         },
-        handleGetUserList(){
+        handleGetUserList() {
             dispatch(actionCreator.getUserList())
         }
     }

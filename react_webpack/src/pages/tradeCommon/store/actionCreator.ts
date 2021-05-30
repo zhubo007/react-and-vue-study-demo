@@ -16,7 +16,7 @@ export const getBoxItemList = (boxId: any, boxName: string) => {
     return (dispatch: any) => {
         axios.get('/app/common/getBoxItem', {params:{boxId, boxName}}).then((response) => {
             let brandList: BrandObj[] = response.data;
-            const nullOption: BrandObj = {boxId: "", boxKey: "", boxText: "---请选择---", sort: 0, boxName: "brandName"};
+            const nullOption: BrandObj = {boxId: "", boxKey: "", boxText: "---请选择---",boxCode: "", sort: 0, boxName: "brandName"};
             brandList.unshift(nullOption);
             dispatch(setBrandList(brandList));
         }).catch((error) => {
