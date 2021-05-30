@@ -24,14 +24,14 @@
     select 
     <include refid="Base_Column_List" />
     from su_product t
-    left join comb_box_item cbi on cbi.box_key= t.brand_type
+    left join comb_box_item cbi on cbi.box_code= t.brand_type and cbi.box_name='brandName'
     where t.product_id = #{productId,jdbcType=INTEGER}
   </select>
   <select id="selectProjectList" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from su_product t
-    left join comb_box_item cbi on cbi.box_key= t.brand_type
+    left join comb_box_item cbi on cbi.box_code= t.brand_type and cbi.box_name='brandName'
     <where>
       <if test="brandType!='' and brandType!=null">
         and t.brand_type=#{brandType}

@@ -45,7 +45,7 @@
     left join su_user su on su.user_id = t.buyer
     left join su_user su1 on su1.user_id = t.seller
     left join su_product sp on sp.product_id = t.product_id
-    left join comb_box_item cbi2 on cbi2.box_key= sp.brand_type
+    left join comb_box_item cbi2 on cbi2.box_code= sp.brand_type and cbi2.box_name = 'brandName'
     <where>
       <if test="dealNo != '' and dealNo != null">
         and t.deal_no = #{dealNo,jdbcType=VARCHAR}

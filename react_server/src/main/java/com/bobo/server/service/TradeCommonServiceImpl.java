@@ -29,8 +29,12 @@ public class TradeCommonServiceImpl implements TradeCommonService {
 
     @Override
     public TradeCommon updateTradeCommon(TradeCommon tradeCommon) {
-        String dealNo = tradeCommon.getDealNo();
         tradeCommonMapper.updateByPrimaryKeySelective(tradeCommon);
         return tradeCommon;
+    }
+
+    @Override
+    public Integer deleteTradeCommon(String dealNo) {
+        return tradeCommonMapper.deleteByPrimaryKey(dealNo);
     }
 }

@@ -12,4 +12,6 @@ public interface TradeCommonService {
     TradeCommon addTradeCommon(TradeCommon tradeCommon);
 
     TradeCommon updateTradeCommon(TradeCommon tradeCommon);
+
+    Integer deleteTradeCommon(String dealNo);
 }
