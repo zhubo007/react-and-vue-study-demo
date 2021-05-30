@@ -11,7 +11,7 @@
  Target Server Version : 100234
  File Encoding         : 65001
 
- Date: 29/04/2021 00:49:42
+ Date: 31/05/2021 06:57:53
 */
 
 SET NAMES utf8mb4;
@@ -22,34 +22,75 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `comb_box_item`;
 CREATE TABLE `comb_box_item`  (
-  `box_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `box_id` int NOT NULL AUTO_INCREMENT,
+  `box_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '代码',
+  `box_key` int NOT NULL COMMENT '下拉值',
+  `box_text` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '下拉显示文字',
+  `sort` int NULL DEFAULT NULL COMMENT '排序号',
+  `box_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '下拉类型',
+  PRIMARY KEY (`box_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 10023 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of comb_box_item
+-- ----------------------------
+INSERT INTO `comb_box_item` VALUES (10001, 'GJGJ_Wine', 1, '古井贡酒', 1, 'brandName');
+INSERT INTO `comb_box_item` VALUES (10002, 'FJ_Wine', 2, '汾酒', 2, 'brandName');
+INSERT INTO `comb_box_item` VALUES (10003, 'XieDaYu_Tea', 3, '谢裕大', 3, 'brandName');
+INSERT INTO `comb_box_item` VALUES (10005, 'fullPayment', 5, '全款', 1, 'payType');
+INSERT INTO `comb_box_item` VALUES (10006, 'installment', 6, '分期付款', 2, 'payType');
+INSERT INTO `comb_box_item` VALUES (10007, 'JD', 1, '京东', 1, 'platform');
+INSERT INTO `comb_box_item` VALUES (10008, 'TB', 2, '淘宝', 2, 'platform');
+INSERT INTO `comb_box_item` VALUES (10009, 'SN', 3, '苏宁易购', 3, 'platform');
+INSERT INTO `comb_box_item` VALUES (10010, '12306', 4, '铁路12306', 4, 'platform');
+INSERT INTO `comb_box_item` VALUES (10011, '12308', 5, '巴士管家', 5, 'platform');
+INSERT INTO `comb_box_item` VALUES (10012, 'ZFB', 12, '支付宝（余额）', 1, 'payWay');
+INSERT INTO `comb_box_item` VALUES (10013, 'WX', 13, '微信（余额）', 2, 'payWay');
+INSERT INTO `comb_box_item` VALUES (10014, 'ZS_BANK_ZFB', 14, '招商信用卡', 3, 'payWay');
+INSERT INTO `comb_box_item` VALUES (10015, 'YC_BANK_WX', 15, '邮储信用卡', 4, 'payWay');
+INSERT INTO `comb_box_item` VALUES (10016, 'ZS_BANK', 16, '招商借记卡', 5, 'payWay');
+INSERT INTO `comb_box_item` VALUES (10017, 'MDY_gardening', 4, '墨斗鱼园艺', 4, 'brandName');
+INSERT INTO `comb_box_item` VALUES (10018, 'JYS_gardening', 5, '九月生园艺', 5, 'brandName');
+INSERT INTO `comb_box_item` VALUES (10019, 'JD_BT', 17, '京东白条', 3, 'payWay');
+INSERT INTO `comb_box_item` VALUES (10020, 'no_brand', 6, '杂牌', 6, 'brandName');
+INSERT INTO `comb_box_item` VALUES (10021, 'IKEA', 7, '宜家', 7, 'brandName');
+INSERT INTO `comb_box_item` VALUES (10022, 'XY', 6, '闲鱼', 6, 'platform');
+
+-- ----------------------------
+-- Table structure for comb_box_item_copy1
+-- ----------------------------
+DROP TABLE IF EXISTS `comb_box_item_copy1`;
+CREATE TABLE `comb_box_item_copy1`  (
+  `box_id` int NOT NULL,
   `box_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '代码',
   `box_key` int NOT NULL AUTO_INCREMENT COMMENT '下拉值',
   `box_text` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '下拉显示文字',
   `sort` int NULL DEFAULT NULL COMMENT '排序号',
   `box_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '下拉类型',
   PRIMARY KEY (`box_key`, `box_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1000 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of comb_box_item
+-- Records of comb_box_item_copy1
 -- ----------------------------
-INSERT INTO `comb_box_item` VALUES ('10001', NULL, 1, '古井贡酒', 1, 'brandName');
-INSERT INTO `comb_box_item` VALUES ('10002', NULL, 2, '汾酒', 2, 'brandName');
-INSERT INTO `comb_box_item` VALUES ('10003', NULL, 3, '谢裕大', 3, 'brandName');
-INSERT INTO `comb_box_item` VALUES ('10004', NULL, 4, '其他品牌', 999, 'brandName');
-INSERT INTO `comb_box_item` VALUES ('10005', 'fullPayment', 5, '全款', 1, 'payType');
-INSERT INTO `comb_box_item` VALUES ('10006', 'installment', 6, '分期付款', 2, 'payType');
-INSERT INTO `comb_box_item` VALUES ('10007', 'JD', 7, '京东', 1, 'platform');
-INSERT INTO `comb_box_item` VALUES ('10008', 'TB', 8, '淘宝', 2, 'platform');
-INSERT INTO `comb_box_item` VALUES ('10009', 'SN', 9, '苏宁易购', 3, 'platform');
-INSERT INTO `comb_box_item` VALUES ('10010', '12306', 10, '铁路12306', 4, 'platform');
-INSERT INTO `comb_box_item` VALUES ('10011', '12308', 11, '巴士管家', 5, 'platform');
-INSERT INTO `comb_box_item` VALUES ('10012', 'ZFB', 12, '支付宝（余额）', 1, 'payWay');
-INSERT INTO `comb_box_item` VALUES ('10013', 'WX', 13, '微信（余额）', 2, 'payWay');
-INSERT INTO `comb_box_item` VALUES ('10014', 'ZS_BANK_ZFB', 14, '招商信用卡', 3, 'payWay');
-INSERT INTO `comb_box_item` VALUES ('10015', 'YC_BANK_WX', 15, '邮储信用卡', 4, 'payWay');
-INSERT INTO `comb_box_item` VALUES ('10016', 'ZS_BANK', 16, '招商借记卡', 5, 'payWay');
+INSERT INTO `comb_box_item_copy1` VALUES (10001, 'GJGJ_Wine', 1, '古井贡酒', 1, 'brandName');
+INSERT INTO `comb_box_item_copy1` VALUES (10002, 'FJ_Wine', 2, '汾酒', 2, 'brandName');
+INSERT INTO `comb_box_item_copy1` VALUES (10003, 'XieDaYu_Tea', 3, '谢裕大', 3, 'brandName');
+INSERT INTO `comb_box_item_copy1` VALUES (10017, 'MDY_gardening', 4, '墨斗鱼园艺', 4, 'brandName');
+INSERT INTO `comb_box_item_copy1` VALUES (10005, 'fullPayment', 5, '全款', 1, 'payType');
+INSERT INTO `comb_box_item_copy1` VALUES (10018, NULL, 5, '九月生园艺', 5, 'brandName');
+INSERT INTO `comb_box_item_copy1` VALUES (10006, 'installment', 6, '分期付款', 2, 'payType');
+INSERT INTO `comb_box_item_copy1` VALUES (10007, 'JD', 7, '京东', 1, 'platform');
+INSERT INTO `comb_box_item_copy1` VALUES (10008, 'TB', 8, '淘宝', 2, 'platform');
+INSERT INTO `comb_box_item_copy1` VALUES (10009, 'SN', 9, '苏宁易购', 3, 'platform');
+INSERT INTO `comb_box_item_copy1` VALUES (10010, '12306', 10, '铁路12306', 4, 'platform');
+INSERT INTO `comb_box_item_copy1` VALUES (10011, '12308', 11, '巴士管家', 5, 'platform');
+INSERT INTO `comb_box_item_copy1` VALUES (10012, 'ZFB', 12, '支付宝（余额）', 1, 'payWay');
+INSERT INTO `comb_box_item_copy1` VALUES (10013, 'WX', 13, '微信（余额）', 2, 'payWay');
+INSERT INTO `comb_box_item_copy1` VALUES (10014, 'ZS_BANK_ZFB', 14, '招商信用卡', 3, 'payWay');
+INSERT INTO `comb_box_item_copy1` VALUES (10015, 'YC_BANK_WX', 15, '邮储信用卡', 4, 'payWay');
+INSERT INTO `comb_box_item_copy1` VALUES (10016, 'ZS_BANK', 16, '招商借记卡', 5, 'payWay');
+INSERT INTO `comb_box_item_copy1` VALUES (10999, NULL, 999, '其他品牌', 999, 'brandName');
 
 -- ----------------------------
 -- Table structure for su_product
@@ -62,24 +103,25 @@ CREATE TABLE `su_product`  (
   `expect_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '预期价格',
   `start_price` decimal(10, 2) NOT NULL COMMENT '初始关注的价格',
   `product_type` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT '1' COMMENT '商品类型',
-  `brand_type` int NULL DEFAULT NULL COMMENT '品牌',
+  `brand_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '品牌',
   `useage` int NULL DEFAULT NULL COMMENT '用处，购买，销售',
   `five_level` int NULL DEFAULT NULL COMMENT '商品打星',
   `reference` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '推荐人',
   `product_die` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '商品特征描述',
   `is_visible` int NOT NULL DEFAULT 1 COMMENT '是否可视',
   PRIMARY KEY (`product_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of su_product
 -- ----------------------------
-INSERT INTO `su_product` VALUES (1, '古井贡酒5', '2021-03-20 01:24:43', 120.00, 158.00, '1', 1, NULL, NULL, '王凯', NULL, 1);
-INSERT INTO `su_product` VALUES (2, '古井贡酒8', '2021-03-20 01:24:43', 120.00, 323.20, '1', 1, NULL, NULL, '王凯', NULL, 1);
-INSERT INTO `su_product` VALUES (3, '汾酒黄盖玻汾', '2021-03-15 12:24:43', 240.00, 268.00, '1', 2, NULL, NULL, '李强', NULL, 1);
-INSERT INTO `su_product` VALUES (8, '汾酒金奖20', '2021-03-25 22:55:56', 368.00, 320.00, '1', 2, NULL, 5, '李强', '汾酒金奖20，中高端烈酒', 1);
-INSERT INTO `su_product` VALUES (10, '祁门功夫红茶300g', '2021-03-25 23:16:39', 220.00, 268.00, '1', 3, NULL, 5, '李强', '红茶，入口润滑，极品，300g，2罐装', 1);
-INSERT INTO `su_product` VALUES (11, '组合可加长餐桌', '2021-03-31 21:38:45', 1200.00, 1490.00, '1', 999, NULL, 3, '朱波', '京东 小厅宽居家旗舰店 正方形钢化玻璃餐桌 单桌', 1);
+INSERT INTO `su_product` VALUES (1, '古井贡酒5', '2021-03-19 17:24:43', 120.00, 158.00, '1', 'GJGJ_Wine', NULL, 3, '王凯', '酒质偏甜', 1);
+INSERT INTO `su_product` VALUES (13, '种菜盆', '2021-05-29 12:03:57', 27.00, 47.40, '1', 'JYS_gardening', NULL, 3, '朱波', '加厚3件装', 1);
+INSERT INTO `su_product` VALUES (14, '3L营养土', '2021-05-10 20:10:42', 5.00, 9.90, '1', 'MDY_gardening', NULL, 5, '朱波', '3L营养土，能中大中小盆号的3盆花', 1);
+INSERT INTO `su_product` VALUES (15, '莫兰迪陶瓷大中小花盆', '2021-05-10 14:09:05', 35.80, 55.80, '1', 'MDY_gardening', NULL, 5, '朱波', '陶瓷材质，品质优良，但价格偏高', 1);
+INSERT INTO `su_product` VALUES (16, '汾酒封坛15老白汾53度单瓶', '2021-05-06 22:13:39', 158.00, 198.00, '1', 'FJ_Wine', NULL, 5, '朱波', '第一次入门的酒，品质优良，价格偏高，适合关注活动价后购买', 1);
+INSERT INTO `su_product` VALUES (17, '大号仿陶瓷花盆', '2021-05-27 14:57:10', 12.78, 14.50, '1', 'no_brand', NULL, 4, '李强', '淘宝店铺：沃美施园艺用品；性价比高；8号大小；2只装；矮款', 1);
+INSERT INTO `su_product` VALUES (18, '提赛尔1米5床架', '2021-05-22 15:07:43', 2000.00, 2499.00, '1', 'IKEA', NULL, 4, '朱波', '宜家床架', 1);
 
 -- ----------------------------
 -- Table structure for su_user
@@ -93,14 +135,17 @@ CREATE TABLE `su_user`  (
   `gender` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '性别，F或M男',
   `last_login_time` datetime(0) NULL DEFAULT NULL COMMENT '最近一次登录时间',
   `is_active` int NOT NULL DEFAULT 1 COMMENT '是否启用',
+  `buy_or_sell` int NOT NULL DEFAULT 3 COMMENT '买卖3，卖家2、买家1、',
   PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of su_user
 -- ----------------------------
-INSERT INTO `su_user` VALUES ('admin', 'zhubo', '朱波', 29, 'M', '2021-04-26 22:13:06', 1);
-INSERT INTO `su_user` VALUES ('JDZY', NULL, '京东自营', NULL, NULL, '2021-04-26 22:58:47', 1);
+INSERT INTO `su_user` VALUES ('admin', 'zhubo', '朱波', 29, 'M', '2021-04-26 22:13:06', 1, 3);
+INSERT INTO `su_user` VALUES ('JDZY', NULL, '京东自营', NULL, NULL, '2021-04-26 22:58:47', 1, 3);
+INSERT INTO `su_user` VALUES ('TB_WMSYYYP', NULL, '沃美施园艺用品', NULL, NULL, NULL, 1, 2);
+INSERT INTO `su_user` VALUES ('XianYu_Seller', NULL, '闲鱼卖家', NULL, NULL, NULL, 1, 3);
 
 -- ----------------------------
 -- Table structure for trade_common
@@ -130,6 +175,49 @@ CREATE TABLE `trade_common`  (
 -- ----------------------------
 -- Records of trade_common
 -- ----------------------------
-INSERT INTO `trade_common` VALUES ('TC20210426230600', 1, 'JDZY', 'admin', 'ZS_BANK', 1, 1, 262.00, 141.85, 'JD', '1', '1', '2021-04-19 21:41:04', NULL, NULL, NULL, 1);
+INSERT INTO `trade_common` VALUES ('TC20210530120838', 13, 'JDZY', 'admin', 'JD_BT', NULL, 1, 49.90, 37.54, 'JD', '京东5元运费券， 1.36京东活动红包，800京豆，商品优惠3元', NULL, '2021-05-29 12:06:14', NULL, NULL, NULL, 1);
+INSERT INTO `trade_common` VALUES ('TC20210530140803', 14, 'JDZY', 'admin', 'JD_BT', NULL, 1, 9.90, 5.73, 'JD', '运费券6元；商品优惠3元；支付有礼1元；京东活动红包0.17', NULL, '2021-05-11 14:06:51', NULL, NULL, NULL, 1);
+INSERT INTO `trade_common` VALUES ('TC20210530141149', 15, 'JDZY', 'admin', 'YC_BANK_WX', NULL, 1, 55.80, 15.50, 'JD', '邮政信用卡30元支付券；京东会员运费券；京豆1000个；京东活动红包0.3元', NULL, '2021-05-04 14:10:35', NULL, NULL, NULL, 1);
+INSERT INTO `trade_common` VALUES ('TC20210530150349', 17, 'TB_WMSYYYP', 'admin', 'YC_BANK_WX', NULL, 1, 14.50, 12.78, 'TB', '淘金币0.72，其他优惠1元', NULL, '2021-05-27 15:00:29', NULL, NULL, NULL, 1);
+INSERT INTO `trade_common` VALUES ('TC20210530161926', 18, 'XianYu_Seller', 'admin', 'ZS_BANK', NULL, 1, 2500.00, 1000.00, 'XY', '提赛尔1.5米床架，加两个床头柜，闲鱼购买，货拉拉143元', NULL, '2021-05-22 16:17:46', NULL, NULL, NULL, 1);
+
+-- ----------------------------
+-- Table structure for trade_market
+-- ----------------------------
+DROP TABLE IF EXISTS `trade_market`;
+CREATE TABLE `trade_market`  (
+  `id` int NOT NULL,
+  `product_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `product_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `product_cost` decimal(65, 0) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of trade_market
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tt_brand
+-- ----------------------------
+DROP TABLE IF EXISTS `tt_brand`;
+CREATE TABLE `tt_brand`  (
+  `brand_id` int NOT NULL AUTO_INCREMENT,
+  `brand_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `brand_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `sort` int NULL DEFAULT NULL,
+  PRIMARY KEY (`brand_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of tt_brand
+-- ----------------------------
+INSERT INTO `tt_brand` VALUES (1, 'GJGJ_Wine', '古井贡酒', 1);
+INSERT INTO `tt_brand` VALUES (2, 'FJ_Wine', '汾酒', 2);
+INSERT INTO `tt_brand` VALUES (3, 'China_Mobile', '中国移动', 3);
+INSERT INTO `tt_brand` VALUES (4, 'Panasonic', '松下', 4);
+INSERT INTO `tt_brand` VALUES (5, 'MDY_gardening', '墨斗鱼园艺', 5);
+INSERT INTO `tt_brand` VALUES (6, 'JYS_gardening', '九月生园艺', 6);
+INSERT INTO `tt_brand` VALUES (7, 'XieDaYu_Tea', '谢裕大', 7);
 
 SET FOREIGN_KEY_CHECKS = 1;
