@@ -51,6 +51,7 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
             tradeCommon: newTradeCommon,
             index: NaN
         }
+        // this.addClick = this.addClick.bind(this)
     }
 
     componentDidMount() {
@@ -113,6 +114,27 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
         this.setState({delete_visible: false})
     };
 
+    addClick = (e:any) => {
+
+    }
+
+    handleUpdate = () => {
+        const {selectedRowKeys, tradeCommonList} = this.state;
+        if (selectedRowKeys.length == 0){
+            message.warn("请选择一条数据进行编辑");
+        }else if(selectedRowKeys.length > 1){
+            message.warn("一次只能对一条数据进行编辑");
+        }else {
+            const dealNo = selectedRowKeys[0];
+            tradeCommonList.forEach((value: TradeCommonEntity, index: number, array: TradeCommonEntity[]) => {
+                if (value.dealNo == dealNo) {
+                    this.setState({add_edit_visible: true, tradeCommon: value})
+                    return
+                }
+            })
+        }
+    }
+
     render() {
         const {selectedRowKeys, tradeCommonList, add_edit_visible, delete_visible, searchValue, tradeCommon} = this.state;
         const {platformList, payWayList} = this.props;
@@ -135,23 +157,8 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
 
         return (
             <Fragment>
-                <Button type="primary" onClick={() => this.setState({add_edit_visible: true, tradeCommon: newTradeCommon})}
-                        style={{marginRight: '8px'}}>新增消费记录</Button>
-                <Button type="primary" onClick={() => {
-                    if (selectedRowKeys.length == 0){
-                        message.warn("请选择一条数据进行编辑");
-                    }else if(selectedRowKeys.length > 1){
-                        message.warn("一次只能对一条数据进行编辑");
-                    }else {
-                        const dealNo = selectedRowKeys[0];
-                        tradeCommonList.forEach((value: TradeCommonEntity, index: number, array: TradeCommonEntity[]) => {
-                            if (value.dealNo == dealNo) {
-                                this.setState({add_edit_visible: true, tradeCommon: value})
-                                return
-                            }
-                        })
-                    }
-                }} style={{marginRight: '8px'}}>编辑产品</Button>
+                <Button type="primary" onClick={() => this.setState({add_edit_visible: true, tradeCommon: newTradeCommon})} style={{marginRight: '8px'}}>新增消费记录</Button>
+                <Button type="primary" onClick={this.handleUpdate} style={{marginRight: '8px'}}>编辑产品</Button>
                 <Button type="primary" danger onClick={() => {
                     if (selectedRowKeys.length == 0){
                         message.warn("请选择一条数据进行删除");

@@ -22,7 +22,10 @@ interface CollectionCreateFormProps {
 //无状态组件
 const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAddCancel, tradeCommon,props}) => {
     const [form] = Form.useForm();
-    form.setFieldsValue({ ...tradeCommon,recordTime: moment(tradeCommon.recordTime==''?new Date(): tradeCommon.recordTime, dateFormat)});
+    form.setFieldsValue({ ...tradeCommon,
+        productId:isNaN(tradeCommon.productId)?'':tradeCommon.productId,
+        recordTime: moment(tradeCommon.recordTime==''?new Date(): tradeCommon.recordTime, dateFormat)
+    });
     useEffect( () =>{
        props.handleGetUserList();
     },[]);
