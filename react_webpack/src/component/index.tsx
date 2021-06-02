@@ -37,6 +37,10 @@ class MainApp extends React.Component<MainAppProps, MainAppState>{
         this.getComponent = this.getComponent.bind(this);
     }
 
+    componentWillMount(){
+        this.titleMenuClick({key:'Product'})
+    }
+
     titleMenuClick = (event: any)=>{
         this.setState({titleMenuActiveKey: event.key})
     };
@@ -55,11 +59,11 @@ class MainApp extends React.Component<MainAppProps, MainAppState>{
             <Layout>
                 <Header className="header">
                     <div className="logo" />
-                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['Product']}>
                         <Menu.Item key="Product" onClick={this.titleMenuClick}>商品列表</Menu.Item>
                         <Menu.Item key="Account" onClick={this.titleMenuClick}>消费记录</Menu.Item>
                         <Menu.Item key="Market" onClick={this.titleMenuClick}>收入理财</Menu.Item>
-                        <Menu.Item key="3" onClick={this.titleMenuClick}>后台系统</Menu.Item>
+                        <Menu.Item key="SystemUser" onClick={this.titleMenuClick}>后台系统</Menu.Item>
                     </Menu>
                 </Header>
                 <Layout>

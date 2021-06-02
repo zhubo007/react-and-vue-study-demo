@@ -79,6 +79,10 @@ export interface UserEntity {
     lastLoginTime: string;
 
     isActive: number;
+
+    buyerOrSeller: number
+
+    platformId: string
 }
 interface AccountProps {
     accounts: TradeCommonEntity[];

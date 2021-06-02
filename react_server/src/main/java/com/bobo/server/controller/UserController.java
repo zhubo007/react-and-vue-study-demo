@@ -1,9 +1,8 @@
 package com.bobo.server.controller;
 
+import com.bobo.server.entity.user.User;
 import com.bobo.server.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -15,7 +14,22 @@ public class UserController {
     private UserService userService;
 
     @GetMapping(path = "/all")
-    public Object test(String userId, String userName){
+    public Object userAll(String userId, String userName){
         return userService.selectUserList(userId, userName);
+    }
+
+    @PostMapping(path = "/add")
+    public Object addUser(@RequestBody User user){
+        return userService.addUser(user);
+    }
+
+    @PostMapping(path = "/edit/{userId}")
+    public Object editUser(@RequestBody User user){
+        return userService.editUser(user);
+    }
+
+    @PostMapping(path = "/del/{userId}")
+    public Object editUser(@RequestParam String userId){
+        return userService.delUser(userId);
     }
 }

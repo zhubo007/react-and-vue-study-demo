@@ -1,11 +1,12 @@
 import Product from '../../pages/product/index';
 import Account from '../../pages/tradeCommon/index';
 import Market from '../../pages/market/index';
-
+import SystemUser from '../../pages/user/index';
 export const componentMap: { [key: string]: any } = {
     'Product': Product,
     'Account': Account,
-    'Market': Market
+    'Market': Market,
+    'SystemUser': SystemUser
 };
 
 export const menus = [
