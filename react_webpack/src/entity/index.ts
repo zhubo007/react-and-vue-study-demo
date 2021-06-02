@@ -48,6 +48,7 @@ export interface TradeCommonEntity {
     discountDie: string
     platformId: string
     brandName: string
+    brandId: string
 }
 
 export interface BoxItemEntity {

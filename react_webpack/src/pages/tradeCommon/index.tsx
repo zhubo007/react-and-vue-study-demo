@@ -33,8 +33,8 @@ interface TradeCommonState {
     index: number
 }
 
-const newTradeCommon: TradeCommonEntity = {dealNo: '', productId: NaN, seller: '', buyer: '', payWay: '', payType: '', productNum: NaN, productPrice: NaN,
-    totalPrice: NaN, recordTime: '',discountDie: '',platformId: '',brandName: ''};
+export const newTradeCommon: TradeCommonEntity = {dealNo: '', productId: NaN, seller: '', buyer: '', payWay: '', payType: '', productNum: NaN, productPrice: NaN,
+    totalPrice: NaN, recordTime: '',discountDie: '',platformId: '',brandName: '',brandId: ''};
 
 class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
 
@@ -51,7 +51,6 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
             tradeCommon: newTradeCommon,
             index: NaN
         }
-        // this.addClick = this.addClick.bind(this)
     }
 
     componentDidMount() {
@@ -76,7 +75,7 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
     };
 
     onAddCancel = () => {
-        this.setState({add_edit_visible: false})
+        this.setState({add_edit_visible: false,tradeCommon: newTradeCommon})
     };
 
     onSelectChange = (selectedRowKeys: string[], tradeCommon: TradeCommonEntity) => {
@@ -95,6 +94,7 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
             }).catch((error) => {
             message.error('操作失败');
         })
+        this.setState({tradeCommon: newTradeCommon});
     };
     onDelete = () => {
         const keys = this.state.selectedRowKeys;
@@ -157,7 +157,7 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
 
         return (
             <Fragment>
-                <Button type="primary" onClick={() => this.setState({add_edit_visible: true, tradeCommon: newTradeCommon})} style={{marginRight: '8px'}}>新增消费记录</Button>
+                <Button type="primary" onClick={() => this.setState({tradeCommon: newTradeCommon,add_edit_visible: true})} style={{marginRight: '8px'}}>新增消费记录</Button>
                 <Button type="primary" onClick={this.handleUpdate} style={{marginRight: '8px'}}>编辑产品</Button>
                 <Button type="primary" danger onClick={() => {
                     if (selectedRowKeys.length == 0){
@@ -232,8 +232,7 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
                                       return moment(value).format('YYYY-MM-DD HH:mm:ss');
                                   }}/>
                 </Table>
-                <AddAccountModal visible={add_edit_visible} onAddCancel={this.onAddCancel} props={this.props}
-                                 onCreate={this.onCreate} tradeCommon={tradeCommon}/>
+                {add_edit_visible&&<AddAccountModal visible={add_edit_visible} onAddCancel={this.onAddCancel} props={this.props} onCreate={this.onCreate} tradeCommon={tradeCommon}/>}
                 <Modal
                     title="系统提醒"
                     visible={delete_visible}

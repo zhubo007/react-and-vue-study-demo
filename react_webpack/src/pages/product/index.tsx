@@ -220,8 +220,7 @@ class Product extends React.Component<ProductProps, ProductState> {
                            pageSizeOptions: ['5', '10', '20', '30', '50'],
                            defaultPageSize: 5
                        }}/>
-                <AddModal add_edit_visible={add_edit_visible} onAddCancel={this.onAddCancel} onCreate={this.onCreate}
-                          brandList={brandList} product={product}/>
+                {add_edit_visible&&<AddModal add_edit_visible={add_edit_visible} onAddCancel={this.onAddCancel} onCreate={this.onCreate} brandList={brandList} product={product}/>}
                 <Modal
                     title="系统提醒"
                     visible={delete_visible}

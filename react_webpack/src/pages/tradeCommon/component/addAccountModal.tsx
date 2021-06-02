@@ -2,7 +2,7 @@ import React, {Fragment, useState, useEffect} from 'react';
 import {Button, Modal, Input, InputNumber, Form, DatePicker, Select, Row, Col, Table} from 'antd';
 import {BoxItemEntity, ProductObj, TradeCommonEntity, UserEntity} from "../../../entity/index"
 import {connect} from "react-redux";
-import {TradeCommonProps} from "../index";
+import {newTradeCommon, TradeCommonProps} from "../index";
 import moment from 'moment'
 
 const {Option} = Select;
@@ -15,40 +15,46 @@ interface CollectionCreateFormProps {
     onCreate: (values: TradeCommonEntity) => void
     onAddCancel: () => void
     tradeCommon: TradeCommonEntity
-    //handleGetUserList: () => void
+    // handleGetUserList: () => void
     props: TradeCommonProps
 }
 
 //无状态组件
-const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate, onAddCancel, tradeCommon,props}) => {
+const AddAccountModal: React.FunctionComponent<CollectionCreateFormProps> = ({visible, onCreate, onAddCancel, tradeCommon,props}) => {
     const [form] = Form.useForm();
+
+    useEffect( () =>{
+       props.handleGetUserList();
+    },[]);
+/*
+    1. 在函数式组件FunctionComponent中，form.setFieldsValue不建议在return上使用，一般在表单值需要动态变化时使用
+       否则会报错误Cannot update during an existing state transition (such as within `render`).......或其他警告，但不会影响正常使用
+    2. 在编辑时初始化值可以在Form标签中使用initialValues属性设置表单初始值
     form.setFieldsValue({ ...tradeCommon,
         productId:isNaN(tradeCommon.productId)?'':tradeCommon.productId,
         recordTime: moment(tradeCommon.recordTime==''?new Date(): tradeCommon.recordTime, dateFormat)
     });
-    useEffect( () =>{
-       props.handleGetUserList();
-    },[]);
+*/
+
     return (
         <Fragment>
-            <Modal visible={visible} title="Title" width={750} onOk={() => {
-                form.validateFields().then((values: TradeCommonEntity) => {
-                    onCreate(values);
-                    form.resetFields();
-                }).catch((info) => {
-                    console.log('Validate Failed:', info);
-                });
-            }} onCancel={onAddCancel} footer={[<Button key="back" onClick={onAddCancel}>关闭</Button>,
-                <Button key="submit" type="primary" onClick={() => {
-                    form.validateFields().then((values: TradeCommonEntity) => {
-                        onCreate(values);
-                        form.resetFields();
-                    }).catch((info) => {
-                        console.log('Validate Failed:', info);
-                    });
-                }}>确定</Button>]}>
-
-                <Form form={form}>
+            <Modal visible={visible} title="Title" width={750} destroyOnClose={true}
+                   onCancel={() => {onAddCancel();}}
+                   footer={[
+                       <Button key="back" onClick={onAddCancel}>关闭</Button>,
+                       <Button key="submit" type="primary" onClick={() => {
+                                                                       form.validateFields().then((values: TradeCommonEntity) => {
+                                                                            onCreate(values);
+                                                                        }).catch((info) => {
+                                                                            console.log('Validate Failed:', info);
+                                                                        });
+                       }}>确定</Button>]}>
+                {/*<Modal /> 和 Form 一起配合使用时，设置 destroyOnClose 也不会在 Modal 关闭时销毁表单字段数据，需要设置 <Form preserve={false} />*/}
+                <Form form={form} preserve={false}
+                      initialValues={{ ...tradeCommon,
+                          productId:isNaN(tradeCommon.productId)?'':tradeCommon.productId,
+                          recordTime: moment(tradeCommon.recordTime==''?new Date(): tradeCommon.recordTime, dateFormat)
+                      }}>
                     <Form.Item name="dealNo" className={'hideColumn'}>
                         <Input disabled={true}/>
                     </Form.Item>
@@ -65,11 +71,11 @@ const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate
                         <Col span={8}>
                             <Form.Item name="productId" rules={[{required: true, message: '商品名称不能为空!'},]}>
                                 <Select placeholder="请选择商品名称" onChange={(value, option) =>{
-                                    const productOption = JSON.parse(JSON.stringify(option));
-                                    form.setFieldsValue({
-                                        brandName: productOption.item['brandName'],
-                                        brandId: productOption.item['brandId'],
-                                    })
+                                                                                    const productOption = JSON.parse(JSON.stringify(option));
+                                                                                    form.setFieldsValue({
+                                                                                        brandName: productOption.item['brandName'],
+                                                                                        brandId: productOption.item['brandId'],
+                                                                                    })
                                 }}>
                                     {
                                         props.productList.map((item: ProductObj, index: number) => <Option key={index} value={item.productId} item={item}>{item.productName}</Option>)
@@ -159,8 +165,7 @@ const AddAccountModal: React.FC<CollectionCreateFormProps> = ({visible, onCreate
                             <Form.Item name="platformId" rules={[{required: true, message: '请选择购买平台!'}]}>
                                 <Select placeholder="请选择购买平台">
                                     {
-                                        props.platformList.map((item: BoxItemEntity, index: number) => <Option key={index}
-                                                                                                         value={item.boxCode}>{item.boxText}</Option>)
+                                        props.platformList.map((item: BoxItemEntity, index: number) => <Option key={index} value={item.boxCode}>{item.boxText}</Option>)
                                     }
                                 </Select>
                             </Form.Item>

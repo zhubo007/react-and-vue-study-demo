@@ -19,8 +19,7 @@ interface CollectionCreateFormProps {
 //无状态组件
 const AddModal: React.FC<CollectionCreateFormProps> = ({add_edit_visible, onCreate, onAddCancel, brandList, product}) => {
     const [form] = Form.useForm();
-    form.setFieldsValue({ ...product,followTime: moment(product.followTime==''?new Date(): product.followTime, dateFormat)});
-
+    // form.resetFields();
     //const [param, setParam] = useState(newProduct);
     //setParam({...product})
     // useEffect( () =>{
@@ -29,14 +28,7 @@ const AddModal: React.FC<CollectionCreateFormProps> = ({add_edit_visible, onCrea
 
     return (
         <Fragment>
-            <Modal visible={add_edit_visible} title="Title" width={750} onOk={() => {
-                form.validateFields().then((values: ProductObj) => {
-                    onCreate(values);
-                    form.resetFields();
-                }).catch((info) => {
-                    console.log('Validate Failed:', info);
-                });
-            }} onCancel={onAddCancel}
+            <Modal visible={add_edit_visible} title="Title" getContainer={false} width={750} onCancel={onAddCancel}
                    footer={[<Button key="back" onClick={onAddCancel}>关闭</Button>,
                        <Button key="submit" type="primary" onClick={() => {
                            form.validateFields().then((values: ProductObj) => {
@@ -46,8 +38,9 @@ const AddModal: React.FC<CollectionCreateFormProps> = ({add_edit_visible, onCrea
                                console.log('Validate Failed:', info);
                            });
                        }}>确定</Button>]}>
-
-                <Form form={form}>
+                {/*当我们第一次点开Modal的时候， FormItem会得到一个initialValue,但是这个值只在组件挂载的时候执行了一次， 当我们再次打开Modal窗口的时候并不会更新。
+                    https://www.jb51.net/article/198485.htm */}
+                <Form form={form} preserve={false} initialValues={{ ...product,followTime: moment(product.followTime==''?new Date(): product.followTime, dateFormat)}}>
                     <Form.Item name="productId" className={'hideColumn'}>
                         <InputNumber disabled={true}/>
                     </Form.Item>
