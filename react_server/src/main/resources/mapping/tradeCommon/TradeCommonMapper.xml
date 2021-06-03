@@ -33,7 +33,7 @@
     t.deal_no, t.product_id, t.seller, buyer, t.pay_way, t.pay_type, t.product_num, t.product_price,
     t.total_price, t.platform_id, t.discount_die, t.feature_die, t.record_time, t.picture_one, t.picture_two,
     t.picture_three, t.is_valid_data,
-    cbi.box_text as platform_name,cbi1.box_text as pay_way_name,su.real_name buyer_name,su1.real_name seller_name,
+    cbi.box_text as platform_name,cbi1.box_text as pay_way_name,su.full_name buyer_name,su1.full_name seller_name,
     sp.product_name, sp.start_price, sp.expect_price,cbi2.box_text as brand_name
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap">

@@ -2,8 +2,7 @@ import React, {Fragment} from 'react';
 import {connect} from 'react-redux';
 import '../../main.css';
 import {Button, Input, message, Modal, Select, Table} from "antd";
-import moment from 'moment'
-import {UserEntity} from "../../entity/index";
+import {BoxItemEntity, ProductObj, UserEntity} from "../../entity/index";
 import axios from "axios";
 import {actionCreator} from "../../utils/store/index";
 import {AddSystemUserModel} from "../user/component/index";
@@ -11,22 +10,34 @@ import {AddSystemUserModel} from "../user/component/index";
 const Option = Select.Option;
 const columns = [
     {title: '编号', dataIndex: 'userId', key: 'userId', className: 'hideColumn'},
-    {title: '产品名称', dataIndex: 'userName', key: 'userName'},
-    {title: '初始价格', dataIndex: 'realName', key: 'realName'},
-    {title: '所在平台', dataIndex: 'platformId', key: 'platformId'},
-    {title: '年龄', dataIndex: 'age', key: 'age'},
-    {title: '性别', dataIndex: 'gender', key: 'gender'},
-    {title: '最近登录时间', dataIndex: 'lastLoginTime', key: 'lastLoginTime'},
+    {title: '简称', dataIndex: 'enName', key: 'enName'},
+    {title: '全称', dataIndex: 'fullName', key: 'fullName'},
+    {title: '所在平台code', dataIndex: 'platformId', key: 'platformId', className: 'hideColumn'},
+    {title: '所在平台', dataIndex: 'platformName', key: 'platformName'},
+    {title: '年龄', dataIndex: 'age', key: 'age', className: 'hideColumn'},
+    {title: '性别', dataIndex: 'gender', key: 'gender', className: 'hideColumn'},
+    {title: '最近登录时间', dataIndex: 'lastLoginTime', key: 'lastLoginTime', className: 'hideColumn'},
     {title: '是否启用', dataIndex: 'isActive', key: 'isActive'},
-    {title: '用户类型', dataIndex: 'buyerOrSeller', key: 'buyerOrSeller'},
+    {title: '用户类型', dataIndex: 'buyerOrSeller', key: 'buyerOrSeller',
+        render: (value: number, rowData: UserEntity, index: number) => {
+            if (1==value){
+                return '买家';
+            } else if(2 == value) {
+                return '卖家';
+            } else if(3 == value) {
+                return '买家、卖家';
+            }
+        },},
 
 ];
 
 export interface SystemUserProps {
+    platformList: BoxItemEntity[]
+    handleBoxItemList: (boxItemList: BoxItemEntity[], boxName: string) => void
 }
 
 interface SystemUserState {
-    userName: string,
+    fullName: string,
     buyer_or_seller: number,
     sysUserList: UserEntity[],
     add_edit_visible: boolean,
@@ -35,14 +46,14 @@ interface SystemUserState {
     userId: string,
     userData: UserEntity,
 }
-export const newUserEntity: UserEntity = {userId: '', userName: '', realName: '', age: NaN, gender: '', lastLoginTime: '', isActive: NaN, buyerOrSeller: NaN, platformId: ''};
+export const newUserEntity: UserEntity = {userId: '', enName: '', fullName: '', age: NaN, gender: '', lastLoginTime: '', isActive: NaN, buyerOrSeller: NaN, platformId: '', platformName: ''};
 
 class SystemUser extends React.Component<SystemUserProps, SystemUserState> {
 
     constructor(props: SystemUserProps) {
         super(props);
         this.state = {
-            userName: '',
+            fullName: '',
             buyer_or_seller: NaN,
             sysUserList: [],
             add_edit_visible: false,
@@ -57,12 +68,13 @@ class SystemUser extends React.Component<SystemUserProps, SystemUserState> {
 
     componentDidMount() {
         this.request();
+        this.props.handleBoxItemList(this.props.platformList, 'platform');
     }
 
     request = () => {
         axios.get('/app/user/all', {
             params: {
-                productName: this.state.userName
+                productName: this.state.fullName
             }
         }).then((response: any) => {
             this.setState({sysUserList: response.data})
@@ -72,11 +84,26 @@ class SystemUser extends React.Component<SystemUserProps, SystemUserState> {
     };
 
     onAddCancel = () => {
+        this.setState({add_edit_visible: false,userData: newUserEntity})
     };
 
-    onSelectChange = (selectedRowKeys: string[]) => {
+    onSelectChange = (selectedRowKeys: string[], userData: UserEntity) => {
+        this.setState({selectedRowKeys});
     };
-    onCreate = (values: any) => {
+    onCreate = (values: UserEntity) => {
+        let requestURL = `/app/user/add`;
+        if (''!=values.userId){
+            requestURL = `/app/user/edit/${values.userId}`
+        }
+        axios.post(requestURL, {...values})
+            .then(res => {
+                this.setState({add_edit_visible: false});
+                message.success('操作成功');
+                this.request();
+            }).catch((error) => {
+            message.error('操作失败');
+        })
+        this.setState({userData: newUserEntity});
     };
     onDelete = () => {
         const keys = this.state.selectedRowKeys;
@@ -85,7 +112,7 @@ class SystemUser extends React.Component<SystemUserProps, SystemUserState> {
             return;
         }
         keys.forEach((value: string, index: number) => {
-            axios.post(`/app/user/delete/${value}`,{})
+            axios.post(`/app/user/del/${value}`,{})
                 .then(res => {
                     this.request();
                 }).catch((error) => {
@@ -96,7 +123,8 @@ class SystemUser extends React.Component<SystemUserProps, SystemUserState> {
         this.setState({delete_visible: false})
     };
     render() {
-        const {selectedRowKeys, delete_visible, add_edit_visible, sysUserList, userName, userData} = this.state;
+        const {selectedRowKeys, delete_visible, add_edit_visible, sysUserList, fullName, userData} = this.state;
+        const {platformList} = this.props;
         const rowSelection: Object = {
             selectedRowKeys,
             type: 'checkbox',
@@ -140,7 +168,7 @@ class SystemUser extends React.Component<SystemUserProps, SystemUserState> {
                     }
                 }} style={{marginRight: '8px'}}>删除产品</Button>
 
-                <Input onChange={(event) => {this.setState({userName: event.target.value})}} value={userName} placeholder="请输入搜索内容"
+                <Input onChange={(event) => {this.setState({fullName: event.target.value})}} value={fullName} placeholder="请输入搜索内容"
                        style={{marginBottom: 8, width: '240px', height: '32px', paddingLeft: '12px', marginRight: '8px', marginLeft: '8px'}}/>
                 <Button type="primary" onClick={() => this.request()}>搜索</Button>
                 <Table columns={columns} dataSource={sysUserList} rowSelection={rowSelection}
@@ -152,7 +180,8 @@ class SystemUser extends React.Component<SystemUserProps, SystemUserState> {
                            pageSizeOptions: ['5', '10', '20', '30', '50'],
                            defaultPageSize: 5
                        }}/>
-                {/*{add_edit_visible&&<AddSystemUserModel add_edit_visible={add_edit_visible} onAddCancel={this.onAddCancel} onCreate={this.onCreate} userData={userData}/>}*/}
+                {add_edit_visible&&<AddSystemUserModel add_edit_visible={add_edit_visible} onAddCancel={this.onAddCancel} onCreate={this.onCreate}
+                                                       userData={userData} platformList={platformList}/>}
                 <Modal
                     title="系统提醒"
                     visible={delete_visible}
@@ -169,11 +198,14 @@ class SystemUser extends React.Component<SystemUserProps, SystemUserState> {
 
 const mapStateToProps = (state: any) => {
     return {
+        platformList: state.getIn(['common_reducer', 'platformList']).toJS(),
     }
 };
 const mapDispatchToProps = (dispatch: any) => {
     return {
-
+        handleBoxItemList(boxItemList: BoxItemEntity[], boxName: string) {
+            dispatch(actionCreator.getBoxItemList(null, boxName))
+        },
     }
 };
 

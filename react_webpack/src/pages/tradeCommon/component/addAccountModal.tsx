@@ -4,6 +4,7 @@ import {BoxItemEntity, ProductObj, TradeCommonEntity, UserEntity} from "../../..
 import {connect} from "react-redux";
 import {newTradeCommon, TradeCommonProps} from "../index";
 import moment from 'moment'
+import {isBlock} from "@babel/types";
 
 const {Option} = Select;
 const {TextArea} = Input;
@@ -106,7 +107,7 @@ const AddAccountModal: React.FunctionComponent<CollectionCreateFormProps> = ({vi
                             <Form.Item name="buyer" rules={[{required: true, message: '请选择买家!'}]}>
                                 <Select placeholder="请选择买家">
                                     {
-                                        props.userList.map((item: UserEntity, index: number) => <Option key={index} value={item.userId}>{item.realName}</Option>)
+                                        props.userList.map((item: UserEntity, index: number) => <Option key={index} value={item.userId}>{item.fullName}</Option>)
                                     }
                                 </Select>
                             </Form.Item>
@@ -121,7 +122,7 @@ const AddAccountModal: React.FunctionComponent<CollectionCreateFormProps> = ({vi
                             <Form.Item name="seller" rules={[{required: true, message: '请选择卖家!'}]}>
                                 <Select placeholder="请选择卖家">
                                     {
-                                        props.userList.map((item: UserEntity, index: number) => <Option key={index} value={item.userId}>{item.realName}</Option>)
+                                        props.userList.map((item: UserEntity, index: number) => <Option key={index} value={item.userId}>{item.fullName}</Option>)
                                     }
                                 </Select>
                             </Form.Item>

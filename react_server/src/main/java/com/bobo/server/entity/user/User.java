@@ -5,9 +5,9 @@ import java.util.Date;
 public class User {
     private String userId;
 
-    private String userName;
+    private String enName;
 
-    private String realName;
+    private String fullName;
 
     private Integer age;
 
@@ -17,6 +17,12 @@ public class User {
 
     private Integer isActive;
 
+    private String platformId;
+
+    private String platformName;
+
+    private Integer buyerOrSeller;
+
     public String getUserId() {
         return userId;
     }
@@ -25,20 +31,20 @@ public class User {
         this.userId = userId == null ? null : userId.trim();
     }
 
-    public String getUserName() {
-        return userName;
+    public String getEnName() {
+        return enName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName == null ? null : userName.trim();
+    public void setEnName(String enName) {
+        this.enName = enName == null ? null : enName.trim();
     }
 
-    public String getRealName() {
-        return realName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setRealName(String realName) {
-        this.realName = realName == null ? null : realName.trim();
+    public void setFullName(String fullName) {
+        this.fullName = fullName == null ? null : fullName.trim();
     }
 
     public Integer getAge() {
@@ -71,5 +77,29 @@ public class User {
 
     public void setIsActive(Integer isActive) {
         this.isActive = isActive;
+    }
+
+    public String getPlatformId() {
+        return platformId;
+    }
+
+    public void setPlatformId(String platformId) {
+        this.platformId = platformId;
+    }
+
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
+    }
+
+    public Integer getBuyerOrSeller() {
+        return buyerOrSeller;
+    }
+
+    public void setBuyerOrSeller(Integer buyerOrSeller) {
+        this.buyerOrSeller = buyerOrSeller;
     }
 }

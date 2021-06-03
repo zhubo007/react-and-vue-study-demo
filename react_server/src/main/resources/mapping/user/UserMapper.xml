@@ -3,15 +3,19 @@
 <mapper namespace="com.bobo.server.dao.user.UserMapper">
   <resultMap id="BaseResultMap" type="com.bobo.server.entity.user.User">
     <id column="user_id" jdbcType="VARCHAR" property="userId" />
-    <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="en_name" jdbcType="VARCHAR" property="enName" />
+    <result column="full_name" jdbcType="VARCHAR" property="fullName" />
     <result column="age" jdbcType="INTEGER" property="age" />
     <result column="gender" jdbcType="VARCHAR" property="gender" />
+    <result column="platform_id" jdbcType="VARCHAR" property="platformId" />
     <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
     <result column="is_active" jdbcType="INTEGER" property="isActive" />
+    <result column="buyer_or_seller" jdbcType="INTEGER" property="buyerOrSeller" />
+
+    <result column="platform_name" jdbcType="VARCHAR" property="platformName" />
   </resultMap>
   <sql id="Base_Column_List">
-    t.user_id, t.user_name, t.real_name, t.age, t.gender, t.last_login_time, t.is_active
+    t.user_id, t.en_name, t.full_name, t.age, t.gender, t.last_login_time, t.is_active, t.buyer_or_seller, t.platform_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -22,14 +26,15 @@
 
   <select id="selectUserListByField" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List" />
+    <include refid="Base_Column_List" />,cbi.box_text as platform_name
     from su_user t
+    left join comb_box_item cbi on cbi.box_code=t.platform_id and cbi.box_name='platform'
     <where>
       <if test="userId != null">
         and t.user_id = #{userId,jdbcType=VARCHAR}
       </if>
-      <if test="userName != null">
-        and t.user_name = #{userName,jdbcType=VARCHAR}
+      <if test="fullName != null">
+        and t.full_name = #{fullName,jdbcType=VARCHAR}
       </if>
     </where>
   </select>
@@ -39,10 +44,10 @@
     where user_id = #{userId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.bobo.server.entity.user.User">
-    insert into su_user (user_id, user_name, real_name, 
+    insert into su_user (user_id, en_name, full_name,
       age, gender, last_login_time, 
       is_active)
-    values (#{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, 
+    values (#{userId,jdbcType=VARCHAR}, #{enName,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR},
       #{age,jdbcType=INTEGER}, #{gender,jdbcType=VARCHAR}, #{lastLoginTime,jdbcType=TIMESTAMP}, 
       #{isActive,jdbcType=INTEGER})
   </insert>
@@ -52,11 +57,11 @@
       <if test="userId != null">
         user_id,
       </if>
-      <if test="userName != null">
-        user_name,
+      <if test="enName != null">
+        en_name,
       </if>
-      <if test="realName != null">
-        real_name,
+      <if test="fullName != null">
+        full_name,
       </if>
       <if test="age != null">
         age,
@@ -70,16 +75,22 @@
       <if test="isActive != null">
         is_active,
       </if>
+      <if test="platformId != null">
+        platform_id,
+      </if>
+      <if test="buyerOrSeller != null">
+        buyer_or_seller,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
         #{userId,jdbcType=VARCHAR},
       </if>
-      <if test="userName != null">
-        #{userName,jdbcType=VARCHAR},
+      <if test="enName != null">
+        #{enName,jdbcType=VARCHAR},
       </if>
-      <if test="realName != null">
-        #{realName,jdbcType=VARCHAR},
+      <if test="fullName != null">
+        #{fullName,jdbcType=VARCHAR},
       </if>
       <if test="age != null">
         #{age,jdbcType=INTEGER},
@@ -93,16 +104,22 @@
       <if test="isActive != null">
         #{isActive,jdbcType=INTEGER},
       </if>
+      <if test="platformId != null">
+        #{platformId,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerOrSeller != null">
+        #{buyerOrSeller,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.bobo.server.entity.user.User">
     update su_user
     <set>
-      <if test="userName != null">
-        user_name = #{userName,jdbcType=VARCHAR},
+      <if test="enName != null">
+        en_name = #{enName,jdbcType=VARCHAR},
       </if>
-      <if test="realName != null">
-        real_name = #{realName,jdbcType=VARCHAR},
+      <if test="fullName != null">
+        full_name = #{fullName,jdbcType=VARCHAR},
       </if>
       <if test="age != null">
         age = #{age,jdbcType=INTEGER},
@@ -116,13 +133,19 @@
       <if test="isActive != null">
         is_active = #{isActive,jdbcType=INTEGER},
       </if>
+      <if test="platformId != null">
+        platform_id = #{platformId,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerOrSeller != null">
+        buyer_or_seller = #{buyerOrSeller,jdbcType=VARCHAR},
+      </if>
     </set>
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.bobo.server.entity.user.User">
     update su_user
-    set user_name = #{userName,jdbcType=VARCHAR},
-      real_name = #{realName,jdbcType=VARCHAR},
+    set en_name = #{enName,jdbcType=VARCHAR},
+        full_name = #{fullName,jdbcType=VARCHAR},
       age = #{age,jdbcType=INTEGER},
       gender = #{gender,jdbcType=VARCHAR},
       last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},

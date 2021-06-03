@@ -18,5 +18,5 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-    List<User> selectUserListByField(@Param("userId") String userId,@Param("userName") String userName);
+    List<User> selectUserListByField(@Param("userId") String userId,@Param("fullName") String fullName);
 }

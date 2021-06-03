@@ -68,9 +68,9 @@ export interface UserEntity {
 
     userId: string;
 
-    userName: string;
+    enName: string;
 
-    realName: string;
+    fullName: string;
 
     age: number;
 
@@ -83,6 +83,8 @@ export interface UserEntity {
     buyerOrSeller: number
 
     platformId: string
+
+    platformName: string
 }
 interface AccountProps {
     accounts: TradeCommonEntity[];

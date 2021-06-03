@@ -14,8 +14,8 @@ public class UserController {
     private UserService userService;
 
     @GetMapping(path = "/all")
-    public Object userAll(String userId, String userName){
-        return userService.selectUserList(userId, userName);
+    public Object userAll(String userId, String fullName){
+        return userService.selectUserList(userId, fullName);
     }
 
     @PostMapping(path = "/add")
@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/del/{userId}")
-    public Object editUser(@RequestParam String userId){
+    public Object editUser(@PathVariable String userId){
         return userService.delUser(userId);
     }
 }
