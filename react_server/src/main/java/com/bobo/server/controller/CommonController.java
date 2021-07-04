@@ -8,7 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.Map;
-
+/**
+ * 
+ * @author ZB
+ *
+ */
 @RestController
 @RequestMapping(path = "/common")
 public class CommonController {
