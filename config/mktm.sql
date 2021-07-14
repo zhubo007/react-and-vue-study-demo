@@ -11,7 +11,7 @@
  Target Server Version : 100234
  File Encoding         : 65001
 
- Date: 31/05/2021 06:57:53
+ Date: 15/07/2021 06:50:07
 */
 
 SET NAMES utf8mb4;
@@ -110,7 +110,7 @@ CREATE TABLE `su_product`  (
   `product_die` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '商品特征描述',
   `is_visible` int NOT NULL DEFAULT 1 COMMENT '是否可视',
   PRIMARY KEY (`product_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of su_product
@@ -122,6 +122,8 @@ INSERT INTO `su_product` VALUES (15, '莫兰迪陶瓷大中小花盆', '2021-05-
 INSERT INTO `su_product` VALUES (16, '汾酒封坛15老白汾53度单瓶', '2021-05-06 22:13:39', 158.00, 198.00, '1', 'FJ_Wine', NULL, 5, '朱波', '第一次入门的酒，品质优良，价格偏高，适合关注活动价后购买', 1);
 INSERT INTO `su_product` VALUES (17, '大号仿陶瓷花盆', '2021-05-27 14:57:10', 12.78, 14.50, '1', 'no_brand', NULL, 4, '李强', '淘宝店铺：沃美施园艺用品；性价比高；8号大小；2只装；矮款', 1);
 INSERT INTO `su_product` VALUES (18, '提赛尔1米5床架', '2021-05-22 15:07:43', 2000.00, 2499.00, '1', 'IKEA', NULL, 4, '朱波', '宜家床架', 1);
+INSERT INTO `su_product` VALUES (19, '琴叶榕', '2021-07-03 05:21:24', 6.00, 12.00, '1', 'no_brand', NULL, 3, '朱波', '京东店铺：韵沃迷之卉专卖店；1棵不含盆', 1);
+INSERT INTO `su_product` VALUES (20, '富贵竹', '2021-07-03 13:24:35', 6.00, 12.00, '1', 'no_brand', NULL, 5, '朱波', '1盆4棵赠两包土，京东自营', 1);
 
 -- ----------------------------
 -- Table structure for su_user
@@ -129,23 +131,24 @@ INSERT INTO `su_product` VALUES (18, '提赛尔1米5床架', '2021-05-22 15:07:4
 DROP TABLE IF EXISTS `su_user`;
 CREATE TABLE `su_user`  (
   `user_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '用户ID',
-  `user_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '用户名',
-  `real_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '真实姓名/店名/企业',
+  `en_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '用户名',
+  `full_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '真实姓名/店名/企业',
   `age` int NULL DEFAULT NULL COMMENT '年龄',
   `gender` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '性别，F或M男',
   `last_login_time` datetime(0) NULL DEFAULT NULL COMMENT '最近一次登录时间',
   `is_active` int NOT NULL DEFAULT 1 COMMENT '是否启用',
-  `buy_or_sell` int NOT NULL DEFAULT 3 COMMENT '买卖3，卖家2、买家1、',
+  `buyer_or_seller` int NOT NULL DEFAULT 3 COMMENT '买卖3，卖家2、买家1、',
+  `platform_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of su_user
 -- ----------------------------
-INSERT INTO `su_user` VALUES ('admin', 'zhubo', '朱波', 29, 'M', '2021-04-26 22:13:06', 1, 3);
-INSERT INTO `su_user` VALUES ('JDZY', NULL, '京东自营', NULL, NULL, '2021-04-26 22:58:47', 1, 3);
-INSERT INTO `su_user` VALUES ('TB_WMSYYYP', NULL, '沃美施园艺用品', NULL, NULL, NULL, 1, 2);
-INSERT INTO `su_user` VALUES ('XianYu_Seller', NULL, '闲鱼卖家', NULL, NULL, NULL, 1, 3);
+INSERT INTO `su_user` VALUES ('admin', 'zhubo', '朱波', 29, 'M', '2021-04-26 22:13:06', 1, 3, NULL);
+INSERT INTO `su_user` VALUES ('JDZY', '京东自营', '京东自营', 18, 'M', '2021-04-26 22:58:47', 1, 2, 'JD');
+INSERT INTO `su_user` VALUES ('TB_WMSYYYP', '沃美施园艺用品', '沃美施园艺用品', NULL, NULL, NULL, 1, 2, 'JD');
+INSERT INTO `su_user` VALUES ('XianYu_Seller', '闲鱼卖家', '闲鱼卖家', 10, 'M', NULL, 1, 3, 'TB');
 
 -- ----------------------------
 -- Table structure for trade_common
@@ -175,11 +178,13 @@ CREATE TABLE `trade_common`  (
 -- ----------------------------
 -- Records of trade_common
 -- ----------------------------
-INSERT INTO `trade_common` VALUES ('TC20210530120838', 13, 'JDZY', 'admin', 'JD_BT', NULL, 1, 49.90, 37.54, 'JD', '京东5元运费券， 1.36京东活动红包，800京豆，商品优惠3元', NULL, '2021-05-29 12:06:14', NULL, NULL, NULL, 1);
-INSERT INTO `trade_common` VALUES ('TC20210530140803', 14, 'JDZY', 'admin', 'JD_BT', NULL, 1, 9.90, 5.73, 'JD', '运费券6元；商品优惠3元；支付有礼1元；京东活动红包0.17', NULL, '2021-05-11 14:06:51', NULL, NULL, NULL, 1);
-INSERT INTO `trade_common` VALUES ('TC20210530141149', 15, 'JDZY', 'admin', 'YC_BANK_WX', NULL, 1, 55.80, 15.50, 'JD', '邮政信用卡30元支付券；京东会员运费券；京豆1000个；京东活动红包0.3元', NULL, '2021-05-04 14:10:35', NULL, NULL, NULL, 1);
+INSERT INTO `trade_common` VALUES ('TC20210530120838', 13, 'JDZY', 'admin', 'JD_BT', NULL, 3, 49.90, 37.54, 'JD', '京东5元运费券， 1.36京东活动红包，800京豆，商品优惠3元', NULL, '2021-05-29 04:06:14', NULL, NULL, NULL, 1);
+INSERT INTO `trade_common` VALUES ('TC20210530140803', 14, 'JDZY', 'admin', 'JD_BT', NULL, 1, 9.90, 5.73, 'JD', '运费券6元；商品优惠3元；支付有礼1元；京东活动红包0.17', NULL, '2021-05-11 06:06:51', NULL, NULL, NULL, 1);
+INSERT INTO `trade_common` VALUES ('TC20210530141149', 15, 'JDZY', 'admin', 'YC_BANK_WX', NULL, 1, 55.80, 15.50, 'JD', '邮政信用卡30元支付券；京东会员运费券；京豆1000个；京东活动红包0.3元', NULL, '2021-05-03 22:10:35', NULL, NULL, NULL, 1);
 INSERT INTO `trade_common` VALUES ('TC20210530150349', 17, 'TB_WMSYYYP', 'admin', 'YC_BANK_WX', NULL, 1, 14.50, 12.78, 'TB', '淘金币0.72，其他优惠1元', NULL, '2021-05-27 15:00:29', NULL, NULL, NULL, 1);
 INSERT INTO `trade_common` VALUES ('TC20210530161926', 18, 'XianYu_Seller', 'admin', 'ZS_BANK', NULL, 1, 2500.00, 1000.00, 'XY', '提赛尔1.5米床架，加两个床头柜，闲鱼购买，货拉拉143元', NULL, '2021-05-22 16:17:46', NULL, NULL, NULL, 1);
+INSERT INTO `trade_common` VALUES ('TC20210703132317', 19, 'JDZY', 'admin', 'JD_BT', NULL, 1, 12.00, 6.25, 'JD', '京豆', NULL, '2021-07-03 13:22:07', NULL, NULL, NULL, 1);
+INSERT INTO `trade_common` VALUES ('TC20210703132700', 20, 'JDZY', 'admin', 'JD_BT', NULL, 1, 12.00, 6.00, 'JD', '1000京豆', NULL, '2021-07-03 13:26:16', NULL, NULL, NULL, 1);
 
 -- ----------------------------
 -- Table structure for trade_market
