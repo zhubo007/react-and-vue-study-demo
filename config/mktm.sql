@@ -11,11 +11,61 @@
  Target Server Version : 100234
  File Encoding         : 65001
 
- Date: 15/07/2021 06:50:07
+ Date: 08/11/2021 00:34:17
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for comb_box
+-- ----------------------------
+DROP TABLE IF EXISTS `comb_box`;
+CREATE TABLE `comb_box`  (
+  `box_id` int NOT NULL AUTO_INCREMENT,
+  `box_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '代码',
+  `box_key` int NOT NULL COMMENT '下拉值',
+  `box_text` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '下拉显示文字',
+  `sort` int NULL DEFAULT NULL COMMENT '排序号',
+  `box_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '下拉类型',
+  PRIMARY KEY (`box_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 10034 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of comb_box
+-- ----------------------------
+INSERT INTO `comb_box` VALUES (10001, 'GJGJ_Wine', 1, '古井贡酒', 1, 'brandName');
+INSERT INTO `comb_box` VALUES (10002, 'FJ_Wine', 2, '汾酒', 2, 'brandName');
+INSERT INTO `comb_box` VALUES (10003, 'XieDaYu_Tea', 3, '谢裕大', 3, 'brandName');
+INSERT INTO `comb_box` VALUES (10005, 'fullPayment', 5, '全款', 1, 'payType');
+INSERT INTO `comb_box` VALUES (10006, 'installment', 6, '分期付款', 2, 'payType');
+INSERT INTO `comb_box` VALUES (10007, 'JD', 1, '京东', 1, 'platform');
+INSERT INTO `comb_box` VALUES (10008, 'TB', 2, '淘宝', 2, 'platform');
+INSERT INTO `comb_box` VALUES (10009, 'SN', 3, '苏宁易购', 3, 'platform');
+INSERT INTO `comb_box` VALUES (10010, '12306', 4, '铁路12306', 4, 'platform');
+INSERT INTO `comb_box` VALUES (10011, '12308', 5, '巴士管家', 5, 'platform');
+INSERT INTO `comb_box` VALUES (10012, 'ZFB', 12, '支付宝（余额）', 1, 'payWay');
+INSERT INTO `comb_box` VALUES (10013, 'WX', 13, '微信（余额）', 2, 'payWay');
+INSERT INTO `comb_box` VALUES (10014, 'ZS_BANK_ZFB', 14, '招商信用卡', 3, 'payWay');
+INSERT INTO `comb_box` VALUES (10015, 'YC_BANK_WX', 15, '邮储信用卡', 4, 'payWay');
+INSERT INTO `comb_box` VALUES (10016, 'ZS_BANK', 16, '招商借记卡', 5, 'payWay');
+INSERT INTO `comb_box` VALUES (10017, 'MDY_gardening', 4, '墨斗鱼园艺', 4, 'brandName');
+INSERT INTO `comb_box` VALUES (10018, 'JYS_gardening', 5, '九月生园艺', 5, 'brandName');
+INSERT INTO `comb_box` VALUES (10019, 'JD_BT', 17, '京东白条', 3, 'payWay');
+INSERT INTO `comb_box` VALUES (10020, 'no_brand', 6, '杂牌', 6, 'brandName');
+INSERT INTO `comb_box` VALUES (10021, 'IKEA', 7, '宜家', 7, 'brandName');
+INSERT INTO `comb_box` VALUES (10022, 'XY', 6, '闲鱼', 6, 'platform');
+INSERT INTO `comb_box` VALUES (10023, '1', 1, '餐饮', 1, 'accountType');
+INSERT INTO `comb_box` VALUES (10024, '1', 1, '购物', 1, 'a');
+INSERT INTO `comb_box` VALUES (10025, '1', 1, '日用', 1, 'a');
+INSERT INTO `comb_box` VALUES (10026, '1', 1, '购物', 1, 'a');
+INSERT INTO `comb_box` VALUES (10027, '1', 1, '购物', 1, 'a');
+INSERT INTO `comb_box` VALUES (10028, '1', 1, '购物', 1, 'a');
+INSERT INTO `comb_box` VALUES (10029, '1', 1, '购物', 1, 'a');
+INSERT INTO `comb_box` VALUES (10030, '1', 1, '购物', 1, 'a');
+INSERT INTO `comb_box` VALUES (10031, '1', 1, '购物', 1, 'a');
+INSERT INTO `comb_box` VALUES (10032, '1', 1, '购物', 1, 'a');
+INSERT INTO `comb_box` VALUES (10033, '1', 1, '购物', 1, 'a');
 
 -- ----------------------------
 -- Table structure for comb_box_item
@@ -24,37 +74,27 @@ DROP TABLE IF EXISTS `comb_box_item`;
 CREATE TABLE `comb_box_item`  (
   `box_id` int NOT NULL AUTO_INCREMENT,
   `box_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '代码',
-  `box_key` int NOT NULL COMMENT '下拉值',
   `box_text` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '下拉显示文字',
   `sort` int NULL DEFAULT NULL COMMENT '排序号',
-  `box_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '下拉类型',
+  `box_code_p` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '字典项父级代码',
   PRIMARY KEY (`box_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10023 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10046 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of comb_box_item
 -- ----------------------------
-INSERT INTO `comb_box_item` VALUES (10001, 'GJGJ_Wine', 1, '古井贡酒', 1, 'brandName');
-INSERT INTO `comb_box_item` VALUES (10002, 'FJ_Wine', 2, '汾酒', 2, 'brandName');
-INSERT INTO `comb_box_item` VALUES (10003, 'XieDaYu_Tea', 3, '谢裕大', 3, 'brandName');
-INSERT INTO `comb_box_item` VALUES (10005, 'fullPayment', 5, '全款', 1, 'payType');
-INSERT INTO `comb_box_item` VALUES (10006, 'installment', 6, '分期付款', 2, 'payType');
-INSERT INTO `comb_box_item` VALUES (10007, 'JD', 1, '京东', 1, 'platform');
-INSERT INTO `comb_box_item` VALUES (10008, 'TB', 2, '淘宝', 2, 'platform');
-INSERT INTO `comb_box_item` VALUES (10009, 'SN', 3, '苏宁易购', 3, 'platform');
-INSERT INTO `comb_box_item` VALUES (10010, '12306', 4, '铁路12306', 4, 'platform');
-INSERT INTO `comb_box_item` VALUES (10011, '12308', 5, '巴士管家', 5, 'platform');
-INSERT INTO `comb_box_item` VALUES (10012, 'ZFB', 12, '支付宝（余额）', 1, 'payWay');
-INSERT INTO `comb_box_item` VALUES (10013, 'WX', 13, '微信（余额）', 2, 'payWay');
-INSERT INTO `comb_box_item` VALUES (10014, 'ZS_BANK_ZFB', 14, '招商信用卡', 3, 'payWay');
-INSERT INTO `comb_box_item` VALUES (10015, 'YC_BANK_WX', 15, '邮储信用卡', 4, 'payWay');
-INSERT INTO `comb_box_item` VALUES (10016, 'ZS_BANK', 16, '招商借记卡', 5, 'payWay');
-INSERT INTO `comb_box_item` VALUES (10017, 'MDY_gardening', 4, '墨斗鱼园艺', 4, 'brandName');
-INSERT INTO `comb_box_item` VALUES (10018, 'JYS_gardening', 5, '九月生园艺', 5, 'brandName');
-INSERT INTO `comb_box_item` VALUES (10019, 'JD_BT', 17, '京东白条', 3, 'payWay');
-INSERT INTO `comb_box_item` VALUES (10020, 'no_brand', 6, '杂牌', 6, 'brandName');
-INSERT INTO `comb_box_item` VALUES (10021, 'IKEA', 7, '宜家', 7, 'brandName');
-INSERT INTO `comb_box_item` VALUES (10022, 'XY', 6, '闲鱼', 6, 'platform');
+INSERT INTO `comb_box_item` VALUES (10034, 'Traffic', '交通', 1, 'expensesType');
+INSERT INTO `comb_box_item` VALUES (10035, 'Clothes', '服饰', 2, 'expensesType');
+INSERT INTO `comb_box_item` VALUES (10036, 'PhoneBills', '话费', 3, 'expensesType');
+INSERT INTO `comb_box_item` VALUES (10037, 'cigarettes&wines', '烟酒', 4, 'expensesType');
+INSERT INTO `comb_box_item` VALUES (10038, 'Medical', '医疗', 5, 'expensesType');
+INSERT INTO `comb_box_item` VALUES (10039, 'food&drink', '饮食', 6, 'expensesType');
+INSERT INTO `comb_box_item` VALUES (10040, 'power&gas&water', '水电气', 7, 'expensesType');
+INSERT INTO `comb_box_item` VALUES (10041, 'furniture&appliances', '家具家电', 8, 'expensesType');
+INSERT INTO `comb_box_item` VALUES (10042, 'Salary', '工资', 1, 'incomeType');
+INSERT INTO `comb_box_item` VALUES (10043, 'Fitness', '健身', 9, 'expensesType');
+INSERT INTO `comb_box_item` VALUES (10044, 'GiftCard', '代金卡', 10, 'expensesType');
+INSERT INTO `comb_box_item` VALUES (10045, 'DailyNecessities', '日用', 11, 'expensesType');
 
 -- ----------------------------
 -- Table structure for comb_box_item_copy1
@@ -149,6 +189,53 @@ INSERT INTO `su_user` VALUES ('admin', 'zhubo', '朱波', 29, 'M', '2021-04-26 2
 INSERT INTO `su_user` VALUES ('JDZY', '京东自营', '京东自营', 18, 'M', '2021-04-26 22:58:47', 1, 2, 'JD');
 INSERT INTO `su_user` VALUES ('TB_WMSYYYP', '沃美施园艺用品', '沃美施园艺用品', NULL, NULL, NULL, 1, 2, 'JD');
 INSERT INTO `su_user` VALUES ('XianYu_Seller', '闲鱼卖家', '闲鱼卖家', 10, 'M', NULL, 1, 3, 'TB');
+
+-- ----------------------------
+-- Table structure for td_cash_book
+-- ----------------------------
+DROP TABLE IF EXISTS `td_cash_book`;
+CREATE TABLE `td_cash_book`  (
+  `deal_no` varchar(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `income_or_expense` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `post_date` datetime(0) NOT NULL,
+  `amt` double(12, 4) NOT NULL,
+  `user_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `is_active` int NOT NULL DEFAULT 1,
+  `ie_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`deal_no`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of td_cash_book
+-- ----------------------------
+INSERT INTO `td_cash_book` VALUES ('EP20211107132125', 'expense', '2020-07-21 21:15:52', -3702.0500, 'admin', '西门子10公斤洗衣机\n京东APP\n原支付金额：3931，价保返228.95到白条，实付金额为3702.05', 1, 'furniture&appliances');
+INSERT INTO `td_cash_book` VALUES ('EP20211107133114', 'expense', '2020-07-25 13:29:53', -3486.9900, 'admin', '松下三门冰箱\n淘宝APP\n原支付金额：3931，返200苏宁卡，实付金额为3702.05', 1, 'furniture&appliances');
+INSERT INTO `td_cash_book` VALUES ('EP20211107133336', 'expense', '2020-06-18 05:32:49', -449.7400, 'admin', '实木书桌1.4米\n淘宝APP\n实付款449.74', 1, 'furniture&appliances');
+INSERT INTO `td_cash_book` VALUES ('EP20211107133641', 'expense', '2020-05-22 05:35:30', -1000.0000, 'admin', '二手宜家实木床加2个床头柜\n闲鱼APP\n实际支付1000元；另有运费', 1, 'furniture&appliances');
+INSERT INTO `td_cash_book` VALUES ('EP20211107133922', 'expense', '2020-06-25 05:37:51', -1656.9000, 'admin', '实木床加床垫\n淘宝APP\n原价1994.90，返338，实付1656.9', 1, 'furniture&appliances');
+INSERT INTO `td_cash_book` VALUES ('EP20211107134456', 'expense', '2021-11-01 05:42:14', -183.9800, 'admin', '卧室窗帘\n淘宝APP\n原价209，实付183.98', 1, 'furniture&appliances');
+INSERT INTO `td_cash_book` VALUES ('EP20211107134651', 'expense', '2021-05-26 13:45:43', -1700.0000, 'admin', '邻居洪文庆定制全屋纱窗', 1, 'furniture&appliances');
+INSERT INTO `td_cash_book` VALUES ('EP20211107134915', 'expense', '2020-12-12 13:48:19', -944.4300, 'admin', '三星27寸显示器\n苏宁易购\n实付944.43', 1, 'furniture&appliances');
+INSERT INTO `td_cash_book` VALUES ('EP20211107135044', 'expense', '2020-11-30 05:49:41', -21.5000, 'admin', '美的水壶\n苏宁易购\n原价89，使用松下冰箱送的苏宁卡抵消67.50，实付21.5', 1, 'furniture&appliances');
+INSERT INTO `td_cash_book` VALUES ('EP20211107135236', 'expense', '2020-10-02 05:51:53', -279.0000, 'admin', '金士顿笔记本内存条\n苏宁易购APP\n实付279', 1, 'furniture&appliances');
+INSERT INTO `td_cash_book` VALUES ('EP20211107135502', 'expense', '2020-11-30 05:54:06', -34.9000, 'admin', '苏宁手机支架\n苏宁易购APP\n实付34.9', 1, 'furniture&appliances');
+INSERT INTO `td_cash_book` VALUES ('EP20211107135629', 'expense', '2020-09-24 05:55:37', 0.0000, 'admin', '贵州茅台迎宾酒\n原价128，使用松下冰箱送的苏宁卡抵消128元', 1, 'cigarettes&wines');
+INSERT INTO `td_cash_book` VALUES ('EP20211107140608', 'expense', '2021-03-06 06:05:33', -150.0000, 'admin', '蓝堡二手动感单车\n闲鱼APP\n实付150', 1, 'Fitness');
+INSERT INTO `td_cash_book` VALUES ('EP20211107140752', 'expense', '2020-11-11 06:07:14', -2237.6800, 'admin', '次卧美的空调\n淘宝APP\n实付2237.68', 1, 'furniture&appliances');
+INSERT INTO `td_cash_book` VALUES ('EP20211107141557', 'expense', '2021-11-07 06:14:43', -97.1600, 'admin', '电费80，优惠0.84元\n水费18元', 1, 'power&gas&water');
+INSERT INTO `td_cash_book` VALUES ('EP20211107142015', 'expense', '2021-11-07 14:17:45', -87.4200, 'admin', '10月1日至10月31日', 1, 'PhoneBills');
+INSERT INTO `td_cash_book` VALUES ('EP20211107144305', 'expense', '2021-11-05 06:42:35', -70.0000, 'admin', '京东E卡，100面值使用70购买', 1, 'GiftCard');
+INSERT INTO `td_cash_book` VALUES ('EP20211107144640', 'expense', '2021-11-07 14:43:35', -36.2100, 'admin', '斯凯奇短袖2件\n京东APP\n原价168，双11优惠，并使用2021年11月5日购买的京东E卡65元', 1, 'Clothes');
+INSERT INTO `td_cash_book` VALUES ('EP20211107145044', 'expense', '2021-11-07 06:48:58', -18.4100, 'admin', '10斤装泡菜坛子\n京东\n使用2021年11月5日购买的京东E卡35元，实付18.41', 1, 'DailyNecessities');
+INSERT INTO `td_cash_book` VALUES ('EP20211107215024', 'expense', '2021-11-07 21:50:16', -390.0000, 'admin', '跑步机280，运费110', 1, 'Fitness');
+INSERT INTO `td_cash_book` VALUES ('EP20211107215237', 'expense', '2020-12-08 21:50:55', -330.1500, 'admin', '松下电动剃须刀\n京东APP\n实付330.15', 1, 'DailyNecessities');
+INSERT INTO `td_cash_book` VALUES ('EP20211107215606', 'expense', '2021-11-03 21:55:05', -557.8500, 'admin', 'Adidas户外连帽羽绒服\n京东APP\n实付557.85', 1, 'Clothes');
+INSERT INTO `td_cash_book` VALUES ('EP20211107215654', 'expense', '2021-11-01 13:56:21', -260.0000, 'admin', 'Adidas红色薄款羽绒服\n京东\n实付260', 1, 'Clothes');
+INSERT INTO `td_cash_book` VALUES ('EP20211107215844', 'expense', '2021-11-01 21:58:11', -161.0000, 'admin', 'Adidas长袖黑色卫衣', 1, 'Clothes');
+INSERT INTO `td_cash_book` VALUES ('EP20211107220058', 'expense', '2021-11-07 21:59:09', -689.3400, 'admin', '23.8寸AOC显示器\n京东APP\n商品价格789.34，实付689.34，使用京东E卡抵100元（南京信用卡任务免费获得）', 1, 'furniture&appliances');
+INSERT INTO `td_cash_book` VALUES ('EP20211107220201', 'expense', '2021-11-07 22:01:28', -136.6400, 'admin', '京东京造床上4件套', 1, 'DailyNecessities');
+INSERT INTO `td_cash_book` VALUES ('EP20211107220238', 'expense', '2021-11-07 22:02:03', -59.0000, 'admin', '京东京造枕头两只\n京东APP\n实付59元', 1, 'DailyNecessities');
 
 -- ----------------------------
 -- Table structure for trade_common
