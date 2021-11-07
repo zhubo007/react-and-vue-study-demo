@@ -20,7 +20,7 @@ module.exports = {
         ]
     },
     mode:'production',    //模式默认两种 development-production
-    entry:'./src/index.js', //入口
+    entry:'./src/index.tsx', //入口
     output:{
         filename:'[name][hash:8].js',
         path: path.resolve(__dirname,'dist'),//出口以当前目录解析出dist的绝对路径，此处必须是绝对路径

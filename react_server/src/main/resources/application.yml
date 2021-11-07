@@ -26,3 +26,5 @@ spring:
     active: dev
 mybatis:
   mapper-locations: classpath:mapping/**/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

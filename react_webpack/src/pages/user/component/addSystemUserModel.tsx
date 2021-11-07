@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import {Button, Modal, Input, InputNumber, Form, Select, Row, Col} from 'antd';
-import {BoxItemEntity, UserEntity} from "../../../entity/index"
+import {BoxItemObj, UserEntity} from "../../../entity/index"
 import {connect} from "react-redux";
 const {Option} = Select;
 
@@ -9,7 +9,7 @@ interface CollectionCreateFormProps {
     onCreate: (values: UserEntity) => void;
     onAddCancel: () => void;
     userData: UserEntity
-    platformList: BoxItemEntity[]
+    platformList: BoxItemObj[]
 }
 
 //无状态组件
@@ -89,7 +89,7 @@ const AddSystemUserModel: React.FC<CollectionCreateFormProps> = ({add_edit_visib
                             <Form.Item name="platformId" rules={[{required: true, message: '请选择所在平台!'}]}>
                                 <Select placeholder="请选择所在平台">
                                     {
-                                        platformList.map((item: BoxItemEntity, index: number) => <Option key={index} value={item.boxCode}>{item.boxText}</Option>)
+                                        platformList.map((item: BoxItemObj, index: number) => <Option key={index} value={item.boxCode}>{item.boxText}</Option>)
                                     }
                                 </Select>
                             </Form.Item>

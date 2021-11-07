@@ -1,6 +1,6 @@
 import React, {Fragment, useState, useEffect} from 'react';
 import {Button, Modal, Input, InputNumber, Form, DatePicker, Select, Row, Col, Table} from 'antd';
-import {BoxItemEntity, ProductObj, TradeCommonEntity, UserEntity} from "../../../entity/index"
+import {BoxItemObj, ProductObj, TradeCommonEntity, UserEntity} from "../../../entity/index"
 import {connect} from "react-redux";
 import {newTradeCommon, TradeCommonProps} from "../index";
 import moment from 'moment'
@@ -149,7 +149,7 @@ const AddAccountModal: React.FunctionComponent<CollectionCreateFormProps> = ({vi
                             <Form.Item name="payWay" rules={[{required: true, message: '请选择支付方式!'}]}>
                                 <Select placeholder="请选择支付方式">
                                     {
-                                        props.payWayList.map((item: BoxItemEntity, index: number) => <Option key={index}
+                                        props.payWayList.map((item: BoxItemObj, index: number) => <Option key={index}
                                                                                                        value={item.boxCode}>{item.boxText}</Option>)
                                     }
                                 </Select>
@@ -166,7 +166,7 @@ const AddAccountModal: React.FunctionComponent<CollectionCreateFormProps> = ({vi
                             <Form.Item name="platformId" rules={[{required: true, message: '请选择购买平台!'}]}>
                                 <Select placeholder="请选择购买平台">
                                     {
-                                        props.platformList.map((item: BoxItemEntity, index: number) => <Option key={index} value={item.boxCode}>{item.boxText}</Option>)
+                                        props.platformList.map((item: BoxItemObj, index: number) => <Option key={index} value={item.boxCode}>{item.boxText}</Option>)
                                     }
                                 </Select>
                             </Form.Item>

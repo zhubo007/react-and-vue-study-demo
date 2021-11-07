@@ -20,11 +20,11 @@ export interface ProductObj {
 
     reference: string
 }
-export interface BrandObj {
 
-    boxId?: string;//可选变量
 
-    boxKey: string;
+export interface BoxItemObj {
+
+    boxId?: number;//可选变量
 
     boxText: string;
 
@@ -32,7 +32,21 @@ export interface BrandObj {
 
     sort: number;
 
-    boxName: string;
+    boxCodeP: string;
+}
+export interface CashBookObj {
+
+    dealNo?: string
+
+    postDate: string
+
+    ieCode: string
+
+    incomeOrExpense: string
+
+    amt: number
+
+    remark: string
 }
 export interface TradeCommonEntity {
     dealNo: string;
@@ -51,19 +65,6 @@ export interface TradeCommonEntity {
     brandId: string
 }
 
-export interface BoxItemEntity {
-    boxId?: string;//可选变量
-
-    boxKey: string;
-
-    boxText: string;
-
-    sort: number;
-
-    boxName: string;
-
-    boxCode: string
-}
 export interface UserEntity {
 
     userId: string;

@@ -1,21 +1,21 @@
 import * as constants from "./constants";
 import axios from 'axios';
-import {BrandObj} from "../../../entity/index"
+import {BoxItemObj} from "../../../entity/index"
 
-export const setBrandList = (brandList: BrandObj[]) => ({
+export const setBrandList = (brandList: BoxItemObj[]) => ({
     type: constants.BOX_BRAND_LIST_OPTION,
     brandList,
 });
 /**
  * 查询品牌信息
  * @param {String} boxId 
- * @param {String} boxName 
+ * @param {String} boxCodeP
  */
-export const getBrandList = (boxId: any, boxName: string) => {
+export const getBrandList = (boxId: any, boxCodeP: string) => {
     return (dispatch: any) => {
-        axios.get('/app/common/getBoxItem', {params:{boxId, boxName}}).then((response) => {
-            let brandList: BrandObj[] = response.data;
-            const nullOption: BrandObj = {boxId: "", boxKey: "", boxText: "---请选择---",boxCode: "", sort: 0, boxName: "brandName"};
+        axios.get('/app/common/getBoxItem', {params:{boxId, boxCodeP}}).then((response) => {
+            let brandList: BoxItemObj[] = response.data;
+            const nullOption: BoxItemObj = {boxId: NaN, boxText: "---请选择---",boxCode: "", sort: 0, boxCodeP: ""};
             brandList.unshift(nullOption);
             dispatch(setBrandList(brandList));
         }).catch((error) => {

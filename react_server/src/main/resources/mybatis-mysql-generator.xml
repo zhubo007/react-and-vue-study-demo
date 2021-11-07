@@ -20,7 +20,7 @@
         <!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
         <jdbcConnection driverClass="org.mariadb.jdbc.Driver"
                         connectionURL="jdbc:mysql://localhost:3306/mktm"
-                        userId="mktm"
+                        userId="root"
                         password="mktm4321">
         </jdbcConnection>
 
@@ -29,18 +29,18 @@
         </javaTypeResolver>
 
         <!-- 指定javabean生成的位置 -->
-        <javaModelGenerator targetPackage="com.bobo.server.entity.user"
+        <javaModelGenerator targetPackage="com.bobo.server.entity.cashbook"
                             targetProject="src/main/java">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="mapping.user"  targetProject="src/main/resources">
+        <sqlMapGenerator targetPackage="mapping.cashbook"  targetProject="src/main/resources">
             <!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false -->
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
         
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.bobo.server.dao.user" targetProject=".\src\main\java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.bobo.server.dao.cashbook" targetProject=".\src\main\java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
@@ -55,7 +55,7 @@
 
         <!--<table tableName="comb_box_item" domainObjectName="BoxItem" enableCountByExample="false"-->
                <!--enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>-->
-        <table tableName="su_user" domainObjectName="User" enableCountByExample="false"
+        <table tableName="td_cash_book" domainObjectName="TdCashBook" enableCountByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>
     </context>
 </generatorConfiguration>

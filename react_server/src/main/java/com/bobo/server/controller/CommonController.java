@@ -21,7 +21,7 @@ public class CommonController {
     private BoxItemService boxItemService;
 
     @GetMapping(path = "/getBoxItem")
-    public Object test(String boxId, String boxName){
-        return boxItemService.selectBoxItem(boxId, boxName);
+    public Object test(String boxCodeP){
+        return boxItemService.selectBoxItem(boxCodeP);
     }
 }

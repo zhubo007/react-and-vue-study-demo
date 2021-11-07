@@ -1,6 +1,6 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import {Button, Modal, Input, InputNumber, Form, DatePicker, Select, Row, Col} from 'antd';
-import {BrandObj, ProductObj} from "../../../entity/index"
+import {BoxItemObj, ProductObj} from "../../../entity/index"
 import {connect} from "react-redux";
 import moment from 'moment'
 const {Option} = Select;
@@ -12,7 +12,7 @@ interface CollectionCreateFormProps {
     add_edit_visible: boolean;
     onCreate: (values: ProductObj) => void;
     onAddCancel: () => void;
-    brandList: BrandObj[],
+    brandList: BoxItemObj[],
     product: ProductObj
 }
 
@@ -92,7 +92,7 @@ const AddModal: React.FC<CollectionCreateFormProps> = ({add_edit_visible, onCrea
                             <Form.Item name="brandType" rules={[{required: true, message: '请选择商品品牌!'}]}>
                                 <Select placeholder="请选择品牌">
                                     {
-                                        brandList.map((item: BrandObj, index: number) => <Option key={index} value={item.boxCode}>{item.boxText}</Option>)
+                                        brandList.map((item: BoxItemObj, index: number) => <Option key={index} value={item.boxCode}>{item.boxText}</Option>)
                                     }
                                 </Select>
                             </Form.Item>

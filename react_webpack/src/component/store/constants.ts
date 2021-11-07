@@ -1,12 +1,14 @@
 import Product from '../../pages/product/index';
 import Account from '../../pages/tradeCommon/index';
-import Market from '../../pages/market/index';
+import BoxItem from '../../pages/combBox/index';
 import SystemUser from '../../pages/user/index';
+import CashBook from '../../pages/cashBook/index';
 export const componentMap: { [key: string]: any } = {
     'Product': Product,
     'Account': Account,
-    'Market': Market,
-    'SystemUser': SystemUser
+    'BoxItem': BoxItem,
+    'SystemUser': SystemUser,
+    'CashBook': CashBook
 };
 
 export const menus = [

@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import {connect} from 'react-redux';
 import '../../main.css';
 import {Button, Input, message, Modal, Select, Table} from "antd";
-import {BoxItemEntity, ProductObj, UserEntity} from "../../entity/index";
+import {BoxItemObj, UserEntity} from "../../entity/index";
 import axios from "axios";
 import {actionCreator} from "../../utils/store/index";
 import {AddSystemUserModel} from "../user/component/index";
@@ -32,8 +32,8 @@ const columns = [
 ];
 
 export interface SystemUserProps {
-    platformList: BoxItemEntity[]
-    handleBoxItemList: (boxItemList: BoxItemEntity[], boxName: string) => void
+    platformList: BoxItemObj[]
+    handleBoxItemList: (boxItemList: BoxItemObj[], boxName: string) => void
 }
 
 interface SystemUserState {
@@ -203,7 +203,7 @@ const mapStateToProps = (state: any) => {
 };
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        handleBoxItemList(boxItemList: BoxItemEntity[], boxName: string) {
+        handleBoxItemList(boxItemList: BoxItemObj[], boxName: string) {
             dispatch(actionCreator.getBoxItemList(null, boxName))
         },
     }

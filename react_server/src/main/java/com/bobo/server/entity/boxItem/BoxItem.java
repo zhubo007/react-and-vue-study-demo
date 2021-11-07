@@ -1,32 +1,22 @@
 package com.bobo.server.entity.boxItem;
 
 public class BoxItem {
-    private String boxId;
-
-    private String boxKey;
+    private Integer boxId;
 
     private String boxText;
 
     private Integer sort;
 
-    private String boxName;
+    private String boxCodeP;
 
     private String boxCode;
 
-    public String getBoxId() {
+    public Integer getBoxId() {
         return boxId;
     }
 
-    public void setBoxId(String boxId) {
-        this.boxId = boxId == null ? null : boxId.trim();
-    }
-
-    public String getBoxKey() {
-        return boxKey;
-    }
-
-    public void setBoxKey(String boxKey) {
-        this.boxKey = boxKey == null ? null : boxKey.trim();
+    public void setBoxId(Integer boxId) {
+        this.boxId = boxId;
     }
 
     public String getBoxText() {
@@ -45,12 +35,12 @@ public class BoxItem {
         this.sort = sort;
     }
 
-    public String getBoxName() {
-        return boxName;
+    public String getBoxCodeP() {
+        return boxCodeP;
     }
 
-    public void setBoxName(String boxName) {
-        this.boxName = boxName == null ? null : boxName.trim();
+    public void setBoxCodeP(String boxCodeP) {
+        this.boxCodeP = boxCodeP == null ? null : boxCodeP.trim();
     }
 
     public String getBoxCode() {

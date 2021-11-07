@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import '../../main.css';
 import {Button, Input, message, Select, Table, Modal} from "antd";
 import moment from 'moment'
-import {BoxItemEntity, BrandObj, ProductObj, TradeCommonEntity, UserEntity} from "../../entity/index";
+import {BoxItemObj, ProductObj, TradeCommonEntity, UserEntity} from "../../entity/index";
 import axios from "axios";
 
 import AddAccountModal from "./component/addAccountModal";
@@ -12,11 +12,11 @@ import {actionCreator} from "../../utils/store/index";
 const Option = Select.Option;
 
 export interface TradeCommonProps {
-    platformList: BoxItemEntity[]
-    payWayList: BoxItemEntity[]
+    platformList: BoxItemObj[]
+    payWayList: BoxItemObj[]
     productList: ProductObj[]
     userList: UserEntity[]
-    handleBoxItemList: (boxItemList: BoxItemEntity[], boxName: string) => void
+    handleBoxItemList: (boxItemList: BoxItemObj[], boxName: string) => void
     handleGetUserList: () => void
     handleProductList: () => void
 }
@@ -173,7 +173,7 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
                         labelInValue id='platformInfo' style={{width: 240, marginRight: '8px'}}
                         placeholder="请选择购买平台">
                     {
-                        platformList.map((item: BoxItemEntity, index: number) => {
+                        platformList.map((item: BoxItemObj, index: number) => {
                             return <Option key={index} value={item.boxCode}>{item.boxText}</Option>
                         })
                     }
@@ -184,7 +184,7 @@ class TradeCommon extends React.Component<TradeCommonProps, TradeCommonState> {
                         labelInValue id='payWayInfo' style={{width: 240}}
                         placeholder="请选择支付方式">
                     {
-                        payWayList.map((item: BoxItemEntity, index: number) => {
+                        payWayList.map((item: BoxItemObj, index: number) => {
                             return <Option key={index} value={item.boxCode}>{item.boxText}</Option>
                         })
                     }
@@ -258,7 +258,7 @@ const mapStateToProps = (state: any) => {
 };
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        handleBoxItemList(boxItemList: BoxItemEntity[], boxName: string) {
+        handleBoxItemList(boxItemList: BoxItemObj[], boxName: string) {
             if (boxItemList.length == 0) {
                 dispatch(actionCreator.getBoxItemList(null, boxName))
             }

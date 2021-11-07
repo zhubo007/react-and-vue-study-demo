@@ -62,7 +62,8 @@ class MainApp extends React.Component<MainAppProps, MainAppState>{
                     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['Product']}>
                         <Menu.Item key="Product" onClick={this.titleMenuClick}>商品列表</Menu.Item>
                         <Menu.Item key="Account" onClick={this.titleMenuClick}>消费记录</Menu.Item>
-                        <Menu.Item key="Market" onClick={this.titleMenuClick}>收入理财</Menu.Item>
+                        <Menu.Item key="BoxItem" onClick={this.titleMenuClick}>字典项</Menu.Item>
+                        <Menu.Item key="CashBook" onClick={this.titleMenuClick}>记账本</Menu.Item>
                         <Menu.Item key="SystemUser" onClick={this.titleMenuClick}>后台系统</Menu.Item>
                     </Menu>
                 </Header>

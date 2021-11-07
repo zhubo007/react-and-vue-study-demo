@@ -2,44 +2,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bobo.server.dao.boxItem.BoxItemMapper">
   <resultMap id="BaseResultMap" type="com.bobo.server.entity.boxItem.BoxItem">
-    <id column="box_id" jdbcType="VARCHAR" property="boxId" />
-    <result column="box_key" jdbcType="VARCHAR" property="boxKey" />
+    <id column="box_id" jdbcType="INTEGER" property="boxId" />
     <result column="box_text" jdbcType="VARCHAR" property="boxText" />
     <result column="sort" jdbcType="INTEGER" property="sort" />
-    <result column="box_name" jdbcType="VARCHAR" property="boxName" />
     <result column="box_code" jdbcType="VARCHAR" property="boxCode" />
+    <result column="box_code_p" jdbcType="VARCHAR" property="boxCodeP" />
   </resultMap>
   <sql id="Base_Column_List">
-    box_id, box_key, box_text, sort, box_name, box_code
+    box_id, box_text, sort, box_code_p, box_code
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from comb_box_item
-    where box_id = #{boxId,jdbcType=VARCHAR}
+    where box_id = #{boxId,jdbcType=INTEGER}
   </select>
   <select id="selectBoxItem" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from comb_box_item
     <where>
-      <if test="boxId!=null and boxId!=''">
-        and box_id = #{boxId,jdbcType=VARCHAR}
-      </if>
-      <if test="boxName!=null and boxName!=''">
-        and box_name = #{boxName,jdbcType=VARCHAR}
+      <if test="boxCodeP != null and boxCodeP != ''">
+        and box_code_p = #{boxCodeP,jdbcType=VARCHAR}
       </if>
     </where>
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from comb_box_item
-    where box_id = #{boxId,jdbcType=VARCHAR}
+    where box_id = #{boxId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.bobo.server.entity.boxItem.BoxItem">
-    insert into comb_box_item (box_id, box_key, box_text, 
-      sort, box_name)
-    values (#{boxId,jdbcType=VARCHAR}, #{boxKey,jdbcType=VARCHAR}, #{boxText,jdbcType=VARCHAR}, 
-      #{sort,jdbcType=INTEGER}, #{boxName,jdbcType=VARCHAR})
+    insert into comb_box_item (box_id, box_text, box_code,
+      sort, box_code_p)
+    values (#{boxId,jdbcType=INTEGER}, #{boxText,jdbcType=VARCHAR}, #{boxCode,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{boxCodeP,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.bobo.server.entity.boxItem.BoxItem">
     insert into comb_box_item
@@ -47,8 +42,8 @@
       <if test="boxId != null">
         box_id,
       </if>
-      <if test="boxKey != null">
-        box_key,
+      <if test="boxCode != null">
+        box_code,
       </if>
       <if test="boxText != null">
         box_text,
@@ -56,16 +51,16 @@
       <if test="sort != null">
         sort,
       </if>
-      <if test="boxName != null">
-        box_name,
+      <if test="boxCodeP != null">
+        box_code_p,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="boxId != null">
-        #{boxId,jdbcType=VARCHAR},
+        #{boxId,jdbcType=INTEGER},
       </if>
-      <if test="boxKey != null">
-        #{boxKey,jdbcType=VARCHAR},
+      <if test="boxCode != null">
+        #{boxCode,jdbcType=VARCHAR},
       </if>
       <if test="boxText != null">
         #{boxText,jdbcType=VARCHAR},
@@ -73,16 +68,16 @@
       <if test="sort != null">
         #{sort,jdbcType=INTEGER},
       </if>
-      <if test="boxName != null">
-        #{boxName,jdbcType=VARCHAR},
+      <if test="boxCodeP != null">
+        #{boxCodeP,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.bobo.server.entity.boxItem.BoxItem">
     update comb_box_item
     <set>
-      <if test="boxKey != null">
-        box_key = #{boxKey,jdbcType=VARCHAR},
+      <if test="boxCode != null">
+        box_code = #{boxCode,jdbcType=VARCHAR},
       </if>
       <if test="boxText != null">
         box_text = #{boxText,jdbcType=VARCHAR},
@@ -90,18 +85,18 @@
       <if test="sort != null">
         sort = #{sort,jdbcType=INTEGER},
       </if>
-      <if test="boxName != null">
-        box_name = #{boxName,jdbcType=VARCHAR},
+      <if test="boxCodeP != null">
+        box_code_p = #{boxCodeP,jdbcType=VARCHAR},
       </if>
     </set>
-    where box_id = #{boxId,jdbcType=VARCHAR}
+    where box_id = #{boxId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.bobo.server.entity.boxItem.BoxItem">
     update comb_box_item
-    set box_key = #{boxKey,jdbcType=VARCHAR},
-      box_text = #{boxText,jdbcType=VARCHAR},
-      sort = #{sort,jdbcType=INTEGER},
-      box_name = #{boxName,jdbcType=VARCHAR}
-    where box_id = #{boxId,jdbcType=VARCHAR}
+    set box_code = #{boxCode,jdbcType=VARCHAR},
+        box_text = #{boxText,jdbcType=VARCHAR},
+        sort = #{sort,jdbcType=INTEGER},
+        box_code_p = #{boxCodeP,jdbcType=VARCHAR}
+    where box_id = #{boxId,jdbcType=INTEGER}
   </update>
 </mapper>

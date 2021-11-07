@@ -14,7 +14,22 @@ public class BoxItemServiceImpl implements BoxItemService {
     private BoxItemMapper boxItemMapper;
 
     @Override
-    public List<BoxItem> selectBoxItem(String boxId, String boxName) {
-        return boxItemMapper.selectBoxItem(boxId, boxName);
+    public List<BoxItem> selectBoxItem(String boxCodeP) {
+        return boxItemMapper.selectBoxItem(boxCodeP);
+    }
+
+    @Override
+    public Integer deleteBoxItem(Integer boxId) {
+        return boxItemMapper.deleteByPrimaryKey(boxId);
+    }
+
+    @Override
+    public Integer updateBoxItem(BoxItem boxItem) {
+        return boxItemMapper.updateByPrimaryKey(boxItem);
+    }
+
+    @Override
+    public Integer addBoxItem(BoxItem boxItem) {
+        return boxItemMapper.insertSelective(boxItem);
     }
 }

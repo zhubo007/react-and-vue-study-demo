@@ -6,5 +6,11 @@ import java.util.List;
 
 public interface BoxItemService {
 
-    List<BoxItem> selectBoxItem(String boxId, String boxName);
+    List<BoxItem> selectBoxItem(String boxCodeP);
+
+    Integer deleteBoxItem(Integer boxId);
+
+    Integer updateBoxItem(BoxItem boxItem);
+
+    Integer addBoxItem(BoxItem boxItem);
 }

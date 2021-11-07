@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bobo.server.dao.cashbook.TdCashBookMapper">
+  <resultMap id="BaseResultMap" type="com.bobo.server.entity.cashbook.TdCashBook">
+    <id column="deal_no" jdbcType="VARCHAR" property="dealNo" />
+    <result column="income_or_expense" jdbcType="VARCHAR" property="incomeOrExpense" />
+    <result column="post_date" jdbcType="TIMESTAMP" property="postDate" />
+    <result column="amt" jdbcType="DOUBLE" property="amt" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="is_active" jdbcType="INTEGER" property="isActive" />
+    <result column="ie_code" jdbcType="VARCHAR" property="ieCode" />
+    <result column="ie_code_name" jdbcType="VARCHAR" property="ieCodeName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tcb.deal_no, tcb.income_or_expense, tcb.post_date, tcb.amt, tcb.user_id, tcb.remark, tcb.is_active, tcb.ie_code
+  </sql>
+  <select id="selectCashBook" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    ,ifnull(cbi1.box_text,cbi2.box_text) as ie_code_name
+    from td_cash_book tcb
+    left join comb_box_item cbi1 on cbi1.box_code = tcb.ie_code and cbi1.box_code_p='expensesType'
+    left join comb_box_item cbi2 on cbi2.box_code = tcb.ie_code and cbi2.box_code_p='incomeType'
+    <where>
+      <if test="ieCode != null and ieCode != ''">
+        and tcb.ie_code =#{ieCode,jdbcType=VARCHAR}
+      </if>
+      <if test="incomeOrExpense != null and incomeOrExpense != ''">
+        and tcb.income_or_expense =#{incomeOrExpense,jdbcType=VARCHAR}
+      </if>
+    </where>
+    order by tcb.post_date desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from td_cash_book
+    where deal_no = #{dealNo,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.bobo.server.entity.cashbook.TdCashBook">
+    insert into td_cash_book (deal_no, income_or_expense, post_date, 
+      amt, user_id, remark, 
+      is_active, ie_code)
+    values (#{dealNo,jdbcType=VARCHAR}, #{incomeOrExpense,jdbcType=VARCHAR}, #{postDate,jdbcType=TIMESTAMP},
+      #{amt,jdbcType=DOUBLE}, #{userId,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+      #{isActive,jdbcType=INTEGER}, #{ieCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bobo.server.entity.cashbook.TdCashBook">
+    insert into td_cash_book
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dealNo != null">
+        deal_no,
+      </if>
+      <if test="incomeOrExpense != null">
+        income_or_expense,
+      </if>
+      <if test="postDate != null">
+        post_date,
+      </if>
+      <if test="amt != null">
+        amt,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="isActive != null">
+        is_active,
+      </if>
+      <if test="ieCode != null">
+        ie_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dealNo != null">
+        #{dealNo,jdbcType=VARCHAR},
+      </if>
+      <if test="incomeOrExpense != null">
+        #{incomeOrExpense,jdbcType=VARCHAR},
+      </if>
+      <if test="postDate != null">
+        #{postDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amt != null">
+        #{amt,jdbcType=DOUBLE},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null">
+        #{isActive,jdbcType=INTEGER},
+      </if>
+      <if test="ieCode != null">
+        #{ieCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bobo.server.entity.cashbook.TdCashBook">
+    update td_cash_book
+    <set>
+      <if test="incomeOrExpense != null">
+        income_or_expense = #{incomeOrExpense,jdbcType=VARCHAR},
+      </if>
+      <if test="postDate != null">
+        post_date = #{postDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amt != null">
+        amt = #{amt,jdbcType=DOUBLE},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null">
+        is_active = #{isActive,jdbcType=INTEGER},
+      </if>
+      <if test="ieCode != null">
+        ie_code = #{ieCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where deal_no = #{dealNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bobo.server.entity.cashbook.TdCashBook">
+    update td_cash_book
+    set income_or_expense = #{incomeOrExpense,jdbcType=VARCHAR},
+      post_date = #{postDate,jdbcType=TIMESTAMP},
+      amt = #{amt,jdbcType=DOUBLE},
+      user_id = #{userId,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      is_active = #{isActive,jdbcType=INTEGER},
+      ie_code = #{ieCode,jdbcType=VARCHAR}
+    where deal_no = #{dealNo,jdbcType=VARCHAR}
+  </update>
+</mapper>
