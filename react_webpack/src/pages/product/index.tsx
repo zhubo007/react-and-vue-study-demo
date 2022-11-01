@@ -138,7 +138,7 @@ class Product extends React.Component<ProductProps, ProductState> {
                 }).catch((error) => {
                 message.error("删除异常");
             })
-        })
+        });
         message.success('产品删除成功');
         this.setState({delete_visible: false})
     };
